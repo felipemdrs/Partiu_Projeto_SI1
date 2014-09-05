@@ -1,11 +1,18 @@
 <style>
 .list-travels {
 	margin-top: 1.15%;
+} 
+.load-more {
+	width: 100%;
+	margin: 10px;
 }
 </style>
 <div class="list-travels col-md-8">
-@for(i <- 0 to 10) {
-	@travel("/assets/img/perfil.jpg", "Titulo", "Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao ", false)
-}
+	@for(i <- 0 to 10) {
+		@travel("/assets/img/perfil.jpg", "Titulo", "Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao ", false)
+	}
+	<div class="load-more btn btn-primary">
+		<h4>Carregar mais</h4>
+	</div>     
 </div>
 @menus.rmenu(travel_group.rmenu())
