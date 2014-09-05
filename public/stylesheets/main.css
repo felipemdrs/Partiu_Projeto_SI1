@@ -14,7 +14,7 @@ h3 {
 
 .arrow_box {
 	color: rgb(80, 80, 80);
-	left: 3.1%;
+	left: 7%;
 	width: 76.4%;
 	position: relative;
 	background: #F8F8F8;
@@ -47,4 +47,8 @@ h3 {
 	border-right-color: #C9C9C9;
 	border-width: 25px;
 	margin-top: -25px;
+}
+
+html body {
+	height: 100%;
 }
