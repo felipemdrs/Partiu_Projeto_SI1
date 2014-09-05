@@ -2,6 +2,10 @@ h3 {
 	font-size: 18px;
 }
 
+.color-theme {
+	background-color: rgb(0, 48, 60);
+}
+
 .list-group-item {
 	border-radius: 0px !important;
 }
@@ -36,6 +40,7 @@ h3 {
 	pointer-events: none;
 }
 
+}
 .arrow_box:after {
 	border-color: rgba(136, 183, 213, 0);
 	border-right-color: white;
@@ -43,6 +48,7 @@ h3 {
 	margin-top: -24px;
 }
 
+}
 .arrow_box:before {
 	border-color: rgba(194, 225, 245, 0);
 	border-right-color: #C9C9C9;
