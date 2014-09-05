@@ -17,11 +17,12 @@ h3 {
 	left: 7%;
 	width: 76.4%;
 	position: relative;
-	background: #F8F8F8;
+	background: #FFFFFF;
 	border: 1px solid #C9C9C9;
 	height: 79%;
 	border-radius: 2px;
 	top: 10%;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.23);
 }
 
 .arrow_box:after, .arrow_box:before {
@@ -37,7 +38,7 @@ h3 {
 
 .arrow_box:after {
 	border-color: rgba(136, 183, 213, 0);
-	border-right-color: #F8F8F8;
+	border-right-color: white;
 	border-width: 24px;
 	margin-top: -24px;
 }
