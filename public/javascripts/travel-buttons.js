@@ -12,6 +12,7 @@ function enableJoinButton(button) {
 		button.removeClass(disabledJoinColorHover);
 	button.addClass(enabledJoinColor);
 	button.data("activated", true);
+	button.attr("title", "Sair");
 }
 //Disable the join button
 function disableJoinButton(button) {
@@ -21,6 +22,7 @@ function disableJoinButton(button) {
 		button.removeClass(enabledJoinColorHover);
 	button.addClass(disabledJoinColor);
 	button.data("activated", false);
+	button.attr("title", "Participar");
 }
 //clicks on join button
 function clickJoinButton() {

@@ -18,7 +18,7 @@ html body {
 }
 
 .color-theme {
-	background-color: rgb(0, 48, 60);
+	background-color: rgb(15, 48, 70);
 }
 
 .color-green {
@@ -103,7 +103,7 @@ html body {
 }
 
 .travel-box {
-	cursor: pointer;
+	
 }
 
 .travel-box:hover {
