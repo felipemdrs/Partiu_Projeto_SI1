@@ -3,7 +3,7 @@
 	<div class="list-travels col-md-5" style="width:70%">
 		@for(i <- 0 to 10) {
 			@if(isAdmin) {
-				@travel_admin("/assets/img/perfil.jpg", "Titulo", "Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao ", (i % 2 == 0))
+				@travel_admin("/assets/img/perfil.jpg", "Titulo", "Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao ")
 			} else {
 				@travel("/assets/img/perfil.jpg", "Titulo", "Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao ", (i % 2 == 0), (menuIndex == 1))
 			}
@@ -14,4 +14,16 @@
 	</div>
 	@menus.rmenu(menu())
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/travel-buttons.js")"></script>
+	<script>
+	$(function(){
+		$(".travel-box-content").click(function(){
+			var button = $(this).parent().parent().find(".travel-box-join");
+			if (!button.data("activated")) {
+				$("#forbiddenModal").modal("show");
+				return; 
+			}
+			window.location.href = "/travels/board";
+		});
+	});
+	</script>
 } 

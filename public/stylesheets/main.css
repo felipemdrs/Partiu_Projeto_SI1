@@ -21,8 +21,12 @@ html body {
 	background-color: rgb(15, 48, 70);
 }
 
-.color-green {
+.color-green, .travel-box-edit {
 	background-color: rgb(51, 102, 51);
+}
+
+.color-dark-green, .travel-box-edit:hover {
+	background-color: rgb(10, 50, 10);	
 }
 
 .color-gray {
@@ -33,11 +37,11 @@ html body {
 	background-color: rgb(102, 102, 102);
 }
 
-.color-blue {
+.color-blue, .travel-box-info {
 	background-color: rgb(30, 90, 165);
 }
 
-.color-dark-blue {
+.color-dark-blue, .travel-box-info:hover {
 	background-color: rgb(10, 40, 70);
 }
 
@@ -137,4 +141,14 @@ html body {
 	text-shadow: 1px 0px 2px rgba(0, 0, 0, 0.5);
 	cursor: pointer;
 	clear: right;
+}
+
+#map-canvas {
+  width: 100%;
+  height: 250px;
+  margin: 0px;
+  padding: 0px;
+}
+#choose-place-content input {
+	height: 50px;
 }

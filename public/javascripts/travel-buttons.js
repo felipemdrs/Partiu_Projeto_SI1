@@ -86,13 +86,6 @@ function hoverJoinButton() {
 			$(this).removeClass(disabledJoinColorHover);
 		}
 	});
-	//Hover of more info button
-	$(".travel-box-info").mouseenter(function(){
-		$(this).addClass("color-dark-blue");
-	});
-	$(".travel-box-info").mouseleave(function(){
-		$(this).removeClass("color-dark-blue");
-	})
 }
 
 $(function(){

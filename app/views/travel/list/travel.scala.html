@@ -1,19 +1,19 @@
 @(thumbnail: String, title: String, description: String, locked: Boolean, participating: Boolean)
 
-	<div class="travel-box"  style="padding-top:1%;height:177px;margin-left:-28px;border-bottom:1px solid #eee;width:105%;">
-		<div class="col-md-2">
-			<div style="margin-top:25%;width:105px;height:117px;background-color:rgb(94, 94, 94);">
-				<img src="/assets/img/perfil.jpg" width="105px" height="117px" style="border:1px solid rgb(172, 172, 172);">
-			</div>
-		</div>
-		<a href="/travels/board"><div class="travel-box-content">
-			<p><b><h3>@title</h3></b></p>
-			<p>@description</p>
-		</div></a>
-		<div class='travel-box-toggle travel-box-join @if(participating) { color-green } else { color-gray } ' data-activated="@(participating)" data-locked='@(locked)' title="@if(participating) { Sair } else { Participar }">
-			<i class="fa @if(locked) { fa-lock } else { fa-check }"></i>
-		</div>
-		<div class="travel-box-toggle travel-box-info color-blue" title="Mais informa&ccedil;&otilde;es">	
-			<i class="fa fa-eye"></i>
+<div class="travel-box"  style="padding-top:1%;height:177px;margin-left:-28px;border-bottom:1px solid #eee;width:105%;">
+	<div class="col-md-2">
+		<div style="margin-top:25%;width:105px;height:117px;background-color:rgb(94, 94, 94);">
+			<img src="/assets/img/perfil.jpg" width="105px" height="117px" style="border:1px solid rgb(172, 172, 172);">
 		</div>
 	</div>
+	<a href="#"><div class="travel-box-content">
+		<p><b><h3>@title</h3></b></p>
+		<p>@description</p>
+	</div></a>
+	<div class='travel-box-toggle travel-box-join @if(participating) { color-green } else { color-gray } ' data-activated="@(participating)" data-locked='@(locked)' title="@if(participating) { Sair } else { Participar }">
+		<i class="fa @if(locked) { fa-lock } else { fa-check }"></i>
+	</div>
+	<div class="travel-box-toggle travel-box-info color-blue" title="Mais informa&ccedil;&otilde;es">	
+		<i class="fa fa-eye"></i>
+	</div>
+</div>
