@@ -1,0 +1,10 @@
+<div class="list-travels col-md-5" style="width:70%">
+	@for(i <- 0 to 10) {
+		@travel("/assets/img/perfil.jpg", "Titulo", "Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao ", (i % 2 == 0), true)
+	}
+	<div class="load-more btn btn-primary">
+		<h4>Carregar mais</h4>
+	</div>     
+</div>
+@menus.rmenu(rmenu())
+<script type="text/javascript" src="@routes.Assets.at("javascripts/home/travel_list.js")"></script>

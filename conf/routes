@@ -4,7 +4,12 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET     /travels              controllers.Application.travels(filter: String ?= null, travelId: Long ?= -1L)
+
+# Travels
+POST	/travels/					controllers.Application.travelList()
+POST	/travels/in					controllers.Application.travelListIn()
+POST	/travels/admin				controllers.Application.travelListAdmin()
+POST	/travels/notify				controllers.Application.travelNotifications()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
