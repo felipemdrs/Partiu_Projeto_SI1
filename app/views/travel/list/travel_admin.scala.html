@@ -1,4 +1,4 @@
-@(thumbnail: String, title: String, description: String, locked: Boolean, participating: Boolean)
+@(thumbnail: String, title: String, description: String, locked: Boolean)
 <a href="#" style="color:black;">
 	<div class="travel-box"  style="padding-top:1%;height:177px;margin-left:-28px;border-bottom:1px solid #eee;width:105%;">
 		<div class="col-md-2">
@@ -10,12 +10,11 @@
 			<p><b><h3>@title</h3></b></p>
 			<p>@description</p>
 		</div>
-		<div class='travel-box-toggle @if(participating) { travel-box-toggle-green } else { travel-box-toggle-gray }'>
-			@if(locked) {
-				<i class="fa fa-lock" data-locked="true"></i>
-			} else {
-				<i class="fa fa-check" data-locked="false"></i>
-			}
+		<div class='travel-box-toggle travel-box-join color-green' data-activated="true" data-locked='@(locked)'>
+			<i class="fa @if(locked) { fa-lock } else { fa-check }"></i>
+		</div>
+		<div class="travel-box-toggle travel-box-info color-blue" >	
+			<i class="fa fa-eye"></i>
 		</div>
 	</div>
 </a>

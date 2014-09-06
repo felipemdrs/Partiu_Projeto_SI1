@@ -1,21 +1,22 @@
+@(index: Integer)
 <div id="l-menu">
 	<div class="col-sm-2"
 		style="height: 100%; position: fixed; padding-left: 1.8%; margin-top: 4%; padding-right: 1%; color: white;">
 		<i class="fa fa-plane" style="font-size: 18px; margin-right: 5%;"></i>
 		<h3 style="display: inline-block;">Viagens</h3>
 		<div class="list-group" style="font-size: 14px;">
-			<a href="#all" class="list-group-item menu-link-travels active"
+			<a href="/travels/" class="list-group-item menu-link-travels @if(index == 0){ active }"
 				style="border-radius: 0px; border-color: rgb(82, 82, 82);">Todas</a>
-			<a href="#in" class="list-group-item travels-board menu-link-board"
+			<a href="/travels/in" class="list-group-item travels-board menu-link-board @if(index == 1){ active }"
 				style="border-radius: 0px; border-color: rgb(82, 82, 82);">Participando</a>
-			<a href="#admin" class="list-group-item travels-admin menu-link-admin"
+			<a href="/travels/admin" class="list-group-item travels-admin menu-link-admin @if(index == 2){ active }"
 				style="border-radius: 0px; border-color: rgb(82, 82, 82);">Administrando</a>
 		</div>
 		<i class="fa fa-volume-down" style="font-size: 22px; margin-right: 5%;"></i>
 		<h3 style="display: inline-block;">Notificações</h3>
 		<div class="list-group"
 			style="overflow-y: auto; max-height: 60%; border-radius: 0px">
-			<a href="#board" class="list-group-item">Grupo</a>
+			<a href="/travels/board" class="list-group-item @if(index == 3){ active }">Grupo</a>
 		</div>
 	</div>
 </div>

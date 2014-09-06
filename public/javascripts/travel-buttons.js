@@ -52,9 +52,9 @@ function clickJoinButton() {
 		}
 	});
 }
-//hover on join button
+//hover on buttons
 function hoverJoinButton() {
-	//Enable hover changing color
+	//Entering of hover of join button
 	$(".travel-box-join").mouseenter(function(){
 		if ($(this).data("activated")) {
 			var icon = $(this).find("i");
@@ -69,7 +69,7 @@ function hoverJoinButton() {
 			$(this).addClass(disabledJoinColorHover);
 		}
 	});
-	//Disable hover changing color
+	//Leaving of hover of join button
 	$(".travel-box-join").mouseleave(function(){
 		if ($(this).data("activated")) {
 			var icon = $(this).find("i");
@@ -84,6 +84,13 @@ function hoverJoinButton() {
 			$(this).removeClass(disabledJoinColorHover);
 		}
 	});
+	//Hover of more info button
+	$(".travel-box-info").mouseenter(function(){
+		$(this).addClass("color-dark-blue");
+	});
+	$(".travel-box-info").mouseleave(function(){
+		$(this).removeClass("color-dark-blue");
+	})
 }
 
 $(function(){

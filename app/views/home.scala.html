@@ -1,0 +1,12 @@
+@(menuIndex: Integer)(content: Html)
+@main("#Partiu") {
+	<!-- Modals -->
+	@modals.cancel()
+	@modals.password()
+	<!--  Sidebar menu -->
+	@menus.lmenu(menuIndex)
+	<!--  Main content -->
+	<div class="main-content" >
+		@content
+	</div>
+}  

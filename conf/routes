@@ -6,10 +6,10 @@
 GET     /                           controllers.Application.index()
 
 # Travels
-POST	/travels/					controllers.Application.travelList()
-POST	/travels/in					controllers.Application.travelListIn()
-POST	/travels/admin				controllers.Application.travelListAdmin()
-POST	/travels/notify				controllers.Application.travelNotifications()
+GET		/travels/					controllers.Application.travelList()
+GET		/travels/in					controllers.Application.travelListIn()
+GET		/travels/admin				controllers.Application.travelListAdmin()
+GET		/travels/board				controllers.Application.travelBoard()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -1,7 +1,9 @@
-<div class="col-md-8" style="height:177px;margin-top:-5px;padding-right:0px;width:70%">
-	@message_input()
-	@for(i <- 1 to 20){
-		@message_box()
-	}
-</div>
-@menus.rmenu(rmenu())
+@home(3){
+	<div class="col-md-8" style="height:177px;margin-top:-5px;padding-right:0px;width:70%">
+		@message_input()
+		@for(i <- 1 to 20){
+			@message_box()
+		}
+	</div>
+	@menus.rmenu(rmenu())
+}
