@@ -1,8 +1,12 @@
 $(function(){
+	var pageId = $('.main-content').data('pageId');
+	$('#l-menu').find('.menu-link-'+pageId).addClass('active');
+	
 	var green = "rgb(51, 102, 51)";
 	var gray = "rgb(211, 211, 211)";
 	var dark_gray = "rgb(102, 102, 102)";
 	var red = "rgb(211, 51, 51)";
+	
 	//Confirm the cancelling of travel
 	$("#travel-box-confirm").click(function(){
 		$("#confirmModal").data().css("background-color", gray);
