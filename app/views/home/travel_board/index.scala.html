@@ -1,7 +1,19 @@
-<div class="col-md-7" style="height:177px;margin-top:-5px;padding-right:0px;width:70%">
-	@message_input()
-	@for(i <- 1 to 20){
-		@message_box()
-	}
-</div>
-@home.menus.rmenu(rmenu())
+@(pageId: String)
+
+@main("#Partiu") {
+	@home.menus.lmenu()
+	<div class="main-content" data-page-id="@pageId" style="height: 92%; position: fixed; margin-top:4%;background-color:white;width:82.6%;margin-left:17.366667%;overflow-y:auto;padding:0.5% 1% 1% 1%;">
+		<div class="col-md-8" style="height:177px;margin-top:-5px;padding-right:0px;width:70%">
+			@message_input()
+			@for(i <- 1 to 20){
+				@message_box()
+			}
+		</div>
+		@home.menus.rmenu(rmenu())
+	</div>
+}
+
+<script>
+	var pageId = $('.main-content').data('pageId');
+	$('#l-menu').find('.menu-link-'+pageId).addClass('active');
+</script>

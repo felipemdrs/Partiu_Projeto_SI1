@@ -1,7 +1,8 @@
 $(function(){
-	var pageId = $('.main-content').data('pageId');
-	$('#l-menu').find('.menu-link-'+pageId).addClass('active');
 	
+	var pageId = $('.main-content').data('pageId');
+	$('#l-menu').find('.menu-link-'+pageId).addClass('active')
+
 	var green = "rgb(51, 102, 51)";
 	var gray = "rgb(211, 211, 211)";
 	var dark_gray = "rgb(102, 102, 102)";

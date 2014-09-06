@@ -4,9 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET     /travels                    controllers.Application.travels_all()
-GET     /travels/admin              controllers.Application.travels_admin()
-GET     /travels/board              controllers.Application.travels_board()
+GET     /travels              controllers.Application.travels(filter: String ?= null, travelId: Long ?= -1L)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

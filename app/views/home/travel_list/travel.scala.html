@@ -1,17 +1,21 @@
 @(thumbnail: String, title: String, description: String, locked: Boolean, participating: Boolean)
-<div class="travel-box">
-	<div class="travel-box-thumbnail">
-		<img src="@thumbnail" width="100px" height="100px" />
+<a href="/travels?filter=board&travelId=4" style="color:black;">
+	<div class="travel-box"  style="padding-top:1%;height:177px;margin-left:-28px;border-bottom:1px solid #eee;width:105%;">
+		<div class="col-md-2">
+			<div style="margin-top:25%;width:105px;height:117px;background-color:rgb(94, 94, 94);">
+				<img src="/assets/img/perfil.jpg" width="105px" height="117px" style="border:1px solid rgb(172, 172, 172);">
+			</div>
+		</div>
+		<div class="travel-box-content">
+			<p><b><h3>@title</h3></b></p>
+			<p>@description</p>
+		</div>
+		<div class='travel-box-toggle @if(participating) { travel-box-toggle-green } else { travel-box-toggle-gray }'>
+			@if(locked) {
+				<i class="fa fa-lock" data-locked="true"></i>
+			} else {
+				<i class="fa fa-check" data-locked="false"></i>
+			}
+		</div>
 	</div>
-	<div class="travel-box-content">
-		<p><b>@title</b></p>
-		<p>@description</p>
-	</div>
-	<div class='travel-box-toggle @if(participating) { travel-box-toggle-green } else { travel-box-toggle-gray }'>
-		@if(locked) {
-			<i class="fa fa-lock" data-locked="true"></i>
-		} else {
-			<i class="fa fa-check" data-locked="false"></i>
-		}
-	</div>
-</div>
+</a>
