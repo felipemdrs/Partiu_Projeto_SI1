@@ -4,15 +4,15 @@ $(function(){
 	var dark_gray = "rgb(102, 102, 102)";
 	var red = "rgb(211, 51, 51)";
 	//Confirm the cancelling of travel
-	$(".travel-box-confirm").click(function(){
+	$("#travel-box-confirm").click(function(){
 		$("#confirmModal").data().css("background-color", gray);
 		$("#confirmModal").modal("hide");
 	});
 	//Confirm the typed password
-	$(".travel-box-password-confirm").click(function(){
+	$("#travel-box-password-confirm").click(function(){
 		$("#typePasswordModal").data().css("background-color", green);
 		$("#typePasswordModal").modal("hide");
-	});
+	}); 
 	//Save the button who calls the modal or activates it
 	$(".travel-box-toggle").click(function(){
 		if ($(this).css("background-color") == red) {
