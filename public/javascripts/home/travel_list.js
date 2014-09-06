@@ -1,30 +1,39 @@
+//all those strings represents css classes
+var disabledJoinColor = "color-gray";
+var disabledJoinColorHover = "color-dark-gray";
+var enabledJoinColor = "color-green";
+var enabledJoinColorHover = "color-red";
+
 //Enable the join button
-function enableButton(button) {
-	if (button.hasClass("color-gray"))
-		button.removeClass("color-gray");
-	if (button.hasClass("color-dark-gray"))
-		button.removeClass("color-dark-gray");
-	button.addClass("color-green");
+function enableJoinButton(button) {
+	if (button.hasClass(disabledJoinColor))
+		button.removeClass(disabledJoinColor);
+	if (button.hasClass(disabledJoinColorHover))
+		button.removeClass(disabledJoinColorHover);
+	button.addClass(enabledJoinColor);
 	button.data("activated", true);
 }
 //Disable the join button
-function disableButton(button) {
-	if (button.hasClass("color-green"))
-		button.removeClass("color-green");
-	button.addClass("color-gray");
+function disableJoinButton(button) {
+	if (button.hasClass(enabledJoinColor))
+		button.removeClass(enabledJoinColor);
+	if (button.hasClass(enabledJoinColorHover))
+		button.removeClass(enabledJoinColorHover);
+	button.addClass(disabledJoinColor);
 	button.data("activated", false);
 }
-$(function(){
+//clicks on join button
+function clickJoinButton() {
 	//Confirm the cancelling of travel
 	$("#travel-box-confirm").click(function(){
 		var button = $("#confirmModal").data();
-		disableButton(button);
+		disableJoinButton(button);
 		$("#confirmModal").modal("hide");
 	});
 	//Confirm the typed password
 	$("#travel-box-password-confirm").click(function(){
 		var button = $("#typePasswordModal").data();
-		enableButton(button);
+		enableJoinButton(button);
 		$("#typePasswordModal").modal("hide");
 	}); 
 	//Click on join button 
@@ -38,10 +47,13 @@ $(function(){
 				$("#typePasswordModal").data($(this));
 				$("#typePasswordModal").modal("show");
 			} else {
-				enableButton($(this));
+				enableJoinButton($(this));
 			}
 		}
 	});
+}
+//hover on join button
+function hoverJoinButton() {
 	//Enable hover changing color
 	$(".travel-box-join").mouseenter(function(){
 		if ($(this).data("activated")) {
@@ -52,9 +64,9 @@ $(function(){
 				icon.removeClass("fa-check");
 			}
 			icon.addClass("fa-close");
-			$(this).addClass("color-red");
+			$(this).addClass(enabledJoinColorHover);
 		} else {
-			$(this).addClass("color-dark-gray");
+			$(this).addClass(disabledJoinColorHover);
 		}
 	});
 	//Disable hover changing color
@@ -67,9 +79,14 @@ $(function(){
 			} else {
 				icon.addClass("fa-check");
 			}
-			$(this).removeClass("color-red");
+			$(this).removeClass(enabledJoinColorHover);
 		} else {
-			$(this).removeClass("color-dark-gray");
+			$(this).removeClass(disabledJoinColorHover);
 		}
 	});
+}
+
+$(function(){
+	clickJoinButton();
+	hoverJoinButton();
 });
