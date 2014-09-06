@@ -37,5 +37,6 @@ $(function(){
 		loadPage(route);
 		$("#l-menu").find(".active").removeClass("active");
 		$(this).addClass("active");
+
 	});
 });
