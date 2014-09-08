@@ -6,14 +6,14 @@
 			<img src="/assets/img/perfil.jpg" width="105px" height="117px" style="border:1px solid rgb(172, 172, 172);">
 		</div>
 	</div>
-	<a href="#"><div class="travel-box-content">
+	<a href="#" style="color: #333333;"><div class="travel-box-content">
 		<p><b><h3>@title</h3></b></p>
 		<p>@description</p>
 	</div></a>
 	<div class='travel-box-toggle travel-box-join @if(participating) { color-green } else { color-gray } ' data-activated="@(participating)" data-locked='@(locked)' title="@if(participating) { Sair } else { Participar }">
 		<i class="fa @if(locked) { fa-lock } else { fa-check }"></i>
 	</div>
-	<div class="travel-box-toggle travel-box-info color-blue" title="Mais informa&ccedil;&otilde;es">	
+	<a href="/travels/1/info"><div class="travel-box-toggle travel-box-info color-blue" title="Mais informa&ccedil;&otilde;es">	
 		<i class="fa fa-eye"></i>
-	</div>
+	</div></a>
 </div>
