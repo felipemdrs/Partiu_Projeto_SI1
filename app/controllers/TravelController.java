@@ -27,4 +27,8 @@ public class TravelController extends Controller {
 		return ok(views.html.travel.info.index.render());
 	}
 	
+	public static Result edit(Long id) {
+		return ok(views.html.travel.edit.index.render());
+	}
+	
 }
