@@ -29,9 +29,9 @@ public class AccountController extends Controller {
 		return badRequest(views.html.index.render());
 	}
 
-	public static Result signout() {
+	public static Result logout() {
 		session().clear();
-		return ok(views.html.index.render());
+		return redirect(routes.Application.index());
 	}
 
 	public static Result register(String name, String email, String password) {

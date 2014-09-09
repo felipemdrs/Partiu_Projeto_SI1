@@ -21,6 +21,11 @@ html body {
 	background-color: rgb(15, 48, 70);
 }
 
+.color-gradiente-theme {
+	background-color: rgb(15, 48, 70);
+	background-image: -webkit-linear-gradient(top,rgb(27, 73, 105),rgb(15, 48, 70));
+}
+
 .color-green, .travel-box-edit {
 	background-color: rgb(51, 102, 51);
 }
@@ -259,3 +264,49 @@ html body {
 }
 
 /* Login end */
+.user-avatar {
+	width: 100%;
+	position: relative;
+	height: 57px;
+	margin-top: -6px;
+}
+
+.user-avatar a .badge {
+	z-index: 2;
+	position: absolute;
+	left: -2px;
+	top: 10px;
+}
+
+.user-avatar a img {
+	-webkit-box-shadow: 0 1px 3px #1e1e1e;
+	-moz-box-shadow: 0 1px 3px #1e1e1e;
+	box-shadow: 0 1px 3px #1e1e1e;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-ms-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+	width:35px;
+	height:35px;
+	margin-right:10px;
+}
+
+.badge-dark-red {
+	background: #a24037;
+	background-size: 100%;
+	background-image: -webkit-gradient(linear,50% 0,50% 100%,color-stop(0%,#b5473e),color-stop(100%,#a24037));
+	background-image: -webkit-linear-gradient(top,#b5473e,#a24037);
+	background-image: -moz-linear-gradient(top,#b5473e,#a24037);
+	background-image: -o-linear-gradient(top,#b5473e,#a24037);
+	background-image: linear-gradient(top,#b5473e,#a24037);
+	-webkit-box-shadow: 0 0 0 1px #692924;
+	-moz-box-shadow: 0 0 0 1px #692924;
+	box-shadow: 0 0 0 1px #692924;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
+	color: #555;
+	background-color: rgb(15, 48, 70);
+	height: 57px;
+}

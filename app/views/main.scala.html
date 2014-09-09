@@ -16,7 +16,7 @@
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     </head>
     <body class="color-theme">
- 	  <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="height:7%;box-shadow:0px 0px 0px 0px;">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top color-theme" style="box-shadow:0px 0px 0px 0px;border-bottom: 1px solid rgb(21, 32, 49);">
 		    <div class="navbar-header">
 		    	<div class="nav-container">
 			        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
@@ -25,18 +25,61 @@
 			            <span class="icon-bar"></span>
 			            <span class="icon-bar"></span>
 			        </button>
-			        <a href="/" class="navbar-brand"><i class="fa fa-plane" style="font-size:50px;margin-top:-27%;"></i></a>
+			        <a href="/" class="navbar-brand"><i class="fa fa-plane" style="font-size:35px;margin-top:-18%;color: white;"></i></a>
 		   		</div>
 			</div>
-			<div id="navbarCollapse" class="collapse navbar-collapse">
+			<div id="navbarCollapse" class="collapse navbar-collapse" style="background-color: rgb(15, 48, 70);color: white;background-image: -webkit-linear-gradient(top,rgb(27, 73, 105),rgb(15, 48, 70));">
 		        <ul class="nav navbar-nav">
-		            <li><a href="#" style="font-size: 40px">#Partiu</a></li>
+		            <li><a href="#" style="font-size: 30px;color: white;">#Partiu</a></li>
 		        </ul>
-		        <ul class="nav navbar-nav navbar-right col-md-5">
 		        	@if(controllers.AccountController.getCurrentUser() == null){
-		          	  @login()
+	        		  <ul class="nav navbar-nav navbar-right col-md-5">
+		          	  	@login()
+		          	  </ul>
+		            } else {
+		            <ul class="nav navbar-nav navbar-right col-md-2">
+		            	<div class="collapse navbar-collapse profile-collapse navbar-right" style="width: 100%;">
+					        <ul class="nav navbar-nav">
+					            <li class="dropdown user-avatar">
+					                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">
+					                    <img src="/assets/img/perfil.jpg" alt="Fofura">
+					                    Fofura <i class="caret"></i>
+					                    <span class="badge badge-dark-red">5</span>
+					                </a>
+					                <ul class="dropdown-menu">
+					                    <li>
+					                        <a href="#/">
+					                            <i class="icon-user"></i>
+					                            <span>Perfil</span>
+					                        </a>
+					                    </li>
+					                    <li>
+					                        <a href="#/">
+					                            <i class="icon-envelope"></i>
+					                            <span>Mensagens</span>
+					                            <span class="label label-red pull-right">5</span>
+					                        </a>
+					                    </li>
+					                    <li>
+					                        <a href="#/">
+					                            <i class="icon-cog"></i>
+					                            <span>Configurações</span>
+					                        </a>
+					                    </li>
+					                    <li>
+					                        <a href="#" onclick="document.getElementById('logoutForm').submit();">
+						                        <form id="logoutForm" action="/logout" method="post">
+							                            <i class="icon-off"></i>
+							                            <span>Sair</span>
+						                         </form>
+					                        </a>
+					                    </li>
+					                </ul>
+					            </li>
+					        </ul>
+					    </div>
+		       		 </ul>
 		            }
-		        </ul>
 		    </div>
 		</nav>
 		@content
