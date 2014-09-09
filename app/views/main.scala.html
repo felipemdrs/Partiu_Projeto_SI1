@@ -33,7 +33,9 @@
 		            <li><a href="#" style="font-size: 40px">#Partiu</a></li>
 		        </ul>
 		        <ul class="nav navbar-nav navbar-right col-md-5">
-		            @login()
+		        	@if(controllers.AccountController.getCurrentUser() == null){
+		          	  @login()
+		            }
 		        </ul>
 		    </div>
 		</nav>

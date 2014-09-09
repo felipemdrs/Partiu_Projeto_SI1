@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,12 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import models.Utils.PasswordService;
+import models.dao.GenericDAOImpl;
 
-@Entity
+@Entity(name="user")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column
@@ -70,6 +72,14 @@ public class User {
 	public boolean passwordIsValid(String password) throws Exception {
 		String criptoPass = PasswordService.getInstance().encrypt(password);
 		return criptoPass.equals(this.password);
+	}
+	
+	public static User findUserByEmail(String email) {
+		List<User> users = GenericDAOImpl.getInstance().findByAttributeName("user", "email", email);
+		if (users.size() > 0) {
+			return users.get(0);
+		}
+		return null;
 	}
 
 	@Override
