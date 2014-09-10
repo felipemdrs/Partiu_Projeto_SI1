@@ -2,28 +2,40 @@
 .participant {
 	position: relative;
 	background-color: white;
-	border-bottom: 1px solid #c8c8c8;
-	border-radius: 5px;
-	margin-right: 20px;
+	border-bottom: 1px solid #d7d7d7;
+	border-radius: 5px 0 0 5px;
+	margin-right: 10px;	
+}
+.participant:nth-of-type(1), .participant:nth-of-type(2) {
+	border-radius: 5px 5px 0 5px;
 }
 .participant:hover {
 	background-color: #d8d8d8;
-
+	border-radius: 5px 5px 5px 5px;
 }
 .participant a {
 	text-decoration: none;
-	color: #f7f7f7;
 }
 .participant img {
 	border-radius: 3px;
 	border:1px solid rgb(172, 172, 172);
+}
+.participant-entry {
+	font-size: 15px;
+	display: block;
+	float: right;
+	clear: both;
+	margin-top: -20px;
+	margin-right: 10px;
 }
 </style>
 
 <div class="participant">
 	<a href="#">
 		<img src="/assets/img/perfil.jpg" width="50px" height="50px">
-		<span style="font-size: 18px; color: black;">&nbsp;Fofura da Silva</span>
+		<span style="font-size: 18px; color: black;">&nbsp;Fofura da Silva
+		<span class="participant-entry"><i>Entrou em: 19/09/14</i></span></span>
+		
 	</a>
 </div>
 <script>

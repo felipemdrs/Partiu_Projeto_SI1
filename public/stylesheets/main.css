@@ -27,11 +27,11 @@ html body {
 }
 
 .color-green, .travel-box-edit {
-	background-color: rgb(51, 102, 51);
+	background-color: #1bba38;
 }
 
 .color-dark-green, .travel-box-edit:hover {
-	background-color: rgb(10, 50, 10);	
+	background-color: #157727;	
 }
 
 .color-gray {
@@ -43,11 +43,11 @@ html body {
 }
 
 .color-blue, .travel-box-info {
-	background-color: rgb(30, 90, 165);
+	background-color: #2e81c1;
 }
 
 .color-dark-blue, .travel-box-info:hover {
-	background-color: rgb(10, 40, 70);
+	background-color: #1f547c;
 }
 
 .color-red {
@@ -112,13 +112,30 @@ html body {
 }
 
 .travel-box {
-	
+	height:177px;
+	margin-left:-15px;
+	padding-right: 10px;
+	border-bottom:1px solid #eee;
+	width:104.3%;
 }
 
 .travel-box:hover {
 	background-color: #eee;
 }
 
+.travel-box .col-md-2 div {
+	margin-top:25%;
+	width:105px;
+	height:117px;
+}
+
+.travel-box img {
+	width: 105px;
+	height: 117px;
+	border:1px solid rgb(172, 172, 172);
+	border-radius: 5px;
+	box-shadow: 2px 3px 1px #d7d7d7;
+}
 .travel-box-thumbnail {
 	display: inline;
 	position: absolute;
@@ -306,7 +323,8 @@ html body {
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
-	color: #555;
-	background-color: rgb(15, 48, 70);
+	background-color: #388db5;
 	height: 57px;
 }
+
+

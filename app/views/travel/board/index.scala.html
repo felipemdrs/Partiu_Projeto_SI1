@@ -1,7 +1,17 @@
-@home(-1){
-	<div class="col-md-8" style="height:177px;margin-top:-5px;padding-right:0px;width:70%">
+@home(1){
+	<style>
+	#board {
+		border: 1px solid #b7b7b7;
+		background-color: white; 
+		padding: 30px; 
+		border-radius: 10px; 
+		margin-top: 1.19%;
+		width:70%;
+	}
+	</style>
+	<div class="col-md-8" id="board">
 		@message_input()
-		@for(i <- 1 to 20){
+		@for(i <- 1 to 5){
 			@message_box()
 		}
 	</div>
