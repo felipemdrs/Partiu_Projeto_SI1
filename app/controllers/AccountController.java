@@ -37,6 +37,14 @@ public class AccountController extends Controller {
 	public static Result register(String name, String email, String password) {
 		return ok(views.html.index.render());
 	}
+	
+	public static Result profile() {
+		return ok(views.html.user.profile.index.render());
+	}
+	
+	public static Result searchProfile(Long id) {
+		return ok(views.html.user.profile.index.render());
+	}
 
 	public static String getCurrentUser() {
 		return session("user");
