@@ -2,6 +2,30 @@
 
 <!DOCTYPE html>
 
+<style>
+#nav {
+	padding: 10px;
+	box-shadow: 0px 0px 0px 0px;
+	color: #707070;
+	font-size: 30px;
+	box-shadow: 0px 1px 0px #707070;
+	background-color: #e7e7e7;
+}
+#nav a {
+	color: #707070;
+}
+#nav a:hover {
+	text-decoration: none;
+	color: #0174DF;
+}
+#nav home i {
+	font-size:35px;
+	margin-top:-18%;
+}
+.navbar-right {
+	width: 100%;
+}
+</style>
 <html>
     <head>
         <title>@title</title>
@@ -15,33 +39,31 @@
         <script src="@routes.Assets.at("javascripts/jquery.popconfirm.js")" type="text/javascript"></script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     </head>
-    <body class="color-theme">
-    <nav role="navigation" class="navbar navbar-default navbar-fixed-top color-theme" style="box-shadow:0px 0px 0px 0px;border-bottom: 1px solid rgb(21, 32, 49);">
+    <body>
+   		<!-- Navbar -->
+   		<nav role="navigation" id="nav" class="navbar navbar-default navbar-fixed-top">
+    		 <!-- Home icon -->
 		    <div class="navbar-header">
 		    	<div class="nav-container">
-			        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-			            <span class="sr-only">Toggle navigation</span>
-			            <span class="icon-bar"></span>
-			            <span class="icon-bar"></span>
-			            <span class="icon-bar"></span>
-			        </button>
-			        <a href="/" class="navbar-brand"><i class="fa fa-plane" style="font-size:35px;margin-top:-18%;color: white;"></i></a>
+			        <a href="/">
+				        <i class="fa fa-plane"></i> #Partiu
+				    </a>
 		   		</div>
 			</div>
-			<div id="navbarCollapse" class="collapse navbar-collapse" style="background-color: rgb(15, 48, 70);color: white;background-image: -webkit-linear-gradient(top,rgb(27, 73, 105),rgb(15, 48, 70));">
-		        <ul class="nav navbar-nav">
-		            <li><a href="#" style="font-size: 30px;color: white;">#Partiu</a></li>
-		        </ul>
+			<!-- Right side -->
+			<div class="collapse navbar-collapse">
+					<!-- Login fields -->
 		        	@if(controllers.AccountController.getCurrentUser() == null){
 	        		  <ul class="nav navbar-nav navbar-right col-md-5">
 		          	  	@login()
 		          	  </ul>
 		            } else {
+		            <!-- Profile dropdown -->
 		            <ul class="nav navbar-nav navbar-right col-md-2">
-		            	<div class="collapse navbar-collapse profile-collapse navbar-right" style="width: 100%;">
+		            	<div class="collapse navbar-collapse profile-collapse navbar-right">
 					        <ul class="nav navbar-nav">
 					            <li class="dropdown user-avatar">
-					                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">
+					                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 					                    <img src="/assets/img/perfil.jpg" alt="Fofura">
 					                    Fofura <i class="caret"></i>
 					                    <span class="badge badge-dark-red">5</span>
