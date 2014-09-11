@@ -56,7 +56,9 @@ public class AccountController extends Controller {
 		if (!success) {
 			return badRequest(views.html.index.render(false, "Ocorreu um erro. Tente novamente."));
 		}
-		return ok(views.html.index.render(false, "Registrado com sucesso"));
+		session().clear();
+		session("user", newUser.getEmail());
+		return redirect(routes.TravelController.list());
 	}
 
 	public static Result register(String name, String email, String password) {
