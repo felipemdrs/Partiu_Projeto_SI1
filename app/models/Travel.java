@@ -1,11 +1,13 @@
 package models;
 import java.net.MalformedURLException;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity(name="travel")
 public class Travel {
@@ -19,13 +21,13 @@ public class Travel {
 	@Column
 	private String description;
 	
-	@Column
+	@ManyToOne
 	private Place place;
 	
-	@Column
+	@ManyToOne
 	private User admin;
 	
-	@Column
+	@ManyToOne
 	private Photo photo;
 	
 	public Travel(User admin, String name, String description, double coordX, 
