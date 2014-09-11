@@ -48,9 +48,9 @@ public class UserTest {
 
 	@Test
 	public void devePermitirAlterarNome() {
-		assertEquals(DEFAULT_USER, user.getNome());
-		user.setNome("User2");
-		assertEquals("User2", user.getNome());
+		assertEquals(DEFAULT_USER, user.getName());
+		user.setName("User2");
+		assertEquals("User2", user.getName());
 	}
 
 	@Test

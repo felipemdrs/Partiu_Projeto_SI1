@@ -1,12 +1,17 @@
 package models;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import models.Utils.PasswordService;
 import models.dao.GenericDAOImpl;
@@ -18,7 +23,7 @@ public class User {
 	private Long id;
 
 	@Column
-	private String nome;
+	private String name;
 
 	@Column
 	private String email;
@@ -26,18 +31,18 @@ public class User {
 	@Column
 	private String password;
 
-	public User() {
-	}
+	public User() { }
 
-	public User(String nome, String email, String password) throws Exception {
+	public User(String name, String email, String password) throws Exception {
+		this();
 		setEmail(email);
-		setNome(nome);
+		setName(name);
 		setPassword(password);
 	}
 
 	public void setPassword(String password) throws Exception {
 		if (this.password != null) {
-			throw new Exception("Password already exists");
+			throw new Exception("Senha ja existe");
 		}
 		this.password = PasswordService.getInstance().encrypt(password);
 	}
@@ -46,12 +51,12 @@ public class User {
 		return id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String nome) {
+		this.name = nome;
 	}
 
 	public String getPassword() {
@@ -60,7 +65,7 @@ public class User {
 
 	public void setEmail(String email) throws Exception {
 		if (this.email != null) {
-			throw new Exception("Email already exists");
+			throw new Exception("E-mail ja existe");
 		}
 		this.email = email;
 	}
@@ -95,4 +100,5 @@ public class User {
 	public int hashCode() {
 		return this.email.hashCode();
 	}
+
 }
