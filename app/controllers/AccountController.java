@@ -46,6 +46,10 @@ public class AccountController extends Controller {
 		return ok(views.html.user.profile.index.render());
 	}
 
+	public static Result edit() {
+		return ok(views.html.user.edit.index.render());
+	}
+	
 	public static String getCurrentUser() {
 		return session("user");
 	}
