@@ -16,6 +16,7 @@ GET		/travels/:id/edit			controllers.TravelController.edit(id: Long)
 # Account
 POST    /login						controllers.AccountController.login()
 POST    /logout						controllers.AccountController.logout()
+POST	/register					controllers.AccountController.register()
 GET 	/profile					controllers.AccountController.profile()
 GET		/:id/profile				controllers.AccountController.searchProfile(id: Long)
 GET		/config						controllers.AccountController.edit()

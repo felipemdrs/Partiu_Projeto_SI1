@@ -1,4 +1,14 @@
+@(error: Boolean, message: String)
+
 @main("#Partiu") {
+	<style>
+	.alert-danger {
+		border: 1px solid #b93838;
+	}
+	.alert-success {
+		border: 1px solid #61c357;
+	}
+	</style>
 	<div class="col-md-offset-1" id="index-content">
 		<div id="index-content-cover">
 	  <div style="height: 100%;">
@@ -14,13 +24,18 @@
 					</h2>
 					<h2 class="row">Participe agora mesmo!</h2>
 			</div>	
+			@if(!message.trim().equals("")) {
+				<div class="alert @if(error){ alert-danger } else { alert-success } row col-md-5" role="alert" style="left: 50px; margin-top: -50px;">
+					<p>@message</p>
+				</div>
+			}		
 			<div class="row col-md-5" id="index-register" >
 				<h2>Cadastre-se, é gratuito!</h2>
 				<br>
-				<form method="post" action="/novo">
+				<form method="post" action="/register">
 					<div class="input-group margin-bottom-sm">
 						<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-						<input class="form-control" name="nome" type="text" placeholder="Nome" required="required" autocomplete="off">
+						<input class="form-control" name="name" type="text" placeholder="Nome" required="required" autocomplete="off">
 					</div>
 					<div class="input-group margin-bottom-sm">
 						<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
@@ -28,7 +43,7 @@
 					</div>
 					<div class="input-group" >
 						<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-				 		<input class="form-control" name="senha" type="password" placeholder="Senha" required="required">
+				 		<input class="form-control" name="password" type="password" placeholder="Senha" required="required">
 					</div>
 					<input class="btn btn-primary" value="Cadastrar" type="submit">
 				</form>

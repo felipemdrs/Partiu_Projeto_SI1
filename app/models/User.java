@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import models.Utils.PasswordService;
+import models.dao.GenericDAO;
 import models.dao.GenericDAOImpl;
 
 @Entity(name="user")
@@ -80,6 +81,17 @@ public class User {
 			return users.get(0);
 		}
 		return null;
+	}
+	
+	public static boolean registerUser(User usr) throws UserException {
+		User found = findUserByEmail(usr.getEmail());
+		if (found != null) {
+			throw new UserException("Usuário já cadastrado.");
+		}
+		GenericDAO dao = GenericDAOImpl.getInstance();
+		boolean success = dao.persist(usr);
+		dao.flush();
+		return success;
 	}
 
 	@Override

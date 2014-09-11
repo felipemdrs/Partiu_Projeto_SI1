@@ -9,7 +9,7 @@ public class Application extends Controller {
 		if (AccountController.getCurrentUser() != null) {
 			return redirect(routes.TravelController.list());
 		}
-		return ok(views.html.index.render());
+		return ok(views.html.index.render(false, ""));
     }
 	
 }
