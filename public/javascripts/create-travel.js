@@ -1,12 +1,25 @@
 //google maps
 var map;
+
 function initialize() {
   var mapOptions = {
     zoom: 8,
-    center: new google.maps.LatLng(-34.397, 150.644)
+    center: new google.maps.LatLng(-7.229214,-35.887145),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
   };
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
+  //var infoWindow = new google.maps.InfoWindow();
+  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+  var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(-7.229214,-35.887145),
+      map: map,
+      title: "Local da viagem"
+  });
+  google.maps.event.addListener(map, 'click', function(event) {
+	  marker.setPosition(event.latLng);
+  });
+
+ // map = new google.maps.Map(document.getElementById('map-canvas'),
+  //    mapOptions);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -19,7 +32,6 @@ $(function(){
 	//show/hide map
 	var content = $("#choose-place-content");
 	content.hide();
-	
 	$("#choose-place").click(function(){
 		if (content.data("visible")) {
 			content.hide();
