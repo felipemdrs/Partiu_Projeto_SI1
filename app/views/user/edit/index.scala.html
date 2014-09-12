@@ -28,7 +28,7 @@
 	display: inline-block;
 	margin-left: 220px;
 	width: calc(100% - 250px);
-	margin-top: -25px;
+	margin-top: -65px;
 }
 
 #profile-buttons button {
@@ -41,15 +41,18 @@
 			<p>@message</p>
 		</div>
 	}
-	<div style="clear: both;">
+	<form method="post" action="/edit" role="form" enctype="multipart/form-data">
+		<div style="clear: both;"></div>
 		<div class="form-group; ">
 			<label>Adicionar foto</label>
+			<input type="file" name="photo" accept="image/*"/>
+			<br/>
 		</div>
-	</div>
-	<div id="profile-photo">
-		<i class="fa fa-plus"></i>
-	</div>
-	<form method="post" action="/edit" role="form">
+		<div id="profile-photo">
+			<img src="@user.getPhotoUrl()" width="197px" height="195px" style="border-radius: 3px; margin-top: -42px;" />
+			<!-- <i class="fa fa-plus"></i>  -->
+		</div>
+		
 		<div id="profile-description">
 			<div class="form-group">
 				<label>Nome</label>

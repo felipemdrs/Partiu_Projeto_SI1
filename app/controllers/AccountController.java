@@ -2,6 +2,9 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.List;
 
 import models.User;
@@ -12,6 +15,8 @@ import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.F.Function0;
 import play.mvc.Controller;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 
 public class AccountController extends Controller {
@@ -106,6 +111,16 @@ public class AccountController extends Controller {
 			}
 		}
 		
+		MultipartFormData body = request().body().asMultipartFormData();
+		FilePart picture = body.getFile("photo");
+		if (picture != null) {
+			String fileName = picture.getFilename();
+			//String contentType = picture.getContentType(); 
+			File file = picture.getFile();
+			//file.renameTo(new File(fileName));
+			current.setPhotoUrl(file.getAbsolutePath());
+		}
+
 		try {
 			JPA.withTransaction(new Function0<Void>() {
 			    @Override
