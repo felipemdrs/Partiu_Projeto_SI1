@@ -12,6 +12,7 @@ GET		/travels/admin				controllers.TravelController.listAdmin()
 GET		/travels/:id/board			controllers.TravelController.board(id: Long)
 GET		/travels/:id/info			controllers.TravelController.info(id: Long)
 GET		/travels/:id/edit			controllers.TravelController.edit(id: Long)
+POST	/travels/create				controllers.TravelController.create()
 
 # Account
 POST    /login						controllers.AccountController.login()

@@ -1,9 +1,9 @@
 
 <h3><b>Criar viagem</b></h3>
-<form role="form">
+<form role="form" method="post" action="/travels/create" id="form-new-travel" >
 	<div class="form-group">
 		<label>Nome</label>
-		<input type="text" class="form-control" placeholder="Nome" name="name" />
+		<input type="text" class="form-control" placeholder="Nome" name="name" required />
 	</div>
 	<div class="form-group">
 		<label>Descri&ccedil;&atilde;o</label>
@@ -11,7 +11,7 @@
 	</div>
 	<div class="form-group">
 		<label>Data de viagem</label>
-		<input type="date" class="form-control" placeholder="Data de viagem" name="date" />
+		<input type="date" class="form-control" placeholder="Data de viagem" name="date" required />
 	</div>
 	<div class="form-group">
 		<label>Local</label>
@@ -33,7 +33,34 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<center><button class="btn btn-success">Criar viagem</button></center>
+		<center><button type="submit" class="btn btn-success">Criar viagem</button></center>
 	</div>
 </form>
 <script type="text/javascript" src="@routes.Assets.at("javascripts/create-travel.js")"></script>
+<script>
+	$(function(){
+		$("#form-new-travel").on("submit", function(e){
+			e.preventDefault();
+			if ($(this).valid()) {
+				$.ajax({
+					url: $(this).attr("action"),
+					data: new FormData(this),
+					type: 'POST',
+					cache: false,
+					mimeType: "multipart/form-data",
+	
+					success: function(result) {
+						console.log("enviado!" + result);
+						window.alert("enviado!" + result);
+					},
+					error: function(result) {
+						console.log("erro!" + result);
+						window.alert("erro!" + result);
+					}
+				});
+			} else {
+				alert("erro2!");
+			}
+		});
+	});
+</script>

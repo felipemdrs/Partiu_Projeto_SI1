@@ -1,5 +1,7 @@
 package controllers;
 
+import static play.data.Form.form;
+import play.data.DynamicForm;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -52,6 +54,22 @@ public class TravelController extends Controller {
 			return redirect(routes.Application.index());
 		}
 		return ok(views.html.travel.edit.index.render());
+	}
+	
+	@Transactional
+	public static Result create() {
+		DynamicForm form = form().bindFromRequest();
+		String name = form.get("name");
+		String description = form.get("description");
+		String date = form.get("date");
+		String placeDescription = form.get("place-description");
+		boolean locked = form.field("locked").value() != null;
+		String password = form.get("password");
+		String repeatPassword = form.get("repeat-password");
+		if (locked && !password.equals(repeatPassword)) {
+			return badRequest();
+		}
+		return redirect(routes.Application.index());
 	}
 	
 }
