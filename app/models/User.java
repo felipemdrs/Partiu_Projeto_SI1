@@ -1,11 +1,9 @@
 package models;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,20 +13,12 @@ import models.Utils.PasswordService;
 
 @Entity
 public class User {
-
+	
+	private static final String DEFAULT_PHOTO = "/assets/images/default-user.gif";
+	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column
-	private String name;
-
-	@Column
-	private String email;
-
-	@Column
-	private String password;
-
-	@Column
+	private String name, email,  password, photoUrl;
 	private Date dateRegister;
 	
 	public User() { 
@@ -40,6 +30,7 @@ public class User {
 		setEmail(email);
 		setName(name);
 		setPassword(password);
+		setPhotoUrl("");
 	}
 
 	public void setPassword(String password) throws Exception {
@@ -81,8 +72,23 @@ public class User {
 		this.dateRegister = dateRegister;
 	}
 
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		if (photoUrl == null || photoUrl.trim().equals("")) {
+			photoUrl = DEFAULT_PHOTO;
+		}
+		this.photoUrl = photoUrl;
+	}
+
 	public String getFormattedDate() { 
 		return new SimpleDateFormat("dd/MM/yyyy").format(dateRegister);
+	}
+	
+	public String getFirstName() {
+		return name.split(" ")[0];
 	}
 	
 	public boolean passwordIsValid(String password) throws Exception {

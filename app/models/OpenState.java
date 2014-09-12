@@ -1,8 +1,13 @@
 package models;
 
+import javax.persistence.ManyToOne;
+
 public class OpenState extends TravelState {
 
+	@ManyToOne
 	private Travel context;
+	
+	public OpenState() { }
 	
 	public OpenState(Travel context) {
 		setContext(context);
@@ -26,7 +31,7 @@ public class OpenState extends TravelState {
 
 	@Override
 	public void open() {
-		throw new InvalidStateException("Esta viagem ja e publica");
+		throw new InvalidStateException("Esta viagem já é aberta.");
 	}
 
 	@Override
@@ -36,7 +41,7 @@ public class OpenState extends TravelState {
 
 	@Override
 	public void changePassword(String password) {
-		throw new InvalidStateException("Apenas viagens privadas possuem senha");
+		throw new InvalidStateException("Apenas viagens privadas possuem senha.");
 	}
 
 }

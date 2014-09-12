@@ -1,5 +1,4 @@
 package models;
-import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,39 +14,38 @@ import javax.persistence.OneToMany;
 @Entity
 public class Travel {
 
+	private static final String DEFAULT_PHOTO = "/assets/img/perfil.jpg";
+	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column
-	private String name;
-	
-	@Column
-	private String description;
-	
+	private String name, description, photoUrl;
 	@ManyToOne
 	private Place place;
-	
 	@ManyToOne
 	private User admin;
-	
-	@ManyToOne
-	private Photo photo;
-	
 	@ManyToOne
 	private TravelState state;
-	
 	@OneToMany
 	private Set<User> participating = new HashSet<User>();
 	
+	public Travel() { }
+	
 	public Travel(User admin, String name, String description, double coordX, 
-			double coordY, String placeDescription, String photoUrl) 
-			throws MalformedURLException, TravelException {
+			double coordY, String placeDescription) 
+			throws TravelException {
 		setAdmin(admin);
 		setName(name);
 		setDescription(description);
 		setPlace(new Place(coordX, coordY, placeDescription));
-		setPhoto(new Photo(photoUrl));
+		setPhotoUrl("");
 		setState(new OpenState(this));
+	}
+	
+	public Travel(User admin, String name, String description, double coordX,
+			double coordY, String placeDescription, String photoUrl)
+			throws TravelException {
+		this(admin, name, description, coordX, coordY, placeDescription);
+		setPhotoUrl(photoUrl);
 	}
 
 	public Long getId() {
@@ -101,15 +99,15 @@ public class Travel {
 		this.admin = admin;
 	}
 
-	public Photo getPhoto() {
-		return photo;
+	public String getPhotoUrl() {
+		return photoUrl;
 	}
 
-	public void setPhoto(Photo photo) throws TravelException {
-		if (photo == null) {
-			throw new TravelException("Foto da viagem nao pode ser nula");
+	public void setPhotoUrl(String photoUrl) {
+		if (photoUrl == null || photoUrl.equals("")) {
+			photoUrl = DEFAULT_PHOTO;
 		}
-		this.photo = photo;
+		this.photoUrl = photoUrl;
 	}
 
 	public Set<User> getParticipating() {

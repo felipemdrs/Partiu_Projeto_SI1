@@ -1,6 +1,6 @@
-@(user: models.User)
+@(user: User)
 
-@home(0){
+@home(-1){
 <style>
 #profile {
 	background-color: white;
@@ -38,41 +38,47 @@
 }
 </style>
 <div id="profile">
-	<div id="profile-photo">
-		<img src="/assets/img/perfil.jpg" width="200px" height="200px" />
-	</div>
-	<div id="profile-description">
-		<div class="form-group">
-			<label>Nome</label>
-			<input type="text" class="form-control" value="@user.getName()" disabled />
+	@if(user == null) {
+		<div class="alert alert-danger" role="alert">
+			<p>Usuário não encontrado.</p>
 		</div>
-		<div class="form-group">
-			<label>E-mail</label>
-			<input type="email" class="form-control" value="@user.getEmail()" disabled />
+	} else {
+		<div id="profile-photo">
+			<img src="@user.getPhotoUrl()" width="200px" height="200px" />
 		</div>
-		<div class="form-group">
-			<label>Membro desde</label>
-			<input type="text" class="form-control" value="@user.getFormattedDate()" disabled />
-		</div>
-	</div>
-	<div style="clear: both;"></div>
-	<hr>
-	<div>
-		<h3>Viagens administradas</h3>
-		@for(i <- 1 to 3) {
-			<div class="profile-travel">
-				<a href="/travels/1/info"><img src="/assets/img/perfil.jpg" title="Viagem para recife" /></a>
+		<div id="profile-description">
+			<div class="form-group">
+				<label>Nome</label>
+				<input type="text" class="form-control" value="@user.getName()" disabled />
 			</div>
-		}
-	</div>
-	<hr>
-	<div>
-		<h3>Viagens participadas</h3>
-		@for(i <- 1 to 10) {
-			<div class="profile-travel">
-				<a href="/travels/1/info"><img src="/assets/img/perfil.jpg" title="Viagem para recife" /></a>
+			<div class="form-group">
+				<label>E-mail</label>
+				<input type="email" class="form-control" value="@user.getEmail()" disabled />
 			</div>
-		}
-	</div>
+			<div class="form-group">
+				<label>Membro desde</label>
+				<input type="text" class="form-control" value="@user.getFormattedDate()" disabled />
+			</div>
+		</div>
+		<div style="clear: both;"></div>
+		<hr>
+		<div>
+			<h3>Viagens administradas</h3>
+			@for(i <- 1 to 3) {
+				<div class="profile-travel">
+					<a href="/travels/1/info"><img src="/assets/img/perfil.jpg" title="Viagem para recife" /></a>
+				</div>
+			}
+		</div>
+		<hr>
+		<div>
+			<h3>Viagens participadas</h3>
+			@for(i <- 1 to 10) {
+				<div class="profile-travel">
+					<a href="/travels/1/info"><img src="/assets/img/perfil.jpg" title="Viagem para recife" /></a>
+				</div>
+			}
+		</div>
+	}
 </div>
 }

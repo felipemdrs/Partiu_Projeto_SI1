@@ -1,5 +1,5 @@
 @(menuIndex: Integer)(content: Html)
-@main("#Partiu") {
+@main("#Partiu", AccountController.getCurrentUser()) {
 	<style>
 	body, .main-content {
 		background-color: #dbdbdb;

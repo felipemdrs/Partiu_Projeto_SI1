@@ -1,5 +1,7 @@
-import static org.junit.Assert.*;
-import models.Photo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import models.Place;
 import models.Travel;
 import models.User;
@@ -37,23 +39,8 @@ public class TravelTest {
 		assertEquals(DEFAULT_DESCRIPTION, v.getDescription());
 		Place p = new Place(DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION);
 		assertEquals(p, v.getPlace());	
-		Photo photo = new Photo(DEFAULT_PHOTO_URL);
-		assertEquals(photo, v.getPhoto());
 	}
-	
-	@Test
-	public void mustReturnDefaultPhoto() throws Exception {
-		//if photo url is blank, then default photo is set
-		Photo photoNormal = new Photo(DEFAULT_PHOTO_URL);
-		Photo photoDefault = new Photo(Photo.DEFAULT_PHOTO);
-		Travel v1 = new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y,
-				DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL);
-		Travel v2 = new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y,
-				DEFAULT_PLACE_DESCRIPTION, "");
-		assertEquals(photoNormal, v1.getPhoto());
-		assertEquals(photoDefault, v2.getPhoto());
-	}
-	
+
 	@Test
 	public void mustJoinPublicTravel() throws Exception {
 		User newUser = new User("user3", "user3@mail.com", "password123");

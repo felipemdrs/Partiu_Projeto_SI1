@@ -20,7 +20,6 @@ public class AccountController extends Controller {
 	
 	@Transactional
 	public static Result login() {
-
 		String email = form().bindFromRequest().get("email");
 		String password = form().bindFromRequest().get("password");
 
@@ -77,6 +76,9 @@ public class AccountController extends Controller {
 	
 	@Transactional
 	public static Result edit() {
+		if (AccountController.getCurrentUser() == null) {
+			return redirect(routes.Application.index());
+		}
 		DynamicForm form = form().bindFromRequest();
 		String name = form.get("name");
 		String oldPassword = form.get("old-password");
@@ -122,17 +124,26 @@ public class AccountController extends Controller {
 
 	@Transactional
 	public static Result profile() {
+		if (AccountController.getCurrentUser() == null) {
+			return redirect(routes.Application.index());
+		}
 		return ok(views.html.user.profile.index.render(getCurrentUser()));
 	}
 	
 	@Transactional
 	public static Result searchProfile(Long id) {
+		if (AccountController.getCurrentUser() == null) {
+			return redirect(routes.Application.index());
+		}
 		User user = dao.findByEntityId(User.class, id);
 		return ok(views.html.user.profile.index.render(user));
 	}
 
 	@Transactional
 	public static Result config() {
+		if (AccountController.getCurrentUser() == null) {
+			return redirect(routes.Application.index());
+		}
 		return ok(views.html.user.edit.index.render(getCurrentUser(), false, ""));
 	}
 	

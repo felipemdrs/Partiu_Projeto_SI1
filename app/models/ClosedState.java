@@ -1,11 +1,16 @@
 package models;
 
+import javax.persistence.ManyToOne;
+
 import models.Utils.PasswordService;
 
 public class ClosedState extends TravelState {
 
+	@ManyToOne
 	private Travel context;
 	private String password;
+	
+	public ClosedState() { }
 	
 	public ClosedState(Travel context, String password) {
 		setContext(context);
