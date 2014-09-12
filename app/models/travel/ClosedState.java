@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import models.InvalidStateException;
 import models.User;
 import models.Utils.PasswordService;
 
@@ -45,7 +44,6 @@ public class ClosedState extends TravelState {
 		try {
 			this.password = PasswordService.getInstance().encrypt(password);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -74,7 +72,7 @@ public class ClosedState extends TravelState {
 
 	@Override
 	public void close(String password) {
-		throw new InvalidStateException("A viagem ja e privada");
+		throw new InvalidStateException("A viagem já é privada.");
 	}
 
 	@Override

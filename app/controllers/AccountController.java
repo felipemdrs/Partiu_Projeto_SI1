@@ -3,8 +3,6 @@ package controllers;
 import static play.data.Form.form;
 
 import java.io.File;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.List;
 
 import models.User;

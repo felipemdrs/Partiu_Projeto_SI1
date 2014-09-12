@@ -39,7 +39,7 @@ public class Travel {
 	private User admin;
 
 	@ManyToOne(cascade=CascadeType.ALL)
-	private TravelState state  = new OpenState();
+	private TravelState state = new OpenState(this);
 
 	@OneToMany(cascade=CascadeType.ALL)
 	private Set<User> participating = new HashSet<User>();
@@ -54,7 +54,6 @@ public class Travel {
 		setDescription(description);
 		setPlace(new Place(coordX, coordY, placeDescription));
 		setPhotoUrl("");
-		//setState(new OpenState(this));
 	}
 	
 	public Travel(User admin, String name, String description, double coordX,
@@ -78,7 +77,7 @@ public class Travel {
 
 	public void setName(String name) throws TravelException {
 		if (name == null || name.trim().equals("")) {
-			throw new TravelException("Nome da viagem nao pode ser vazio");
+			throw new TravelException("Nome da viagem não pode ser vazio.");
 		}
 		this.name = name;
 	}
@@ -97,7 +96,7 @@ public class Travel {
 
 	public void setPlace(Place place) throws TravelException {
 		if (place == null) {
-			throw new TravelException("Local da viagem nao pode ser nulo");
+			throw new TravelException("Local da viagem não pode ser nulo");
 		}
 		this.place = place;
 	}
@@ -108,9 +107,9 @@ public class Travel {
 
 	public void setAdmin(User admin) throws TravelException {
 		if (admin == null) {
-			throw new TravelException("Administrador da viagem nao pode ser nulo");
+			throw new TravelException("Administrador da viagem não pode ser nulo.");
 		} else if (this.admin != null) {
-			throw new TravelException("Esta viagem ja possui um administrador");
+			throw new TravelException("Esta viagem já possui um administrador.");
 		}
 		this.admin = admin;
 	}
@@ -135,7 +134,7 @@ public class Travel {
 	}
 	
 	protected void setState(TravelState state) {
-		this.state = (OpenState) state;
+		this.state = state;
 	}
 
 	public boolean leave(User usr) {

@@ -1,4 +1,4 @@
-package models;
+package models.travel;
 
 public class InvalidStateException extends RuntimeException {
 

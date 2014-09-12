@@ -3,8 +3,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import models.Place;
-import models.Travel;
 import models.User;
+import models.travel.Travel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -90,6 +90,7 @@ public class TravelTest {
 		try {
 			t.close("123");
 		} catch(Exception e) {
+			e.printStackTrace();
 			fail();
 		}
 		//closed state

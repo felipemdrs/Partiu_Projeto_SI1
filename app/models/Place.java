@@ -1,4 +1,5 @@
 package models;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -8,7 +9,14 @@ public class Place {
 
 	@Id @GeneratedValue
 	private Long id;
-	private double coordX, coordY;
+	
+	@Column
+	private double coordX;
+	
+	@Column
+	private double coordY;
+	
+	@Column
 	private String description;
 	
 	public Place() { }
