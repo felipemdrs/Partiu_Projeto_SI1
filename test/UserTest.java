@@ -30,7 +30,7 @@ public class UserTest {
 		try {
 			user.setPassword(DEFAULT_PASSWORD);
 		} catch (Exception e) {
-			assertEquals("Password already exists", e.getMessage());
+			assertEquals("Senha já existe.", e.getMessage());
 		}
 		assertEquals(oldPassword, user.getPassword());
 	}
@@ -41,7 +41,7 @@ public class UserTest {
 			user.setEmail("mateus2@mail.com");
 			fail();
 		} catch (Exception e) {
-			assertEquals("Email already exists", e.getMessage());
+			assertEquals("E-mail já existe.", e.getMessage());
 		}
 		assertEquals(user.getEmail(), DEFAULT_EMAIL);
 	}

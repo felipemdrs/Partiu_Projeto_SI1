@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity(name="photo")
+@Entity
 public class Photo {
 
 	public static final String BASE_URL = "http://localhost:9000";

@@ -1,6 +1,9 @@
 package models;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import models.Utils.PasswordService;
-import models.dao.GenericDAO;
-import models.dao.GenericDAOImpl;
 
-@Entity(name="user")
+@Entity
 public class User {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +28,12 @@ public class User {
 	@Column
 	private String password;
 
-	public User() { }
+	@Column
+	private Date dateRegister;
+	
+	public User() { 
+		setDateRegister(Calendar.getInstance().getTime());
+	}
 
 	public User(String name, String email, String password) throws Exception {
 		this();
@@ -37,9 +43,6 @@ public class User {
 	}
 
 	public void setPassword(String password) throws Exception {
-		if (this.password != null) {
-			throw new Exception("Senha ja existe");
-		}
 		this.password = PasswordService.getInstance().encrypt(password);
 	}
 
@@ -61,7 +64,7 @@ public class User {
 
 	public void setEmail(String email) throws Exception {
 		if (this.email != null) {
-			throw new Exception("E-mail ja existe");
+			throw new Exception("E-mail já existe.");
 		}
 		this.email = email;
 	}
@@ -70,30 +73,23 @@ public class User {
 		return email;
 	}
 
+	public Date getDateRegister() {
+		return dateRegister;
+	}
+
+	public void setDateRegister(Date dateRegister) {
+		this.dateRegister = dateRegister;
+	}
+
+	public String getFormattedDate() { 
+		return new SimpleDateFormat("dd/MM/yyyy").format(dateRegister);
+	}
+	
 	public boolean passwordIsValid(String password) throws Exception {
 		String criptoPass = PasswordService.getInstance().encrypt(password);
 		return criptoPass.equals(this.password);
 	}
 	
-	public static User findUserByEmail(String email) {
-		List<User> users = GenericDAOImpl.getInstance().findByAttributeName("user", "email", email);
-		if (users.size() > 0) {
-			return users.get(0);
-		}
-		return null;
-	}
-	
-	public static boolean registerUser(User usr) throws UserException {
-		User found = findUserByEmail(usr.getEmail());
-		if (found != null) {
-			throw new UserException("Usuário já cadastrado.");
-		}
-		GenericDAO dao = GenericDAOImpl.getInstance();
-		boolean success = dao.persist(usr);
-		dao.flush();
-		return success;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (obj != null && obj instanceof User) {

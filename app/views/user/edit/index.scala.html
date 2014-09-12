@@ -1,3 +1,5 @@
+@(user: models.User, error: Boolean, message: String)
+
 @home(0){
 <style>
 #profile {
@@ -34,6 +36,11 @@
 }
 </style>
 <div id="profile">
+	@if(!message.trim().equals("")) {
+		<div class="alert @if(error) { alert-danger } else { alert-success }" role="alert">
+			<p>@message</p>
+		</div>
+	}
 	<div style="clear: both;">
 		<div class="form-group; ">
 			<label>Adicionar foto</label>
@@ -41,32 +48,37 @@
 	</div>
 	<div id="profile-photo">
 		<i class="fa fa-plus"></i>
-		
 	</div>
-	<div id="profile-description">
-		<div class="form-group">
-			<label>Nome</label>
-			<input type="text" class="form-control" value="Fofura da Silva" />
+	<form method="post" action="/edit" role="form">
+		<div id="profile-description">
+			<div class="form-group">
+				<label>Nome</label>
+				<input type="text" class="form-control" value="@user.getName()" name="name" />
+			</div>
+			<div class="form-group">
+				<label>E-mail</label>
+				<input type="email" class="form-control" value="@user.getEmail()" name="email" disabled />
+			</div>
+			<div class="form-group">
+				<label>Senha atual</label>
+				<input type="password" class="form-control" placeholder="Senha atual" name="old-password" required />
+			</div>
+			<div class="form-group">
+				<label>Nova senha</label>
+				<input type="password" class="form-control" placeholder="Nova senha" name="password" />
+			</div>
+			<div class="form-group">
+				<label>Confirme a senha</label>
+				<input type="password" class="form-control" placeholder="Repita a nova senha" name="repeat-password" />
+			</div>
 		</div>
-		<div class="form-group">
-			<label>E-mail</label>
-			<input type="email" class="form-control" value="user1 at mail.com" />
+		<div style="clear: both;"></div>
+		<div id="profile-buttons">
+			<center>
+				<a href="/"><button class="btn btn-danger">Cancelar</button></a>
+				<button type="submit" class="btn btn-success">Salvar</button>
+			</center>
 		</div>
-		<div class="form-group">
-			<label>Senha</label>
-			<input type="password" class="form-control" placeholder="Senha" />
-		</div>
-		<div class="form-group">
-			<label>Confirme a senha</label>
-			<input type="password" class="form-control" placeholder="Repita a senha" />
-		</div>
-	</div>
-	<div style="clear: both;"></div>
-	<div id="profile-buttons">
-		<center>
-			<a href="/"><button class="btn btn-danger">Cancelar</button></a>
-			<button class="btn btn-success">Salvar</button>
-		</center>
-	</div>
+	</input>
 </div>
 }

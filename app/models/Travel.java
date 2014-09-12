@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-@Entity(name="travel")
+@Entity
 public class Travel {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
