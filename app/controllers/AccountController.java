@@ -30,7 +30,7 @@ public class AccountController extends Controller {
 				return redirect(routes.TravelController.list());
 			}
 		} catch (Exception e) {
-			return badRequest(e.getMessage());
+			return badRequest(views.html.index.render(true, e.getMessage()));
 		}
 			
 		return badRequest(views.html.index.render(true, "Usuário ou senha inválidos."));
@@ -55,18 +55,13 @@ public class AccountController extends Controller {
 			return badRequest(views.html.index.render(true, e.getMessage()));
 		}
 		
-		boolean success = false;
 		try {
-			success = GenericDAOImpl.getInstance().persist(newUser);
+			GenericDAOImpl.getInstance().persist(newUser);
 			GenericDAOImpl.getInstance().flush();
-		} catch(Exception e) {
-			success = false;
-		}
-
-		if (!success) {
+		} catch(Throwable e) {
 			return badRequest(views.html.index.render(true, "Ocorreu um erro. Tente novamente."));
 		}
-		
+
 		session().clear();
 		session("user_email", newUser.getEmail());
 		return redirect(routes.TravelController.list());
@@ -97,6 +92,7 @@ public class AccountController extends Controller {
 			return badRequest(views.html.user.edit.index.render(currentUser, true, e.getMessage()));
 		}
 		
+		/*
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("photo");
 		if (picture != null) {
@@ -106,7 +102,8 @@ public class AccountController extends Controller {
 			//file.renameTo(new File(fileName));
 			currentUser.setPhotoUrl(file.getAbsolutePath());
 		}
-
+		*/
+		
 		try {
 	    	GenericDAOImpl.getInstance().merge(currentUser);
 	    	GenericDAOImpl.getInstance().flush();
@@ -146,4 +143,5 @@ public class AccountController extends Controller {
 	public static User getCurrentUser() {
 		return User.getUserByEmail(session("user_email"));
 	}
+	
 }

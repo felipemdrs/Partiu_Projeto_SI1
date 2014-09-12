@@ -11,16 +11,21 @@ function initialize() {
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
+function displayMap() {
+	google.maps.event.trigger($("#map-canvas")[0], 'resize');
+}
 
 $(function(){
 	//show/hide map
 	var content = $("#choose-place-content");
 	content.hide();
+	
 	$("#choose-place").click(function(){
 		if (content.data("visible")) {
 			content.hide();
 		} else {
 			content.show();
+			displayMap();
 		}
 		content.data("visible", !content.data("visible"));
 	});
