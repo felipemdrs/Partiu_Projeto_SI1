@@ -1,14 +1,25 @@
-package models;
+package models.travel;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import models.InvalidStateException;
+import models.User;
+
+@Entity
+@DiscriminatorValue("OpenState")
+@Table(name = "OPENSTATE")
 public class OpenState extends TravelState {
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Travel context;
-	
-	public OpenState() { }
-	
+
+	public OpenState() {
+	}
+
 	public OpenState(Travel context) {
 		setContext(context);
 	}

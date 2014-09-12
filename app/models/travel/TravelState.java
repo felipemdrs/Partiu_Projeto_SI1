@@ -1,10 +1,20 @@
-package models;
+package models.travel;
 
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
-@Entity(name = "travel_state")
+import models.User;
+
+@Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="TRAVEL_TYPE")
+@Table(name="TRAVEL_STATE")
 public abstract class TravelState {
 
 	@Id @GeneratedValue

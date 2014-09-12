@@ -1,8 +1,9 @@
-package models;
+package models.travel;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import models.Place;
+import models.User;
+
 @Entity
 public class Travel {
 
@@ -18,14 +22,26 @@ public class Travel {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name, description, photoUrl;
-	@ManyToOne
+
+	@Column
+	private String name;
+	
+	@Column
+	private String description;
+	
+	@Column
+	private String photoUrl;
+
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Place place;
-	@ManyToOne
+
+	@ManyToOne(cascade=CascadeType.ALL)
 	private User admin;
-	@ManyToOne
-	private TravelState state;
-	@OneToMany
+
+	@ManyToOne(cascade=CascadeType.ALL)
+	private TravelState state  = new OpenState();
+
+	@OneToMany(cascade=CascadeType.ALL)
 	private Set<User> participating = new HashSet<User>();
 	
 	public Travel() { }
@@ -38,7 +54,7 @@ public class Travel {
 		setDescription(description);
 		setPlace(new Place(coordX, coordY, placeDescription));
 		setPhotoUrl("");
-		setState(new OpenState(this));
+		//setState(new OpenState(this));
 	}
 	
 	public Travel(User admin, String name, String description, double coordX,
@@ -119,7 +135,7 @@ public class Travel {
 	}
 	
 	protected void setState(TravelState state) {
-		this.state = state;
+		this.state = (OpenState) state;
 	}
 
 	public boolean leave(User usr) {

@@ -1,17 +1,29 @@
-package models;
+package models.travel;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import models.InvalidStateException;
+import models.User;
 import models.Utils.PasswordService;
 
+@Entity
+@DiscriminatorValue("CloseState")
+@Table(name="CLOSESTATE")
 public class ClosedState extends TravelState {
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Travel context;
+
+	@Column
 	private String password;
 	
 	public ClosedState() { }
-	
+
 	public ClosedState(Travel context, String password) {
 		setContext(context);
 		setPassword(password);
