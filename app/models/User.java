@@ -3,6 +3,7 @@ package models;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import models.Utils.PasswordService;
+import models.dao.GenericDAOImpl;
+import play.data.validation.Constraints.Email;
 
 @Entity
 public class User {
@@ -25,7 +28,8 @@ public class User {
 	@Column
 	private String name;
 	
-	@Column
+	@Column(unique = true)
+	@Email
 	private String email;
 	
 	@Column
@@ -37,16 +41,40 @@ public class User {
 	@Temporal(TemporalType.DATE)
 	private Date dateRegister;
 	
-	public User() { 
-		setDateRegister(Calendar.getInstance().getTime());
+	public User() {
 	}
 
 	public User(String name, String email, String password) throws Exception {
-		this();
 		setEmail(email);
 		setName(name);
 		setPassword(password);
-		setPhotoUrl("");
+		setPhotoUrl(""); 
+		setDateRegister(Calendar.getInstance().getTime());
+	}
+
+
+	public void setPassword(String password) throws Exception {
+		if (stringIsValid(this.password)) {
+			throw new Exception("Senha já existe.");
+		}
+		if (!stringIsValid(password)) {
+			throw new Exception("Senha inválida.");
+		}
+		this.password = PasswordService.getInstance().encrypt(password);
+	}
+
+	public void setPassword(String oldPassword, String newPassword) throws Exception {
+		if (stringIsValid(newPassword) && stringIsValid(oldPassword)){
+			if (passwordIsValid(oldPassword)) {
+				this.password = oldPassword;
+			} else {
+				throw new Exception("Senha inválida.");
+			}
+		}
+	}
+	
+	private boolean stringIsValid(String str) {
+		return str != null && str.trim().length() > 0;
 	}
 
 	public Long getId() {
@@ -67,10 +95,6 @@ public class User {
 
 	public String getPassword() {
 		return password;
-	}
-
-	public void setPassword(String password) throws Exception {
-		this.password = PasswordService.getInstance().encrypt(password);
 	}
 
 	public void setEmail(String email) throws Exception {
@@ -116,6 +140,14 @@ public class User {
 		return criptoPass.equals(this.password);
 	}
 	
+	public static User getUserByEmail(String email) {
+		List<User> users = GenericDAOImpl.getInstance().findByAttributeName("User", "email", email);
+		if (!users.isEmpty()) {
+			return users.get(0);
+		}
+		return null;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj != null && obj instanceof User) {
@@ -129,5 +161,4 @@ public class User {
 	public int hashCode() {
 		return this.email.hashCode();
 	}
-
 }

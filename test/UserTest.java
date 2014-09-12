@@ -25,14 +25,36 @@ public class UserTest {
 	}
 
 	@Test
-	public void naoDevePermitirAlterarSenha() {
+	public void naoDevePermitirAlterarSenha() throws Exception {
 		String oldPassword = user.getPassword();
 		try {
 			user.setPassword(DEFAULT_PASSWORD);
+			fail();
 		} catch (Exception e) {
 			assertEquals("Senha já existe.", e.getMessage());
 		}
 		assertEquals(oldPassword, user.getPassword());
+
+		setUp();
+		
+		try {
+			user.setPassword("wrongpassword", "newPassword123");
+			fail();
+		} catch (Exception e) {
+			assertEquals("Senha inválida.", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void devePermitirAlterarSenha() {
+		String oldPassword = user.getPassword();
+
+		try {
+			user.setPassword(DEFAULT_PASSWORD, "newPassword123");
+		} catch (Exception e) {
+			fail();
+		}
+		assertNotEquals(oldPassword, user.getPassword());
 	}
 
 	@Test

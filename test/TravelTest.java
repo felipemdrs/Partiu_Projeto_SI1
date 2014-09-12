@@ -2,8 +2,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import models.Place;
 import models.User;
+import models.travel.Place;
 import models.travel.Travel;
 
 import org.junit.Before;

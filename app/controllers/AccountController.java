@@ -6,39 +6,33 @@ import java.io.File;
 import java.util.List;
 
 import models.User;
-import models.dao.GenericDAO;
 import models.dao.GenericDAOImpl;
 import play.data.DynamicForm;
-import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
-import play.libs.F.Function0;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 
 public class AccountController extends Controller {
-
-	private static GenericDAO dao = new GenericDAOImpl();
 	
 	@Transactional
 	public static Result login() {
 		String email = form().bindFromRequest().get("email");
 		String password = form().bindFromRequest().get("password");
 
-		List<User> users = dao.findByAttributeName("User", "email", email);
-		if (!users.isEmpty()) {
-			User user = users.get(0);
-			try {
-				if (user.passwordIsValid(password)) {
-					session().clear();
-					session("user", user.getEmail());
-					return redirect(routes.TravelController.list());
-				}
-			} catch (Exception e) {
-				return badRequest(e.getMessage());
+		User user = User.getUserByEmail(email);
+
+		try {
+			if (user.passwordIsValid(password)) {
+				session().clear();
+				session("user_email", user.getEmail());
+				return redirect(routes.TravelController.list());
 			}
+		} catch (Exception e) {
+			return badRequest(e.getMessage());
 		}
+			
 		return badRequest(views.html.index.render(true, "Usuário ou senha inválidos."));
 	}
 
@@ -61,19 +55,20 @@ public class AccountController extends Controller {
 			return badRequest(views.html.index.render(true, e.getMessage()));
 		}
 		
-		boolean success;
+		boolean success = false;
 		try {
-			success = dao.persist(newUser);
-			dao.flush();
+			success = GenericDAOImpl.getInstance().persist(newUser);
+			GenericDAOImpl.getInstance().flush();
 		} catch(Exception e) {
-			return badRequest(views.html.index.render(true, e.getMessage()));
+			success = false;
 		}
+
 		if (!success) {
 			return badRequest(views.html.index.render(true, "Ocorreu um erro. Tente novamente."));
 		}
 		
 		session().clear();
-		session("user", newUser.getEmail());
+		session("user_email", newUser.getEmail());
 		return redirect(routes.TravelController.list());
 	}
 	
@@ -85,28 +80,21 @@ public class AccountController extends Controller {
 		DynamicForm form = form().bindFromRequest();
 		String name = form.get("name");
 		String oldPassword = form.get("old-password");
-		String password = form.get("password");
+		String newPassword = form.get("password");
 		String repeatPassword = form.get("repeat-password");
 		
-		final User current = getCurrentUser();
-		try {
-			if (!current.passwordIsValid(oldPassword)) {
-				return badRequest(views.html.user.edit.index.render(current, true, "Senha incorreta."));
-			}
-		} catch(Exception e) {
-			return badRequest(views.html.user.edit.index.render(current, true, "Ocorreu um erro. Tente novamente."));
-		}
-		if (!password.equals(repeatPassword)) {
-			return badRequest(views.html.user.edit.index.render(current, true, "Senhas não coincidem"));
+		final User currentUser = getCurrentUser();
+
+		if (!oldPassword.equals(repeatPassword)) {
+			return badRequest(views.html.user.edit.index.render(currentUser, true, "Senhas não coincidem"));
 		}
 		
-		current.setName(name);
-		if (!password.trim().equals("")) {
-			try {
-				current.setPassword(password);
-			} catch(Exception e) {
-				return badRequest(views.html.user.edit.index.render(current, true, "Ocorreu um erro. Tente novamente."));
-			}
+		currentUser.setName(name);
+
+		try {
+			currentUser.setPassword(oldPassword, newPassword);
+		} catch(Exception e) {
+			return badRequest(views.html.user.edit.index.render(currentUser, true, e.getMessage()));
 		}
 		
 		MultipartFormData body = request().body().asMultipartFormData();
@@ -116,23 +104,17 @@ public class AccountController extends Controller {
 			//String contentType = picture.getContentType(); 
 			File file = picture.getFile();
 			//file.renameTo(new File(fileName));
-			current.setPhotoUrl(file.getAbsolutePath());
+			currentUser.setPhotoUrl(file.getAbsolutePath());
 		}
 
 		try {
-			JPA.withTransaction(new Function0<Void>() {
-			    @Override
-			    public Void apply() throws Throwable {
-			    	dao.merge(current);
-					dao.flush();
-					return null;
-			    }
-			});
+	    	GenericDAOImpl.getInstance().merge(currentUser);
+	    	GenericDAOImpl.getInstance().flush();
 		} catch(Throwable e) {
-			return badRequest(views.html.user.edit.index.render(current, true, "Ocorreu um erro. Tente novamente."));
+			return badRequest(views.html.user.edit.index.render(currentUser, true, "Ocorreu um erro. Tente novamente."));
 		} 
 		
-		return ok(views.html.user.edit.index.render(current, false, "Dados alterados com sucesso."));
+		return ok(views.html.user.edit.index.render(currentUser, false, "Dados alterados com sucesso."));
 	}
 
 	@Transactional
@@ -148,7 +130,7 @@ public class AccountController extends Controller {
 		if (AccountController.getCurrentUser() == null) {
 			return redirect(routes.Application.index());
 		}
-		User user = dao.findByEntityId(User.class, id);
+		User user = GenericDAOImpl.getInstance().findByEntityId(User.class, id);
 		return ok(views.html.user.profile.index.render(user));
 	}
 
@@ -162,22 +144,6 @@ public class AccountController extends Controller {
 	
 	@Transactional
 	public static User getCurrentUser() {
-		try {
-			User u = JPA.withTransaction(new Function0<User>() {
-			    @Override
-			    public User apply() throws Throwable {
-			    	List<User> users = dao.findByAttributeName("User", "email", session("user"));
-					if (users.isEmpty()) {
-						return null;
-					}
-					return users.get(0);
-			    }
-			});
-			return u;
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		return null;
+		return User.getUserByEmail(session("user_email"));
 	}
-
 }

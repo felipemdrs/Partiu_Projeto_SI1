@@ -11,6 +11,17 @@ import play.db.jpa.JPA;
  */
 public class GenericDAOImpl implements GenericDAO {
 
+	private static GenericDAO instance;
+	
+	private GenericDAOImpl() { }
+	
+	public static GenericDAO getInstance() {
+		if (instance == null) {
+			instance = new GenericDAOImpl();
+		}
+		return instance;
+	}
+	
 	@Override
 	public boolean persist(Object e) {
 		JPA.em().persist(e);
