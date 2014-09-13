@@ -2,6 +2,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import models.User;
 import models.travel.Place;
 import models.travel.Travel;
@@ -20,19 +24,20 @@ public class TravelTest {
 						DEFAULT_PHOTO_URL = "http://i.stack.imgur.com/WxVXe.jpg";
 	private static double DEFAULT_COORD_X = 9.99, 
 						DEFAULT_COORD_Y = 6.66;
+	private static Date DATE = Calendar.getInstance().getTime();
 	
 	private Travel t;
 	
 	@Before
 	public void setUp() throws Exception {
 		admin = new User("user2", "user2@mail.com", "admin");
-		t = new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL);
+		t = new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL, DATE);
 	}
 	
 	@Test
 	public void mustCreateTravel() throws Exception {
 		Travel v = new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y,
-				DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL); 
+				DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL, DATE); 
 		//verify gets, sets and equals
 		assertEquals(admin, v.getAdmin());
 		assertEquals(DEFAULT_NAME, v.getName());
@@ -112,12 +117,12 @@ public class TravelTest {
 	public void mustThrowExceptions() throws Exception {
 		//null admin
 		try {
-			new Travel(null, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL);
+			new Travel(null, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL, DATE);
 			fail();
 		} catch(Exception e) { }
 		//blank name
 		try {
-			new Travel(admin, "", DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL);
+			new Travel(admin, "", DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL, DATE);
 			fail();
 		} catch(Exception e) { }
 		//admin can be set only once (at constructor)
@@ -127,7 +132,7 @@ public class TravelTest {
 		} catch(Exception e) { }
 		//photo url can be blank
 		try {
-			new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, "");
+			new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, "", DATE);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			fail();

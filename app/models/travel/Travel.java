@@ -1,5 +1,7 @@
 package models.travel;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import models.User;
 
@@ -37,6 +41,9 @@ public class Travel {
 	@ManyToOne(cascade=CascadeType.ALL)
 	private User admin;
 
+	@Temporal(TemporalType.DATE)
+	private Date date = Calendar.getInstance().getTime();
+	
 	@ManyToOne(cascade=CascadeType.ALL)
 	private TravelState state = new OpenState(this);
 
@@ -46,22 +53,23 @@ public class Travel {
 	public Travel() { }
 	
 	public Travel(User admin, String name, String description, double coordX, 
-			double coordY, String placeDescription) 
+			double coordY, String placeDescription, Date date) 
 			throws TravelException {
 		setAdmin(admin);
 		setName(name);
 		setDescription(description);
 		setPlace(new Place(coordX, coordY, placeDescription));
+		setDate(date);
 		setPhotoUrl("");
 	}
 	
 	public Travel(User admin, String name, String description, double coordX,
-			double coordY, String placeDescription, String photoUrl)
+			double coordY, String placeDescription, String photoUrl, Date date)
 			throws TravelException {
-		this(admin, name, description, coordX, coordY, placeDescription);
+		this(admin, name, description, coordX, coordY, placeDescription, date);
 		setPhotoUrl(photoUrl);
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -122,6 +130,14 @@ public class Travel {
 			photoUrl = DEFAULT_PHOTO;
 		}
 		this.photoUrl = photoUrl;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public Set<User> getParticipating() {
