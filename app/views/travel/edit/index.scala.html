@@ -1,19 +1,6 @@
 @(travel: models.travel.Travel, errorMessage: String)
 
 @home(2) {
-	<style>
-		#map-canvas {
-			width: 100%;
-		}
-		.list-travels-edit {
-			width:70%;
-			background-color: white;
-			padding: 10px;
-			border-radius: 10px;
-			border: 1px solid #b7b7b7;
-			top: 1.9%;
-		}
-	</style>
 	@if(!errorMessage.trim().equals("")) {
 		<div class="alert alert-danger" role="alert">
 			@errorMessage
