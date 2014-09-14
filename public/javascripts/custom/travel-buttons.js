@@ -27,9 +27,19 @@ function disableJoinButton(button) {
 //clicks on join button
 function clickJoinButton() {
 	//Confirm the cancelling of travel
-	$("#travel-box-confirm").click(function(){
+	$("#travel-box-confirm").click(function(e){
+		e.preventDefault();
+
 		var button = $("#confirmModal").data();
-		disableJoinButton(button);
+		var travelId = button.data('travelid');
+
+		$.proxy($.ajax({
+			type: 'put',
+			url: '/travels/' + travelId + '/leave',
+			success: function(result) {
+				disableJoinButton(button);
+			}
+		}), this);
 		$("#confirmModal").modal("hide");
 	});
 	//Confirm the typed password
@@ -40,6 +50,8 @@ function clickJoinButton() {
 	}); 
 	//Click on join button 
 	$(".travel-box-join").click(function(){
+		var travelId = $(this).data('travelid');
+
 		if ($(this).data("activated")) {
 			$("#confirmModal").data($(this)); //save the button into the modal
 			$("#confirmModal").modal("show"); 
@@ -49,7 +61,6 @@ function clickJoinButton() {
 				$("#typePasswordModal").data($(this));
 				$("#typePasswordModal").modal("show");
 			} else {
-				var travelId = $(this).data('travelid');
 				$.proxy($.ajax({
 					type: 'put',
 					url: '/travels/' + travelId + '/join',

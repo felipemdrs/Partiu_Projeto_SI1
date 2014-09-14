@@ -265,6 +265,7 @@ public class TravelController extends Controller {
 		return redirect(routes.Application.index());
 	}
 
+	@Transactional
 	public static Result leave(Long id) {
 		Travel travel = Travel.getTravelById(id);
 		if (travel == null) {
@@ -274,11 +275,6 @@ public class TravelController extends Controller {
 		if (!travel.leave(current)) {
 			return badRequest("Usuário não está participando da viagem."); 
 		}
-		if (!travel.leave(current)) {
-			return badRequest("Usuário não está participando da viagem."); 
-		}
-		Travel.merge(travel);
-		User.merge(current);
 		return ok();
 	}
 
@@ -296,9 +292,6 @@ public class TravelController extends Controller {
 		if (!travel.join(current, password)) {		
 			return badRequest("Usuário não está participando da viagem."); 
 		}
-		System.out.println("okkkkkkkkkkkkkkkk");
-		//Travel.merge(travel);
-		//User.merge(current);
 		return ok();
 	}
 	
