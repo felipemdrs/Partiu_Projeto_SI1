@@ -9,10 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import models.Post;
+import models.Travel;
 import models.User;
 import models.dao.GenericDAOImpl;
-import models.travel.Post;
-import models.travel.Travel;
 import play.data.DynamicForm;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
@@ -31,7 +31,7 @@ public class TravelController extends Controller {
 		Set<Travel> travels = new HashSet<>();
 
 		for (Travel travel : allTravels) {
-			if (!travel.isAdminister(currentUser) && !travel.isParticipating(currentUser)) {
+			if (!currentUser.isAdminister(travel) && !currentUser.isParticipating(travel)) {
 				travels.add(travel);
 			}
 		}
@@ -43,7 +43,7 @@ public class TravelController extends Controller {
 	public static Result listIn() {
 		User currentUser = AccountController.getCurrentUser();
 
-		return ok(views.html.travel.list.index.render(1, currentUser, getTravelsParticipating()));
+		return ok(views.html.travel.list.index.render(1, currentUser, currentUser.getTravelsParticipating()));
 	}
 	
 	@Transactional
@@ -58,7 +58,7 @@ public class TravelController extends Controller {
 		User current = AccountController.getCurrentUser();
 		if (found == null) {
 			return badRequest(views.html.travel.board.index.render(current, found, "Viagem não encontrada."));
-		} else if (!found.isParticipating(current) && !found.isAdminister(current)) {
+		} else if (!current.isParticipating(found) && !current.isAdminister(found)) {
 			return badRequest(views.html.travel.board.index.render(current, found, "Você não tem permissões para ver esta viagem."));
 		}
 		return ok(views.html.travel.board.index.render(current, found, ""));
@@ -81,7 +81,7 @@ public class TravelController extends Controller {
 			return ok(views.html.travel.edit.index.render(found, "Viagem não encontrada.", "", true));
 		}
 		User current = AccountController.getCurrentUser();
-		if (!found.isAdminister(current)) {
+		if (!current.isAdminister(found)) {
 			return ok(views.html.travel.edit.index.render(found, "Você não tem permissões para editar esta viagem.", "", true));
 		}
 		return ok(views.html.travel.edit.index.render(found, "", "", true));
@@ -202,7 +202,7 @@ public class TravelController extends Controller {
 		Travel travel = Travel.getTravelById(travelId);
 		Post post = Post.getPostById(postId);
 		User current = AccountController.getCurrentUser();
-		boolean canEdit = travel.isAdminister(current) || post.getUser().equals(current);
+		boolean canEdit = current.isAdminister(travel) || post.getUser().equals(current);
 		return ok("[" + canEdit + "]");
 	}
 	
@@ -211,7 +211,7 @@ public class TravelController extends Controller {
 		Travel travel = Travel.getTravelById(travelId);
 		Post post = Post.getPostById(postId);
 		User current = AccountController.getCurrentUser();
-		boolean canEdit = travel.isAdminister(current) || post.getUser().equals(current);
+		boolean canEdit = current.isAdminister(travel) || post.getUser().equals(current);
 		if (canEdit) {
 			travel.removePost(post);
 		} else {
@@ -257,11 +257,7 @@ public class TravelController extends Controller {
 		}
 
 		try {
-			Travel travel = new Travel(AccountController.getCurrentUser(), name, description, coordX, coordY, placeDescription, date);
-			if (password != null && !password.trim().isEmpty()) {
-				travel.close(password);
-			}
-			Travel.merge(travel);
+			AccountController.getCurrentUser().createTravel(name, description, coordX, coordY, placeDescription, date, password);
 		} catch(Exception e) {
 			return badRequest("Ocorreu um erro. Tente novamente.");
 		}
@@ -305,37 +301,18 @@ public class TravelController extends Controller {
 	
 	@Transactional
 	public static Result travelsParticipating() {
-
+		User user = AccountController.getCurrentUser();
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 
 		try {
-			json = mapper.writeValueAsString(getTravelsParticipating());
+			json = mapper.writeValueAsString(user.getTravelsParticipating());
 		} catch (Exception e) {
 			return badRequest();
 		}
 		
 		return ok(json);
 	}
-	
-	@Transactional
-	public static Set<Travel> getTravelsParticipating() {
-		User currentUser = AccountController.getCurrentUser();
-
-		List<Travel> allTravels = GenericDAOImpl.getInstance().findAllByClassName("Travel");
-
-		Set<Travel> travels = new HashSet<>();
-
-		for (Travel travel : allTravels) {
-			if (!travel.isAdminister(currentUser) && travel.isParticipating(currentUser)) {
-				travels.add(travel);
-			}
-		}
-		
-		return travels;
-	}
-	
-	
 	
 	@Transactional
 	public static Result travelsAdmin() {

@@ -1,8 +1,8 @@
-@(user: User, travel: models.travel.Travel, errorMessage: String)
+@(user: User, travel: Travel, errorMessage: String)
 @index = @{
 	if(travel == null) 0
-	else if(travel.isAdminister(user)) 2
-	else if(travel.isParticipating(user)) 1
+	else if(user.isAdminister(travel)) 2
+	else if(user.isParticipating(travel)) 1
 	else 0
 }
 @home(index) {

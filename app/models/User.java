@@ -2,6 +2,7 @@ package models;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -14,7 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,8 +23,9 @@ import javax.validation.constraints.NotNull;
 
 import models.Utils.PasswordService;
 import models.dao.GenericDAOImpl;
-import models.travel.Travel;
-import models.travel.TravelException;
+
+import org.hibernate.annotations.IndexColumn;
+
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
 
@@ -59,12 +61,20 @@ public class User {
 	@Temporal(TemporalType.DATE)
 	private Date dateRegister;
 
-	@OneToMany(mappedBy="admin", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
+	@JoinTable(name="entity_travelsadmin")
+	@IndexColumn(base = 1, name = "tra")
 	private Set<Travel> travelsAdmin = new HashSet<Travel>();
 	
-	public User() {
-	}
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
+	@JoinTable(name="entity_travelsparticipating")
+	@IndexColumn(base = 1, name = "trp")
+	private Set<Travel> travelsParticipating = new HashSet<Travel>();
+	
+	@SuppressWarnings("unused")
+	private User() { }
 
 	public User(String name, String email, String password) throws Exception {
 		setEmail(email);
@@ -74,49 +84,19 @@ public class User {
 		setDateRegister(Calendar.getInstance().getTime());
 	}
 
-
-	public void setPassword(String password) throws Exception {
-		if (stringIsValid(this.password)) {
-			throw new Exception("Senha já existe.");
-		}
-		if (!stringIsValid(password)) {
-			throw new Exception("Senha inválida.");
-		}
-		this.password = PasswordService.getInstance().encrypt(password);
-	}
-
-	public void setPassword(String oldPassword, String newPassword) throws Exception {
-		if (stringIsValid(newPassword) && stringIsValid(oldPassword)){
-			if (passwordIsValid(oldPassword)) {
-				this.password = oldPassword;
-			} else {
-				throw new Exception("Senha inválida.");
-			}
-		}
-	}
-	
-	private boolean stringIsValid(String str) {
-		return str != null && str.trim().length() > 0;
-	}
-
-	public Long getId() {
-		return id;
-	}
-	
-	public Set<Travel> getTravelsAdmin() {
-		return this.travelsAdmin;
-	}
-	
-	public void createTravel(String name, String description, double coordX, 
+	public Travel createTravel(String name, String description, double coordX, 
 			double coordY, String placeDescription, Date dateRegister) {
 		try {
-			this.travelsAdmin.add(new Travel(this, name, description, coordX, coordY, placeDescription, dateRegister));
+			Travel travel = new Travel(this, name, description, coordX, coordY, placeDescription, dateRegister);
+			this.travelsAdmin.add(travel);
+			return travel;
 		} catch (TravelException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
-	public void createTravel(String name, String description, double coordX,
+	public Travel createTravel(String name, String description, double coordX,
 			double coordY, String placeDescription, Date date, String password) {
 		try {
 			Travel travel = new Travel(this, name, description, coordX, coordY, placeDescription, dateRegister);
@@ -126,11 +106,17 @@ public class User {
 			}		
 
 			this.travelsAdmin.add(travel);
+			return travel;
 		} catch (TravelException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
+	public Long getId() {
+		return id;
+	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -176,7 +162,7 @@ public class User {
 		}
 		this.photoUrl = photoUrl;
 	}
-	
+
 	public String getFormattedDate() { 
 		return new SimpleDateFormat("dd/MM/yyyy").format(dateRegister);
 	}
@@ -184,7 +170,63 @@ public class User {
 	public String getFirstName() {
 		return name.split(" ")[0];
 	}
+
+	public Set<Travel> getTravelsAdmin() {
+		return Collections.unmodifiableSet(travelsAdmin);
+	}
 	
+	public Set<Travel> getTravelsParticipating() {
+		return Collections.unmodifiableSet(travelsParticipating);
+	}
+
+	//Protected because it can only be accessible through
+	//travel.join(usr, password)
+	protected boolean join(Travel travel) {
+		if (isAdminister(travel)) {
+			return false;
+		}
+		return travelsParticipating.add(travel);
+	}
+
+	public boolean leave(Travel travel) {
+		if (isAdminister(travel)) {
+			return false;
+		}
+		return travelsParticipating.remove(travel);
+	}
+
+	public boolean isAdminister(Travel t) {
+		return travelsAdmin.contains(t);
+	}
+	
+	public boolean isParticipating(Travel t) {
+		return travelsParticipating.contains(t);
+	}
+
+	public void setPassword(String password) throws Exception {
+		if (stringIsValid(this.password)) {
+			throw new Exception("Senha já existe.");
+		}
+		if (!stringIsValid(password)) {
+			throw new Exception("Senha inválida.");
+		}
+		this.password = PasswordService.getInstance().encrypt(password);
+	}
+
+	public void setPassword(String oldPassword, String newPassword) throws Exception {
+		if (stringIsValid(newPassword) && stringIsValid(oldPassword)){
+			if (passwordIsValid(oldPassword)) {
+				this.password = oldPassword;
+			} else {
+				throw new Exception("Senha inválida.");
+			}
+		}
+	}
+	
+	private boolean stringIsValid(String str) {
+		return str != null && str.trim().length() > 0;
+	}
+
 	public boolean passwordIsValid(String password) throws Exception {
 		String criptoPass = PasswordService.getInstance().encrypt(password);
 		return criptoPass.equals(this.password);

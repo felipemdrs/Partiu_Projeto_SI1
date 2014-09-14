@@ -1,4 +1,4 @@
-package models.travel;
+package models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

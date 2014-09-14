@@ -1,4 +1,4 @@
-@(menuIndex: Integer, user: User, travels: Set[models.travel.Travel], isAdmin: Boolean)
+@(menuIndex: Integer, user: User, travels: Set[Travel], isAdmin: Boolean)
 @home(menuIndex) {
 	<div class="list-travels col-md-5">
 		<div class="list-travels-header">
@@ -6,14 +6,10 @@
 		</div>
 		@if(travels != null && travels.size() > 0){
 			@for(t <- travels){
-				@if(isAdmin) {
-					@travel_admin(user, t)
-				} else {
-					@travel(user, t)
-				}
+				@travel(user, t)
 			}
 		}else{
-			<h3>Não existe viagens!</h3>
+			<h3>No momento n&atilde;o existem viagens para esta categoria.</h3>
 		}
 		<div class="load-more btn btn-primary">
 			<h4>Carregar mais</h4>

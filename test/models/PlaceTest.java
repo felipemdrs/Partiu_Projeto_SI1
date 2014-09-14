@@ -1,5 +1,6 @@
+package models;
 import static org.junit.Assert.fail;
-import models.travel.Place;
+import models.Place;
 
 import org.junit.Test;
 

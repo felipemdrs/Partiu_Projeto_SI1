@@ -73,7 +73,7 @@
 		<hr>
 		<div>
 			<h3>Viagens participadas</h3>
-			@for(travel <- controllers.TravelController.getTravelsParticipating()) {
+			@for(travel <- user.getTravelsParticipating()) {
 				<div class="profile-travel">
 					<a href="/travels/@travel.getId()/info"><img src="@travel.getPhotoUrl()" title="@travel.getName()" /></a>
 				</div>

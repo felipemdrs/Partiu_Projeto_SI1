@@ -1,4 +1,4 @@
-package models.travel;
+package models;
 
 public class TravelException extends Exception {
 

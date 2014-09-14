@@ -1,8 +1,6 @@
-package models.travel;
+package models;
 
 import javax.persistence.Entity;
-
-import models.User;
 
 @Entity
 public class OpenState extends TravelState {
@@ -24,8 +22,8 @@ public class OpenState extends TravelState {
 
 	@Override
 	public boolean join(User usr, String password) {
-		if (!context.isAdminister(usr)) {
-			return context.join(usr);
+		if (!usr.isAdminister(context)) {
+			return usr.join(context);
 		}
 		return false;
 	}

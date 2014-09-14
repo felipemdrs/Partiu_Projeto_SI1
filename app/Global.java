@@ -6,9 +6,9 @@ import java.util.List;
 
 import controllers.AccountController;
 import controllers.routes;
+import models.Travel;
 import models.User;
 import models.dao.GenericDAOImpl;
-import models.travel.Travel;
 import play.Application;
 import play.GlobalSettings;
 import play.db.jpa.JPA;

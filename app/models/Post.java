@@ -1,4 +1,4 @@
-package models.travel;
+package models;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
-import models.User;
 import models.dao.GenericDAOImpl;
 import play.data.validation.Constraints.Required;
 

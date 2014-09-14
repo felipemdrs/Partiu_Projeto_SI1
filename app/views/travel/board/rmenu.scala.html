@@ -1,9 +1,9 @@
-@(user: User, travel: models.travel.Travel)
+@(user: User, travel: Travel)
 
 <h3><b>@travel.getName()</b></h3>
 <p style="margin-top:30px;text-align:justify">@travel.getDescription()</p>
 <hr>
-@if(travel.isAdminister(user)) {
+@if(user.isAdminister(travel)) {
 	<h3>Administração</h3>
 	<div style="margin-top:30px;">
 		<a href="/travels/@travel.getId()/edit"><button class="btn btn-default col-md-4">Editar</button></a>

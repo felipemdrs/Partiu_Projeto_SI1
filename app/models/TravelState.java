@@ -1,11 +1,9 @@
-package models.travel;
+package models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import models.User;
 
 @Entity
 public abstract class TravelState {

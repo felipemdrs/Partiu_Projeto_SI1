@@ -1,3 +1,4 @@
+package models;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -5,10 +6,6 @@ import static org.junit.Assert.fail;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import models.User;
-import models.travel.Place;
-import models.travel.Travel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +17,8 @@ public class TravelTest {
 	//default constraints
 	private static String DEFAULT_NAME = "Name",
 						DEFAULT_DESCRIPTION = "Description", 
-						DEFAULT_PLACE_DESCRIPTION = "Place description", 
-						DEFAULT_PHOTO_URL = "http://i.stack.imgur.com/WxVXe.jpg";
+						DEFAULT_PLACE_DESCRIPTION = "Place description";
+					
 	private static double DEFAULT_COORD_X = 9.99, 
 						DEFAULT_COORD_Y = 6.66;
 	private static Date DATE = Calendar.getInstance().getTime();
@@ -31,13 +28,13 @@ public class TravelTest {
 	@Before
 	public void setUp() throws Exception {
 		admin = new User("user2", "user2@mail.com", "admin");
-		t = new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL, DATE);
+		t = admin.createTravel(DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DATE);
 	}
 	
 	@Test
 	public void mustCreateTravel() throws Exception {
 		Travel v = new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y,
-				DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL, DATE); 
+				DEFAULT_PLACE_DESCRIPTION,  DATE); 
 		//verify gets, sets and equals
 		assertEquals(admin, v.getAdmin());
 		assertEquals(DEFAULT_NAME, v.getName());
@@ -49,18 +46,18 @@ public class TravelTest {
 	@Test
 	public void mustJoinPublicTravel() throws Exception {
 		User newUser = new User("user3", "user3@mail.com", "password123");
-		assertFalse(t.isParticipating(newUser));
-		assertFalse(t.isAdminister(newUser));
+		assertFalse(newUser.isParticipating(t));
+		assertFalse(newUser.isAdminister(t));
 		//password here is irrelevant
 		assertTrue(t.join(newUser, "123")); //it can be any password
 		assertFalse(t.join(newUser, "123")); //already is joined...
-		assertTrue(t.isParticipating(newUser));
-		assertFalse(t.isAdminister(newUser));
+		assertTrue(newUser.isParticipating(t));
+		assertFalse(newUser.isAdminister(t));
 		
-		assertTrue(t.isAdminister(admin));
-		assertFalse(t.isParticipating(admin));
+		assertTrue(admin.isAdminister(t));
+		assertFalse(admin.isParticipating(t));
 		assertFalse(t.join(admin, "123")); //admin is the manager, so it cant join (again)
-		assertFalse(t.isParticipating(admin));
+		assertFalse(admin.isParticipating(t));
 	}
 	
 	@Test
@@ -68,17 +65,17 @@ public class TravelTest {
 		t.close("pass123");
 		User newUser = new User("user3", "user3@mail.com", "password123");
 		//first lets assure user is not joined
-		assertFalse(t.isParticipating(newUser));
-		assertFalse(t.isAdminister(newUser));
+		assertFalse(newUser.isParticipating(t));
+		assertFalse(newUser.isAdminister(t));
 		//dont let him participate using a wrong password
 		assertFalse(t.join(newUser, "wrongpassword"));
-		assertFalse(t.isParticipating(newUser));
+		assertFalse(newUser.isParticipating(t));
 		//now let him participate using the right password
 		assertTrue(t.join(newUser, "pass123"));
-		assertTrue(t.isParticipating(newUser));
+		assertTrue(newUser.isParticipating(t));
 		//dont let admin participate even with right password
 		assertFalse(t.join(admin, "pass123"));
-		assertFalse(t.isParticipating(admin));
+		assertFalse(admin.isParticipating(t));
 	}
 	
 	@Test
@@ -117,12 +114,12 @@ public class TravelTest {
 	public void mustThrowExceptions() throws Exception {
 		//null admin
 		try {
-			new Travel(null, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL, DATE);
+			new Travel(null, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DATE);
 			fail();
 		} catch(Exception e) { }
 		//blank name
 		try {
-			new Travel(admin, "", DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DEFAULT_PHOTO_URL, DATE);
+			new Travel(admin, "", DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, DATE);
 			fail();
 		} catch(Exception e) { }
 		//admin can be set only once (at constructor)
@@ -130,13 +127,11 @@ public class TravelTest {
 			t.setAdmin(admin);
 			fail();
 		} catch(Exception e) { }
-		//photo url can be blank
+		//place description cannot be empty
 		try {
-			new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, DEFAULT_PLACE_DESCRIPTION, "", DATE);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			new Travel(admin, DEFAULT_NAME, DEFAULT_DESCRIPTION, DEFAULT_COORD_X, DEFAULT_COORD_Y, "", DATE);
 			fail();
-		}
+		} catch(Exception e) { }
 	}
 	
 }

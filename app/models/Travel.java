@@ -1,4 +1,4 @@
-package models.travel;
+package models;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -21,7 +22,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import models.User;
 import models.dao.GenericDAOImpl;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
@@ -58,12 +58,6 @@ public class Travel {
 	@NotNull
 	private Place place;
 
-	@ManyToOne(cascade=CascadeType.ALL)
-	@Required
-	@NotNull
-	@JsonBackReference
-	private User admin;
-
 	@Temporal(TemporalType.DATE)
 	@Required
 	@NotNull
@@ -73,16 +67,17 @@ public class Travel {
 	private TravelState state;
 
 	@OneToMany(cascade=CascadeType.ALL)
-	private Set<User> participating = new HashSet<User>();
-	
-	@OneToMany(cascade=CascadeType.ALL)
 	@JsonBackReference
 	private List<Post> posts = new ArrayList<Post>();
+	
+	@ManyToOne
+	@JoinColumn(name="entity_travelsadmin")
+	private User admin;
 	
 	@SuppressWarnings("unused")
 	private Travel() { }
 	
-	public Travel(User admin, String name, String description, double coordX, 
+	protected Travel(User admin, String name, String description, double coordX, 
 			double coordY, String placeDescription, Date date) 
 			throws TravelException {
 		setAdmin(admin);
@@ -94,13 +89,6 @@ public class Travel {
 		this.state  = new OpenState(this);
 	}
 	
-	public Travel(User admin, String name, String description, double coordX,
-			double coordY, String placeDescription, String photoUrl, Date date)
-			throws TravelException {
-		this(admin, name, description, coordX, coordY, placeDescription, date);
-		setPhotoUrl(photoUrl);
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -143,19 +131,6 @@ public class Travel {
 		this.place = place;
 	}
 
-	public User getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(User admin) throws TravelException {
-		if (admin == null) {
-			throw new TravelException("Administrador da viagem não pode ser nulo.");
-		} else if (this.admin != null) {
-			throw new TravelException("Esta viagem já possui um administrador.");
-		}
-		this.admin = admin;
-	}
-
 	public String getPhotoUrl() {
 		return photoUrl;
 	}
@@ -175,29 +150,34 @@ public class Travel {
 		this.date = date;
 	}
 
-	public Set<User> getParticipating() {
-		return Collections.unmodifiableSet(participating);
-	}
-
 	public List<Post> getPosts() {
 		return Collections.unmodifiableList(posts);
 	}
 
+	public User getAdmin() {
+		return admin;
+	}
+
+	protected void setAdmin(User admin) throws TravelException {
+		if (admin == null) {
+			throw new TravelException("Administrador da viagem não pode ser nulo.");
+		} else if (this.admin != null) {
+			throw new TravelException("Esta viagem já possuí um administrador.");
+		}
+		this.admin = admin;
+	}
+	
+	//-----------------------------------------
+	// STATE METHODS
+	//-----------------------------------------
 	protected void setState(TravelState state) {
 		this.state = state;
 	}
 
 	public boolean leave(User usr) {
-		return participating.remove(usr);
+		return usr.leave(this);
 	}
 	
-	//protected because only the travelstate
-	//can add a user this way (without the need of password)
-	protected boolean join(User usr) {
-		return participating.add(usr);
-	}
-	
-	//this is the method which is public (requires password)
 	public boolean join(User usr, String password) {
 		return state.join(usr, password);
 	}
@@ -213,13 +193,19 @@ public class Travel {
 	public void changePassword(String password) {
 		state.changePassword(password);
 	}
+	//-----------------------------------------
+	// END OF STATE METHODS
+	//-----------------------------------------
 	
-	public boolean isParticipating(User usr) {
-		return participating.contains(usr);
-	}
-	
-	public boolean isAdminister(User usr) {
-		return admin.equals(usr);
+	public Set<User> getParticipating() {
+		Set<User> participating = new HashSet<User>();
+		List<User> all = GenericDAOImpl.getInstance().findAllByClassName("User");
+		for(User u : all) {
+			if (u.isParticipating(this)) {
+				participating.add(u);
+			}
+		}
+		return Collections.unmodifiableSet(participating);
 	}
 
 	public void addPost(User user, String message) {
