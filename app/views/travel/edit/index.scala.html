@@ -49,17 +49,5 @@
 		</div>
 	</div>
 	@menus.rmenu(menu())
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/create-travel.js")"></script>
-	<script>
-	//show/hide lock
-	var lockContent = $("#lock-content");
-	lockContent.hide();
-	$("input[name='locked']").change(function(){
-		if ($(this).is(":checked")) {
-			lockContent.slideDown();
-		} else {
-			lockContent.slideUp();
-		}
-	});
-	</script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/create-travel.js")"></script>
 } 

@@ -87,8 +87,18 @@ function hoverJoinButton() {
 		}
 	});
 }
-
+function joinTravel() {
+	$(".travel-box-content").click(function(){
+		var button = $(this).parent().parent().find(".travel-box-join");
+		if (!button.data("activated")) {
+			$("#forbiddenModal").modal("show");
+			return; 
+		}
+		window.location.href = "/travels/1/board";
+	});
+}
 $(function(){
 	clickJoinButton();
 	hoverJoinButton();
+	joinTravel();
 });

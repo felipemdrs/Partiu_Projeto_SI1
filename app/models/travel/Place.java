@@ -4,25 +4,39 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
+import play.data.validation.Constraints.MaxLength;
+import play.data.validation.Constraints.Required;
 
 @Entity
 public class Place {
 
+	private static final int MAX_DESCRIPTION_LENGTH = 150;
+	private static final double MAX_LAT_VALUE = 85.1;
+	private static final double MAX_LNG_VALUE = 180;
+	
 	@Id @GeneratedValue
 	private Long id;
 	
+	@Required
 	@Column
 	private double coordX;
 	
+	@Required
 	@Column
 	private double coordY;
 	
 	@Column
+	@Required
+	@NotNull
+	@MaxLength(value = MAX_DESCRIPTION_LENGTH)
 	private String description;
 	
 	public Place() { }
 	
-	public Place(double coordX, double coordY, String description) {
+	public Place(double coordX, double coordY, String description) 
+		throws TravelException {
 		this.setCoordX(coordX);
 		this.setCoordY(coordY);
 		this.setDescription(description);
@@ -40,7 +54,10 @@ public class Place {
 		return coordX;
 	}
 
-	public void setCoordX(double coordX) {
+	public void setCoordX(double coordX) throws PlaceException {
+		if (Math.abs(coordX) >= MAX_LNG_VALUE) {
+			throw new PlaceException("Longitude inválida.");
+		}
 		this.coordX = coordX;
 	}
 
@@ -48,7 +65,10 @@ public class Place {
 		return coordY;
 	}
 
-	public void setCoordY(double coordY) {
+	public void setCoordY(double coordY) throws PlaceException {
+		if (Math.abs(coordY) >= MAX_LAT_VALUE) {
+			throw new PlaceException("Latitude inválida.");
+		}
 		this.coordY = coordY;
 	}
 
@@ -56,7 +76,10 @@ public class Place {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description) throws PlaceException {
+		if (description == null || description.trim().equals("")) {
+			throw new PlaceException("Descrição do lugar não pode ser vazia.");
+		}
 		this.description = description;
 	}
 

@@ -73,7 +73,7 @@ public class AccountController extends Controller {
 			return redirect(routes.Application.index());
 		}
 		DynamicForm form = form().bindFromRequest();
-		String name = form.get("name");
+		String name = form.get("name"); 
 		String oldPassword = form.get("old-password");
 		String newPassword = form.get("password");
 		String repeatPassword = form.get("repeat-password");

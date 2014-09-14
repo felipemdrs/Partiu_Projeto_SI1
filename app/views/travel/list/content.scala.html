@@ -35,17 +35,5 @@
 		</div>     
 	</div>
 	@menus.rmenu(menu())
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/travel-buttons.js")"></script>
-	<script>
-	$(function(){
-		$(".travel-box-content").click(function(){
-			var button = $(this).parent().parent().find(".travel-box-join");
-			if (!button.data("activated")) {
-				$("#forbiddenModal").modal("show");
-				return; 
-			}
-			window.location.href = "/travels/1/board";
-		});
-	});
-	</script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/travel-buttons.js")"></script>
 } 

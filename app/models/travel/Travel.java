@@ -1,5 +1,4 @@
 package models.travel;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -15,34 +14,49 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import models.User;
+import play.data.validation.Constraints.MaxLength;
+import play.data.validation.Constraints.Required;
 
 @Entity
 public class Travel {
 
 	private static final String DEFAULT_PHOTO = "/assets/img/perfil.jpg";
+	private static final int MAX_NAME_LENGTH = 40;
+	private static final int MAX_DESCRIPTION_LENGTH = 350;
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column
+	@Required
+	@NotNull
+	@MaxLength(value = MAX_NAME_LENGTH)
 	private String name;
 	
 	@Column
+	@MaxLength(value = MAX_DESCRIPTION_LENGTH)
 	private String description;
 	
 	@Column
 	private String photoUrl;
 
 	@ManyToOne(cascade=CascadeType.ALL)
+	@Required
+	@NotNull
 	private Place place;
 
 	@ManyToOne(cascade=CascadeType.ALL)
+	@Required
+	@NotNull
 	private User admin;
 
 	@Temporal(TemporalType.DATE)
-	private Date date = Calendar.getInstance().getTime();
+	@Required
+	@NotNull
+	private Date date;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	private TravelState state = new OpenState(this);
