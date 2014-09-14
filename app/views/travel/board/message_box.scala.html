@@ -1,4 +1,4 @@
-@(travel: models.travel.Travel)
+@(post: models.travel.Post)
 
 <style>
 .message-box {
@@ -36,20 +36,15 @@
 <div class="message-box">
 	<div class="col-md-2">
 		<div>
-			<a href="/1/profile"><img src="/assets/img/perfil.jpg"></a>
+			<a href="/@post.getUser().getId()/profile"><img src="@post.getUser().getPhotoUrl()"></a>
 		</div>
 	</div>
 	<div class="arrow_box col-md-7">
 		<h3>
-			<b>Fofura disse</b>
+			<b>@post.getUser().getName() disse</b>
 		</h3>
-		<p> Ola Felipe, Tudo bem? Vamos
-		embora agora ou não? Vamos que horas? Corre!! kkkk senão vamos nos
-		atrasar?
-		</p>
-		<i>
-		16 de agosto de 2014 ás 18:00h
-		</i> 
+		<p> @post.getMessage()</p>
+		<i>@post.getFormattedDate()</i> 
 	</div>
 </div>
 

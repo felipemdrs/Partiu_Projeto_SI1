@@ -17,6 +17,25 @@ margin-top:10px
 }
 </style>
 <div id="message-input">
-	<textarea cols="" class="form-control" placeholder="Fale algo sobre a viagem" autofocus="autofocus" maxlength="150"></textarea>
-	<button class="btn btn-primary">Publicar</button>
+	<form id="form-post" action="/travels/@travel.getId()/post" method="post">
+		<textarea name="message" cols="" class="form-control" placeholder="Fale algo sobre a viagem" autofocus="autofocus" maxlength="150"></textarea>
+		<button type="submit" class="btn btn-primary">Publicar</button>
+		
+	</form>
 </div>
+<input type="hidden" id="travel-id" value="@travel.getId()" />
+<div class="message-box-template" >
+	<div class="col-md-2">
+		<div>
+			<a href="#"><img id="photoUrl"></a>
+		</div>
+	</div>
+	<div class="arrow_box col-md-7">
+		<h3>
+			<b><span id="userName"></span> disse</b>
+		</h3>
+		<p id="message"></p>
+		<i id="date"></i> 
+	</div>
+</div>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/create-post.js")"></script>

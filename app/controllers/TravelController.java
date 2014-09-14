@@ -14,6 +14,8 @@ import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class TravelController extends Controller {
 
 	@Transactional
@@ -47,10 +49,10 @@ public class TravelController extends Controller {
 		}
 		Travel found = Travel.getTravelById(id);
 		User current = AccountController.getCurrentUser();
-		if (!found.isParticipating(current) && !found.isAdminister(current)) {
-			return badRequest(views.html.travel.board.index.render(current, found, "Você não tem permissões para ver esta viagem."));
-		} else if (found == null) {
+		if (found == null) {
 			return badRequest(views.html.travel.board.index.render(current, found, "Viagem não encontrada."));
+		} else if (!found.isParticipating(current) && !found.isAdminister(current)) {
+			return badRequest(views.html.travel.board.index.render(current, found, "Você não tem permissões para ver esta viagem."));
 		}
 		return ok(views.html.travel.board.index.render(current, found, ""));
 	}
@@ -69,11 +71,54 @@ public class TravelController extends Controller {
 			return redirect(routes.Application.index());
 		}
 		Travel found = Travel.getTravelById(id);
+		if (found == null) {
+			return ok(views.html.travel.edit.index.render(found, "Viagem não encontrada."));
+		}
 		User current = AccountController.getCurrentUser();
 		if (!found.isAdminister(current)) {
 			return ok(views.html.travel.edit.index.render(found, "Você não tem permissões para editar esta viagem."));
 		}
 		return ok(views.html.travel.edit.index.render(found, ""));
+	}
+	
+	@Transactional
+	public static Result post(Long id) {
+		DynamicForm form = form().bindFromRequest();
+		String message = form.get("message");
+		
+		Travel found = Travel.getTravelById(id);
+		if (found == null) {
+			return badRequest("Viagem não encontrada.");
+		}
+		User current = AccountController.getCurrentUser();
+		
+		found.addPost(current, message);
+		try {
+			GenericDAOImpl.getInstance().merge(found);
+			GenericDAOImpl.getInstance().flush();
+		} catch(Exception e) {
+			return badRequest("Erro ao publicar o post. Tente novamente.");
+		}
+		
+		return redirect(routes.Application.index());
+	}
+	
+	@Transactional
+	public static Result getPosts(Long id) {
+		Travel found = Travel.getTravelById(id);
+		if (found == null) {
+			return badRequest("Viagem não encontrada.");
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		
+		try {
+			json = mapper.writeValueAsString(found.getPosts());
+		} catch (Exception _) {
+			return badRequest();
+		}
+		
+		return ok(json);
 	}
 	
 	@Transactional

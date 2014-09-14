@@ -1,6 +1,7 @@
 @(user: User, travel: models.travel.Travel, errorMessage: String)
 @index = @{
-	if(travel.isAdminister(user)) 2
+	if(travel == null) 0
+	else if(travel.isAdminister(user)) 2
 	else 1
 }
 @home(index){
@@ -17,8 +18,8 @@
 	@if(errorMessage.trim().equals("")) {
 		<div class="col-md-8" id="board">
 			@message_input(travel)
-			@for(i <- 1 to 5){
-				@message_box(travel)
+			@for(post <- travel.getPosts()){
+				@message_box(post)
 			}
 		</div>
 		@menus.rmenu(rmenu(user, travel))

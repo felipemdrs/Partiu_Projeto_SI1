@@ -12,10 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import models.Utils.PasswordService;
 import models.dao.GenericDAOImpl;
 import play.data.validation.Constraints.Email;
+import play.data.validation.Constraints.Required;
 
 @Entity
 public class User {
@@ -26,13 +28,19 @@ public class User {
 	private Long id;
 	
 	@Column
+	@Required
+	@NotNull
 	private String name;
 	
 	@Column(unique = true)
 	@Email
+	@Required
+	@NotNull
 	private String email;
 	
 	@Column
+	@Required
+	@NotNull
 	private String password;
 	
 	@Column

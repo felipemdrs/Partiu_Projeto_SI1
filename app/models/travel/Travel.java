@@ -1,7 +1,9 @@
 package models.travel;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -64,6 +66,9 @@ public class Travel {
 
 	@OneToMany(cascade=CascadeType.ALL)
 	private Set<User> participating = new HashSet<User>();
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<Post> posts = new ArrayList<Post>();
 	
 	public Travel() { }
 	
@@ -162,7 +167,15 @@ public class Travel {
 	public void setParticipating(Set<User> participating) {
 		this.participating = participating;
 	}
-	
+
+	public List<Post> getPosts() {
+		return Collections.unmodifiableList(posts);
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
 	protected void setState(TravelState state) {
 		this.state = state;
 	}
@@ -202,6 +215,10 @@ public class Travel {
 		return admin.equals(usr);
 	}
 
+	public void addPost(User user, String message) {
+		posts.add(0, new Post(user, message));
+	}
+	
 	public static Travel getTravelById(Long id) {
 		Travel found = GenericDAOImpl.getInstance().findByEntityId(Travel.class, id);
 		return found;
