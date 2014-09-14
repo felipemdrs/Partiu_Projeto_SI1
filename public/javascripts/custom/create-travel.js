@@ -142,7 +142,10 @@ $(function(){
 	});
 	//show/hide lock
 	var lockContent = $("#lock-content");
-	lockContent.hide();
+	//if (!$("input[name='locked']").is(":checked")) {
+		lockContent.hide();
+	//}
+	
 	$("input[name='locked']").change(function(){
 		if ($(this).is(":checked")) {
 			lockContent.slideDown();
@@ -160,4 +163,5 @@ $(function(){
 			$("#choose-place").tooltip("hide");
 		}
 	});
+
 });

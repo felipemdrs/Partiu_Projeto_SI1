@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class Travel {
 
-	private static final String DEFAULT_PHOTO = "/assets/img/perfil.jpg";
+	private static final String DEFAULT_PHOTO = "/assets/images/default-travel.jpg";
 	private static final int MAX_NAME_LENGTH = 40;
 	private static final int MAX_DESCRIPTION_LENGTH = 350;
 	

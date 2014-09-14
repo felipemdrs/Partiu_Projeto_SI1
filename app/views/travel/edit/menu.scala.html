@@ -1,3 +1,12 @@
+@(travel: models.travel.Travel)
+
+<img src="@travel.getPhotoUrl()" width="100%" style="margin-top: 20px; border-radius: 5px; border: 1px solid #eee; box-shadow: 2px 2px 2px #b7b7b7;" />
+<div class="form-group; ">
+	<br/>
+	<label>Adicionar foto</label>
+	<input type="file" name="photo" accept="image/*"/>
+</div>
+
 <h3><b>Participantes</b></h3>
 <div class="form-group">
 	<label>Adicionar participante</label>
@@ -6,13 +15,17 @@
 <div class="form-group">
 	<label>Remover participantes</label>
 	<div class="participantes-foto">
-		@for(i <- 1 to 30){ 
-		<div style="display: inline-block;">
-			<a href="/1/profile"><img src="/assets/img/perfil.jpg" width="40px" height="40px" style="display: inline-block; margin-bottom: 4px; border: 1px solid rgb(172, 172, 172);"></a> 
-			<div style="position: absolute; margin-left: 25px; margin-top: -45px; text-shadow: 2px 2px 2px black;">
-				<a href="#" class="remove-participant" style="color: white;"><i class="fa fa-times"></i></a>
+		@if(travel.getParticipating().isEmpty()) {
+			<p>N&atilde;o h&aacute; participantes para remover no momento.</p>
+		} else {
+			@for(user <- travel.getParticipating()){ 
+			<div style="display: inline-block;">
+				<a href="/@user.getId()/profile"><img title="@user.getName()" src="@user.getPhotoUrl()" width="40px" height="40px" style="display: inline-block; margin-bottom: 4px; border: 1px solid rgb(172, 172, 172);"></a> 
+				<div style="position: absolute; margin-left: 25px; margin-top: -45px; text-shadow: 2px 2px 2px black;">
+					<a href="#" class="remove-participant" style="color: white;"><i class="fa fa-times"></i></a>
+				</div>
 			</div>
-		</div>
+			}
 		}
 	</div>
 </div>

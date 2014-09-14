@@ -10,7 +10,7 @@ function initialize() {
 	var coordx = $("input[name='coords-x']").val();
 	var coordy = $("input[name='coords-y']").val();
 	var mapOptions = {
-			zoom: 12,
+			zoom: 13,
 			center: new google.maps.LatLng(coordx, coordy),
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 	};

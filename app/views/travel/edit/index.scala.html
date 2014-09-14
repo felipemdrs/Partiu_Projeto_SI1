@@ -2,48 +2,58 @@
 
 @home(2) {
 	@if(!errorMessage.trim().equals("")) {
-		<div class="alert alert-danger" role="alert">
+		<div class="alert alert-danger" role="alert" style="margin-top: 1.19%;">
 			@errorMessage
 		</div>
 	} else {
-		<div class="list-travels-edit col-md-5">
-			<div class="form-group">
-				<label>Nome</label>
-				<input type="text" class="form-control" value="@travel.getName()" />
-			</div>
-			<div class="form-group">
-				<label>Descri&ccedil;&atilde;o</label>
-				<input type="text" class="form-control" value="@travel.getDescription()" />
-			</div>
-			<div class="form-group">
-				<label>Data de viagem</label>
-				<input type="text" class="form-control" value="@travel.getDate()" />
-			</div>
-			<div class="form-group">
-				<label>Local</label>
-				<input type="text" class="form-control" value="@travel.getPlace().getDescription()" />
-				<input type="button" id="choose-place" class="form-control btn btn-default" value="Ver no mapa" />
-				<div id="choose-place-content" class="thumbnail" data-visible="false">
-					<div id="map-canvas"></div>
-				</div>
-			</div>
-			<div class="form-group">
-			@travel.isLocked()
-				<input type="checkbox" name="locked" @if(travel.isLocked()){checked}/> Privado
-			</div>
-			<div id="lock-content">
+		<form action="/@travel.getId()/edit" method="post" role="form" enctype="multipart/form-data" style="margin-top: 1.19%;">
+			<div class="list-travels-edit col-md-5">
 				<div class="form-group">
-					<input class="form-control" type="password" name="password" placeholder="Senha" />
+					<label>Nome</label>
+					<input name="travel-name" type="text" class="form-control" value="@travel.getName()" required />
 				</div>
 				<div class="form-group">
-					<input class="form-control" type="password" name="repeat-password" placeholder="Repita a senha" />
+					<label>Descri&ccedil;&atilde;o</label>
+					<input name="description" type="text" class="form-control" value="@travel.getDescription()" />
+				</div>
+				<div class="form-group">
+					<label>Data de viagem</label>
+					<input name="date" type="text" class="form-control datepicker" value="@travel.getDate()" required style="padding-left: 10px;" />
+				</div>
+				<div class="form-group">
+					<label>Local</label>
+					<input name="place-description" type="text" class="form-control" value="@travel.getPlace().getDescription()" required />
+					<input type="button" id="choose-place" class="form-control btn btn-default" data-toggle="button" value="Ver no mapa" />
+					<div id="choose-place-content" class="thumbnail" data-visible="false">
+						<div id="map-canvas"></div>
+						<input type="hidden" name="coords-x" value="@travel.getPlace().getCoordX()" />
+						<input type="hidden" name="coords-y" value="@travel.getPlace().getCoordY()" />
+					</div>
+				</div>
+				<div class="form-group">
+					<input type="checkbox" name="locked" @if(travel.isLocked()){ checked }/> Privado
+				</div>
+				<div id="lock-content">
+					<div class="form-group">
+						<input class="form-control" type="password" name="password" placeholder="Nova Senha" />
+					</div>
+					<div class="form-group">
+						<input class="form-control" type="password" name="repeat-password" placeholder="Repita a senha" />
+					</div>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="password" name="old-password" placeholder="Senha atual" required />
+				</div>
+				<div class="form-group">
+					<center>
+						<a href="/"><button type="button" class="btn btn-danger">Cancelar</button></a>
+						<button type="submit" class="btn btn-success">Salvar</button>
+					</center>
 				</div>
 			</div>
-			<div class="form-group">
-				<center><button class="btn btn-success">Salvar</button></center>
-			</div>
-		</div>
+			@menus.rmenu(menu(travel))
+		</form>
 	}
-	@menus.rmenu(menu())
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/set-map-place.js")"></script>
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/create-travel.js")"></script>
 } 

@@ -3,12 +3,27 @@ var map = null;
 var marker = null;
 
 function initialize() {
+	var coordx = $("input[name='coords-x']").val();
+	var coordy = $("input[name='coords-y']").val();
+	var mapCenter;
+	if (!coordx || !coordy) {
+		mapCenter = new google.maps.LatLng(-7.216895033745134, -35.9079759567976);
+	} else {
+		mapCenter = new google.maps.LatLng(coordx, coordy);
+	}
 	var mapOptions = {
-			zoom: 12,
-			center: new google.maps.LatLng(-7.216895033745134, -35.9079759567976),
+			zoom: 13,
+			center: mapCenter,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	if (coordx && coordy) {
+		marker = new google.maps.Marker({
+			position: mapCenter,
+			map: map,
+			title: "Local da viagem"
+		});
+	}
 	google.maps.event.addListener(map, 'click', function(event) {
 		if (marker == null) {
 			marker = new google.maps.Marker({
@@ -56,9 +71,6 @@ function clearMarker() {
 
 $(function(){
 	initialize();
-	//stores up information of the map
-	$("input[name='coords-x']").hide();
-	$("input[name='coords-y']").hide();
 	//show/hide map
 	setTimeout(function(){
 		hideMap();
