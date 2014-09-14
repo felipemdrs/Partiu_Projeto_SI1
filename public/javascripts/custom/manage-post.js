@@ -45,6 +45,7 @@ function removePost() {
 				refreshPosts();
 			}
 		});
+		return false;
 	});
 }
 $(function(){
@@ -66,7 +67,7 @@ $(function(){
 				top.tooltip({
 					placement: 'top',
 					trigger: 'focus',
-					title: 'Erro ao criar publicar post.'
+					title: result
 				});
 				top.tooltip("show");
 			}

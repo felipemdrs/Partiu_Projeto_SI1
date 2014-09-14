@@ -229,4 +229,14 @@ public class Travel {
 		return found;
 	}
 
+	public static void persist(Travel travel) {
+		GenericDAOImpl.getInstance().persist(travel);
+		GenericDAOImpl.getInstance().flush();
+	}
+	
+	public static void merge(Travel travel) {
+		GenericDAOImpl.getInstance().merge(travel);
+		GenericDAOImpl.getInstance().flush();
+	}
+	
 }

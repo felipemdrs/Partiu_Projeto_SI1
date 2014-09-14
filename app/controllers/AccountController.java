@@ -1,17 +1,11 @@
 package controllers;
 
 import static play.data.Form.form;
-
-import java.io.File;
-import java.util.List;
-
 import models.User;
 import models.dao.GenericDAOImpl;
 import play.data.DynamicForm;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
-import play.mvc.Http.MultipartFormData;
-import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 
 public class AccountController extends Controller {
@@ -56,8 +50,7 @@ public class AccountController extends Controller {
 		}
 		
 		try {
-			GenericDAOImpl.getInstance().persist(newUser);
-			GenericDAOImpl.getInstance().flush();
+			User.persist(newUser);
 		} catch(Throwable e) {
 			return badRequest(views.html.index.render(true, "Ocorreu um erro. Tente novamente."));
 		}
@@ -102,8 +95,7 @@ public class AccountController extends Controller {
 		*/
 		
 		try {
-	    	GenericDAOImpl.getInstance().merge(currentUser);
-	    	GenericDAOImpl.getInstance().flush();
+			User.merge(currentUser);
 		} catch(Throwable e) {
 			return badRequest(views.html.user.edit.index.render(currentUser, true, "Ocorreu um erro. Tente novamente."));
 		} 

@@ -5,7 +5,6 @@ import static play.data.Form.form;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -98,8 +97,7 @@ public class TravelController extends Controller {
 		
 		found.addPost(current, message);
 		try {
-			GenericDAOImpl.getInstance().merge(found);
-			GenericDAOImpl.getInstance().flush();
+			Travel.merge(found);
 		} catch(Exception e) {
 			return badRequest("Erro ao publicar o post. Tente novamente.");
 		}
@@ -145,8 +143,11 @@ public class TravelController extends Controller {
 		} else {
 			return badRequest("Operação inválida.");
 		}
-		GenericDAOImpl.getInstance().merge(travel);
-		GenericDAOImpl.getInstance().flush();
+		try {
+			Travel.merge(travel);
+		} catch(Exception e) {
+			return badRequest("Erro no banco de dados.");
+		}
 		return ok();
 	}
 	
@@ -186,13 +187,29 @@ public class TravelController extends Controller {
 		}
 		
 		try {
-			GenericDAOImpl.getInstance().persist(newTravel);
-			GenericDAOImpl.getInstance().flush();
+			Travel.persist(newTravel);
 		} catch(Throwable e) {
 			return badRequest("Ocorreu um erro. Tente novamente.");
 		}
 		
 		return redirect(routes.Application.index());
+	}
+
+	public static Result leave(Long id) {
+		Travel travel = Travel.getTravelById(id);
+		if (travel == null) {
+			return badRequest("Viagem não encontrada.");
+		}
+		User current = AccountController.getCurrentUser();
+		if (!travel.leave(current)) {
+			return badRequest("Usuário não está participando da viagem."); 
+		}
+		if (!current.leaveTravel(travel)) {
+			return badRequest("Usuário não está participando da viagem."); 
+		}
+		Travel.merge(travel);
+		User.merge(current);
+		return ok();
 	}
 	
 	@Transactional

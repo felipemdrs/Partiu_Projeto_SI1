@@ -18,12 +18,14 @@ GET		/travels/:id/board			controllers.TravelController.board(id: Long)
 GET		/travels/:id/info			controllers.TravelController.info(id: Long)
 GET		/travels/:id/edit			controllers.TravelController.edit(id: Long)
 POST	/travels/create				controllers.TravelController.create()
+POST	/travels/:id/leave			controllers.TravelController.leave(id: Long)
 
 # Posts
 POST	/travels/:id/post			controllers.TravelController.post(id: Long)
 POST	/travels/:id/getposts		controllers.TravelController.getPosts(id: Long)
 POST	/posts/:travelid&:postid/canEdit	controllers.TravelController.canEditPost(travelid: Long, postid: Long)
 POST	/posts/:travelid&:postid/delete		controllers.TravelController.deletePost(travelid: Long, postid: Long)
+
 # Account
 POST    /login						controllers.AccountController.login()
 POST    /logout						controllers.AccountController.logout()

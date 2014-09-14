@@ -15,7 +15,11 @@
 		width:70%;
 	}
 	</style>
-	@if(errorMessage.trim().equals("")) {
+	@if(errorMessage != null && !errorMessage.trim().equals("")) {
+		<div class="alert alert-danger" role="alert" style="margin-top: 1.19%;">
+			@errorMessage
+		</div>
+	} else {
 		<div class="col-md-8" id="board">
 			@message_input(travel)
 			@for(post <- travel.getPosts()){
@@ -23,9 +27,6 @@
 			}
 		</div>
 		@menus.rmenu(rmenu(user, travel))
-	} else {
-		<div class="alert alert-danger" role="alert" style="margin-top: 1.19%;">
-			@errorMessage
-		</div>
-	}
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/leave-travel.js")"></script>
+	} 
 }

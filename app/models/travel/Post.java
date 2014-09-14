@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import models.User;
@@ -35,15 +33,7 @@ public class Post {
 	private String message;
 	
 	@Column
-	@Temporal(TemporalType.DATE)
-	private Date date = Calendar.getInstance().getTime();
-	
-	@Column
-	private String timeOfDay = String.format("%02d", Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) + ":" + 
-						String.format("%02d", Calendar.getInstance().get(Calendar.MINUTE));
-	
-	@Column
-	private String formattedDate = getSimplifiedDate(date) + " às " + timeOfDay + "h";
+	private String formattedDate = getSimplifiedDate() + " às " + getTimeOfDay() + "h";
 	
 	@SuppressWarnings("unused")
 	private Post() { }
@@ -77,22 +67,6 @@ public class Post {
 		this.message = message;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getTimeOfDay() {
-		return timeOfDay;
-	}
-
-	public void setTimeOfDay(String timeOfDay) {
-		this.timeOfDay = timeOfDay;
-	}
-	
 	public String getFormattedDate() { 
 		return formattedDate;
 	}
@@ -101,11 +75,18 @@ public class Post {
 		this.formattedDate = formattedDate;
 	}
 	
-	private static String getSimplifiedDate(Date date) { 
+	private static String getSimplifiedDate() { 
+		Date date = Calendar.getInstance().getTime();
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
 		return format.format(date);
 	}
 
+	private static String getTimeOfDay() { 
+		return String.format("%02d", Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) + ":" + 
+				String.format("%02d", Calendar.getInstance().get(Calendar.MINUTE));
+
+	}
+	
 	public static Post getPostById(Long id) {
 		return GenericDAOImpl.getInstance().findByEntityId(Post.class, id);
 	}

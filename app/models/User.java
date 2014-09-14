@@ -180,13 +180,27 @@ public class User {
 		String criptoPass = PasswordService.getInstance().encrypt(password);
 		return criptoPass.equals(this.password);
 	}
-	
+
+	public boolean leaveTravel(Travel travel) {
+		return travelsParticipating.remove(travel);
+	}
+
 	public static User getUserByEmail(String email) {
 		List<User> users = GenericDAOImpl.getInstance().findByAttributeName("User", "email", email);
 		if (!users.isEmpty()) {
 			return users.get(0);
 		}
 		return null;
+	}
+	
+	public static void persist(User user) {
+		GenericDAOImpl.getInstance().persist(user);
+		GenericDAOImpl.getInstance().flush();
+	}
+	
+	public static void merge(User user) {
+		GenericDAOImpl.getInstance().merge(user);
+		GenericDAOImpl.getInstance().flush();
 	}
 	
 	@Override

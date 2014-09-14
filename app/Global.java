@@ -39,8 +39,7 @@ public class Global extends GlobalSettings {
 				if (GenericDAOImpl.getInstance()
 						.findByAttributeName("User", "email", email).isEmpty()) {
 					User user = new User(name, email, password);
-					GenericDAOImpl.getInstance().persist(user);
-					GenericDAOImpl.getInstance().flush();
+					User.persist(user);
 					return user;
 				}
 				return null;
