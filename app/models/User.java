@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import models.Utils.PasswordService;
 import models.dao.GenericDAOImpl;
 import models.travel.Travel;
+import models.travel.TravelException;
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
 
@@ -110,6 +111,15 @@ public class User {
 	
 	public Set<Travel> getTravelsAdmin() {
 		return this.travelsAdmin;
+	}
+	
+	public void createTravel(String name, String description, double coordX, 
+			double coordY, String placeDescription, Date dateRegister) {
+		try {
+			this.travelsAdmin.add(new Travel(this, name, description, coordX, coordY, placeDescription, dateRegister));
+		} catch (TravelException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setId(Long id) {

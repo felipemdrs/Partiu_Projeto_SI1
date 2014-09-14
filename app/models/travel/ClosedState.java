@@ -79,5 +79,10 @@ public class ClosedState extends TravelState {
 	public void changePassword(String password) {
 		setPassword(password);
 	}
+	
+	@Override
+	public boolean hasPassword() {
+		return true;
+	}
 
 }

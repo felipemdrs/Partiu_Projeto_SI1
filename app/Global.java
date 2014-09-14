@@ -50,10 +50,7 @@ public class Global extends GlobalSettings {
 					String description, double coordX, double coordY,
 					String placeDescription, Date date) throws Throwable {
 				if (admin != null) {
-					Travel travel = new Travel(admin, name, description,
-							coordX, coordY, placeDescription, date);
-					GenericDAOImpl.getInstance().persist(travel);
-					GenericDAOImpl.getInstance().flush();
+					admin.createTravel(name, description, coordX, coordY, placeDescription, date);
 				}
 				return null;
 			}

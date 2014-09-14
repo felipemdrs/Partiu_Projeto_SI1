@@ -52,5 +52,10 @@ public class OpenState extends TravelState {
 	public void changePassword(String password) {
 		throw new InvalidStateException("Apenas viagens privadas possuem senha.");
 	}
+	
+	@Override
+	public boolean hasPassword() {
+		return false;
+	}
 
 }

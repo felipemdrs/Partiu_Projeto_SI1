@@ -125,6 +125,10 @@ public class Travel {
 	public Place getPlace() {
 		return place;
 	}
+	
+	public boolean isLocked() {
+		return state.hasPassword();
+	}
 
 	public void setPlace(Place place) throws TravelException {
 		if (place == null) {

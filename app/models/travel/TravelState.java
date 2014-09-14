@@ -31,5 +31,6 @@ public abstract class TravelState {
 	public abstract void open();
 	public abstract void close(String password);
 	public abstract void changePassword(String password);
+	public abstract boolean hasPassword();
 	
 }

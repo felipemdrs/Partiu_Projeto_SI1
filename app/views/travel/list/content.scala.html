@@ -5,13 +5,11 @@
 			<p>Viagens</p>
 		</div>
 		@if(travels != null && travels.size() > 0){
-			@for(i <- 0 to travels.size()) {
-				@for(t <- travels){
-					@if(isAdmin) {
-						@travel_admin("/assets/img/perfil.jpg", t.getName(), t.getDescription())
-					} else {
-						@travel("/assets/img/perfil.jpg", t.getName(), t.getDescription(), (i % 2 == 0), (menuIndex == 1))
-					}
+			@for(t <- travels){
+				@if(isAdmin) {
+					@travel_admin("/assets/img/perfil.jpg", t.getName(), t.getDescription())
+				} else {
+					@travel("/assets/img/perfil.jpg", t.getName(), t.getDescription(), t.isLocked(), (menuIndex == 1))
 				}
 			}
 		}else{
