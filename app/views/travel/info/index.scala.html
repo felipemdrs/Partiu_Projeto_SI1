@@ -41,13 +41,15 @@
 				<input type="button" id="choose-place" class="form-control btn btn-default" value="Ver no mapa" />
 				<div id="choose-place-content" class="thumbnail" data-visible="false">
 					<div id="map-canvas"></div>
+					<input type="hidden" name="coords-x" value="@travel.getPlace().getCoordX()" />
+					<input type="hidden" name="coords-y" value="@travel.getPlace().getCoordY()" />
 				</div>
 			</div>
 			<div class="form-group">
 				<input type="checkbox" @if(travel.isLocked()) { checked } disabled /> Privado
 			</div>
 		</div>
-		@menus.rmenu(menu())
+		@menus.rmenu(menu(travel))
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/show-travel.js")"></script>
 	}
 } 
