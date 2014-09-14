@@ -59,7 +59,7 @@ function clickJoinButton() {
 	//Click on join button 
 	$(".travel-box-join").click(function(){
 		var travelId = $(this).data('travelid');
-
+		var joinButton = $(this);
 		if ($(this).data("activated")) {
 			$("#confirmModal").data($(this)); //save the button into the modal
 			$("#confirmModal").modal("show"); 
@@ -73,7 +73,7 @@ function clickJoinButton() {
 					type: 'put',
 					url: '/travels/' + travelId + '/join',
 					success: function(result) {
-						enableJoinButton($(this));
+						enableJoinButton(joinButton);
 					}
 				}), this);
 			}
