@@ -19,7 +19,6 @@ public class ClosedState extends TravelState {
 	public ClosedState() { }
 
 	public ClosedState(Travel context, String password) {
-		System.out.println("closeds");
 		setContext(context);
 		setPassword(password);
 	}

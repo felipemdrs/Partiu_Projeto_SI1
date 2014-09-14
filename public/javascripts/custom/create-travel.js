@@ -32,10 +32,6 @@ function createValidations() {
 		|| (Number(value) > Number($(params).val())); 
 	},'A data deve ser maior que a atual.');
 
-	jQuery.validator.addMethod("equalsPassword", function(value, element, params) {
-		return value == $("password").val();
-	},'Senhas não coincidem.');
-
 	jQuery.validator.addMethod('regex', function(value, element, regexp) {
 		var re = new RegExp(regexp);
 		return this.optional(element) || re.test(value);
@@ -43,7 +39,7 @@ function createValidations() {
 
 	$("#form-new-travel").validate({
 		rules:{
-			name:{
+			'travel-name':{
 				required: true,
 				maxlength: 40
 			},
@@ -59,7 +55,7 @@ function createValidations() {
 			}
 		},
 		messages:{
-			name:{
+			'travel-name':{
 				required: "Nome é obrigatório.",
 				maxlength: "Tamanho do nome excedeu o limite."
 			},

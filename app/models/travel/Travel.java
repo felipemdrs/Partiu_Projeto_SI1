@@ -1,4 +1,5 @@
 package models.travel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -229,6 +230,10 @@ public class Travel {
 		posts.remove(post);
 	}
 
+	public String getFormattedDate() { 
+		return new SimpleDateFormat("dd/MM/yyyy").format(date);
+	}
+	
 	public static Travel getTravelById(Long id) {
 		Travel found = GenericDAOImpl.getInstance().findByEntityId(Travel.class, id);
 		return found;

@@ -1,19 +1,24 @@
-@(thumbnail: String, title: String, description: String, locked: Boolean, participating: Boolean)
-
+@(user: User, travel: models.travel.Travel)
+@participating = @{
+	travel.isParticipating(user)
+}
+@locked = @{
+	travel.isLocked()
+}
 <div class="travel-box">
 	<a href="#" style="color: #333333;"><div class="col-md-2">
 		<div>
-			<img src="/assets/img/perfil.jpg">
+			<img src="@travel.getPhotoUrl()">
 		</div>
 	</div>
 	<div class="travel-box-content">
-		<p><b><h3>@title</h3></b></p>
-		<p>@description</p>
+		<p><b><h3>@travel.getName()</h3></b></p>
+		<p>@travel.getDescription()</p>
 	</div></a>
 	<div class='travel-box-toggle travel-box-join @if(participating) { color-green } else { color-gray } ' data-activated="@(participating)" data-locked='@(locked)' title="@if(participating) { Sair } else { Participar }">
 		<i class="fa @if(locked) { fa-lock } else { fa-check }"></i>
 	</div>
-	<a href="/travels/1/info"><div class="travel-box-toggle travel-box-info color-blue" title="Mais informa&ccedil;&otilde;es">	
+	<a href="/travels/@travel.getId()/info"><div class="travel-box-toggle travel-box-info color-blue" title="Mais informa&ccedil;&otilde;es">	
 		<i class="fa fa-plus"></i>
 	</div></a>
 </div>

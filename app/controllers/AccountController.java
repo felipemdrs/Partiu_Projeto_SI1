@@ -24,10 +24,10 @@ public class AccountController extends Controller {
 				return redirect(routes.TravelController.list());
 			}
 		} catch (Exception e) {
-			return badRequest(views.html.index.render(true, e.getMessage()));
+			return badRequest(views.html.index.render(e.getMessage()));
 		}
 			
-		return badRequest(views.html.index.render(true, "Usuário ou senha inválidos."));
+		return badRequest(views.html.index.render("Usuário ou senha inválidos."));
 	}
 
 	public static Result logout() {
@@ -42,17 +42,21 @@ public class AccountController extends Controller {
 		String email = form.get("email");
 		String password = form.get("password");
 		
+		if (User.getUserByEmail(email) != null) {
+			return badRequest(views.html.index.render("Usuário já cadastrado."));
+		}
+		
 		User newUser;
 		try {
 			newUser = new User(name, email, password);
 		} catch(Exception e) {
-			return badRequest(views.html.index.render(true, e.getMessage()));
+			return badRequest(views.html.index.render(e.getMessage()));
 		}
 		
 		try {
 			User.persist(newUser);
 		} catch(Throwable e) {
-			return badRequest(views.html.index.render(true, "Ocorreu um erro. Tente novamente."));
+			return badRequest(views.html.index.render("Ocorreu um erro. Tente novamente."));
 		}
 
 		session().clear();
@@ -70,7 +74,7 @@ public class AccountController extends Controller {
 		
 		final User currentUser = getCurrentUser();
 
-		if (!oldPassword.equals(repeatPassword)) {
+		if (!newPassword.equals(repeatPassword)) {
 			return badRequest(views.html.user.edit.index.render(currentUser, true, "Senhas não coincidem"));
 		}
 		

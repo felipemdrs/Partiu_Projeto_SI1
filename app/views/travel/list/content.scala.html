@@ -1,4 +1,4 @@
-@(menuIndex: Integer, travels: Set[models.travel.Travel], isAdmin: Boolean)
+@(menuIndex: Integer, user: User, travels: Set[models.travel.Travel], isAdmin: Boolean)
 @home(menuIndex) {
 	<div class="list-travels col-md-5">
 		<div class="list-travels-header">
@@ -7,9 +7,9 @@
 		@if(travels != null && travels.size() > 0){
 			@for(t <- travels){
 				@if(isAdmin) {
-					@travel_admin("/assets/img/perfil.jpg", t.getName(), t.getDescription())
+					@travel_admin(user, t)
 				} else {
-					@travel("/assets/img/perfil.jpg", t.getName(), t.getDescription(), t.isLocked(), (menuIndex == 1))
+					@travel(user, t)
 				}
 			}
 		}else{

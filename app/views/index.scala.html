@@ -1,4 +1,4 @@
-@(error: Boolean, message: String)
+@(message: String)
 
 @main("#Partiu", null) {
 	<div class="col-md-offset-1" id="index-content">
@@ -16,26 +16,26 @@
 					</h2>
 					<h2 class="row">Participe agora mesmo!</h2>
 			</div>	
-			@if(message != null && !message.trim().equals("")) {
-				<div class="alert @if(error){ alert-danger } else { alert-success } row col-md-5" role="alert" style="left: 50px; margin-top: -50px;">
+			@if(!message.trim().equals("")) {
+				<div class="alert alert-danger row col-md-5" role="alert" style="left: 50px; margin-top: -50px;">
 					<p>@message</p>
 				</div>
 			}		
 			<div class="row col-md-5" id="index-register" >
 				<h2>Cadastre-se, é gratuito!</h2>
 				<br>
-				<form method="post" action="/register">
+				<form method="post" action="/register" role="form" >
 					<div class="input-group margin-bottom-sm">
 						<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-						<input class="form-control" name="name" type="text" placeholder="Nome" required="required" autocomplete="off">
+						<input class="form-control" name="name" type="text" placeholder="Nome" required >
 					</div>
 					<div class="input-group margin-bottom-sm">
 						<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-						<input class="form-control" name="email" type="email" placeholder="Email" required="required" autocomplete="off">
+						<input class="form-control" name="email" type="email" placeholder="Email" required >
 					</div>
 					<div class="input-group" >
 						<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-				 		<input class="form-control" name="password" type="password" placeholder="Senha" required="required">
+				 		<input class="form-control" name="password" type="password" placeholder="Senha" required >
 					</div>
 					<input class="btn btn-primary" value="Cadastrar" type="submit">
 				</form>

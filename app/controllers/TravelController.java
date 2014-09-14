@@ -35,18 +35,20 @@ public class TravelController extends Controller {
 				travels.add(travel);
 			}
 		}
-		
-		return ok(views.html.travel.list.index.render(0, travels));
+	
+		return ok(views.html.travel.list.index.render(0, currentUser, travels));
 	}
 	
 	@Transactional
 	public static Result listIn() {
-		return ok(views.html.travel.list.index.render(1, AccountController.getCurrentUser().getTravelsParticipating()));
+		User current = AccountController.getCurrentUser();
+		return ok(views.html.travel.list.index.render(1, current, current.getTravelsParticipating()));
 	}
 	
 	@Transactional
 	public static Result listAdmin() {
-		return ok(views.html.travel.list.index_admin.render(AccountController.getCurrentUser().getTravelsAdmin()));
+		User current = AccountController.getCurrentUser();
+		return ok(views.html.travel.list.index_admin.render(current, current.getTravelsAdmin()));
 	}
 
 	@Transactional
@@ -154,7 +156,7 @@ public class TravelController extends Controller {
 	@Transactional
 	public static Result create() {
 		DynamicForm form = form().bindFromRequest();
-		String name = form.get("name");
+		String name = form.get("travel-name");
 		String description = form.get("description");
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
 		Date date = null;
@@ -177,6 +179,9 @@ public class TravelController extends Controller {
 		String repeatPassword = form.get("repeat-password");
 		if (locked && !password.equals(repeatPassword)) {
 			return badRequest("Senhas não coincidem.");
+		}
+		if (!locked) {
+			password = null;
 		}
 
 		try {
