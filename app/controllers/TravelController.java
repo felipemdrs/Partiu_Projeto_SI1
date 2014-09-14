@@ -85,7 +85,7 @@ public class TravelController extends Controller {
 	}
 	
 	@Transactional
-	public static Result post(Long travelId) {
+	public static Result insertPost(Long travelId) {
 		DynamicForm form = form().bindFromRequest();
 		String message = form.get("message");
 		
