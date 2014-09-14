@@ -1,6 +1,7 @@
 @(user: User, travel: models.travel.Travel)
 
 <div class="travel-box"  >
+	<input type="hidden" id="travel-id" value="@travel.getId()" />
 	<a href="/travels/@travel.getId()/board" style="color: #333333;"><div class="col-md-2">
 		<div >
 			<img src="@travel.getPhotoUrl()" >

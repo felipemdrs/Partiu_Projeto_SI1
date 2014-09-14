@@ -108,11 +108,12 @@ function hoverJoinButton() {
 function joinTravel() {
 	$(".travel-box-content").click(function(){
 		var button = $(this).parent().parent().find(".travel-box-join");
+		var travelid = $(this).parent().parent().find("#travel-id").val();
 		if (!button.data("activated")) {
 			$("#forbiddenModal").modal("show");
 			return; 
 		}
-		window.location.href = "/travels/1/board";
+		window.location.href = "/travels/" + travelid + "/board";
 	});
 }
 $(function(){
