@@ -21,7 +21,7 @@ POST	/travels/create				controllers.TravelController.create()
 POST	/travels/:id/leave			controllers.TravelController.leave(id: Long)
 
 # Posts
-POST	/travels/:id/insertPost		controllers.TravelController.post(id: Long)
+POST	/travels/:id/insertPost		controllers.TravelController.insertPost(id: Long)
 POST	/travels/:id/getposts		controllers.TravelController.getPosts(id: Long)
 POST	/posts/:travelid&:postid/canEdit	controllers.TravelController.canEditPost(travelid: Long, postid: Long)
 POST	/posts/:travelid&:postid/delete		controllers.TravelController.deletePost(travelid: Long, postid: Long)

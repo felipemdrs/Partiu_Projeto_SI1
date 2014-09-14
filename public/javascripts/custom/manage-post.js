@@ -51,7 +51,7 @@ function removePost() {
 $(function(){
 	$(".message-box-template").hide();
 	var travelid = $("#travel-id").val();
-	var travelurl = '/travels/' + travelid + '/post';
+	var travelurl = '/travels/' + travelid + '/insertPost';
 	var top = $("textarea");
 	$("#form-post").submit(function(){
 		$.ajax({
