@@ -14,6 +14,8 @@
 	</div>
 } else {
 	<button id="leave-travel" class="btn btn-danger col-md-6 col-md-offset-2">Sair da viagem</button>
+	<div style="clear: both;"></div>
+	<br/>
 }
 <hr style="margin-top:0">
 <h3>Participantes</h3>
@@ -21,7 +23,7 @@
 	<input style="margin-bottom:25px" class="form-control" placeholder="Convide um usuário"/>
 	<div class="participantes-foto">
 		@for(user <- travel.getParticipating()){ 
-			<a href="/1/profile"><img src="/assets/img/perfil.jpg" width="40px" height="40px" style="margin-bottom: 4px; border: 1px solid rgb(172, 172, 172);"></a> 
+			<a href="/@user.getId()/profile"><img title="@user.getName()" src="@user.getPhotoUrl()" width="40px" height="40px" style="margin-bottom: 4px; border: 1px solid rgb(172, 172, 172);"></a> 
 		}
 	</div>
 	<a href="/travels/@travel.getId()/info" style="margin-top:5px;text-decoration:none;color:white;">Ver mais...</a>
