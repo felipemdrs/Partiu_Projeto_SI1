@@ -4,7 +4,7 @@ var marker = null;
 
 function initialize() {
 	var mapOptions = {
-			zoom: 11,
+			zoom: 12,
 			center: new google.maps.LatLng(-7.216895033745134, -35.9079759567976),
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
@@ -25,22 +25,11 @@ function initialize() {
 	});
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
-google.maps.event.addDomListener(window, "resize", function() {
-	var center = map.getCenter();
-	google.maps.event.trigger(map, "resize");
-	map.setCenter(center); 
-});
-
 function displayMap() {
 	google.maps.event.trigger($("#map-canvas")[0], 'resize');
 }
 
-$(function(){
-	//stores up information of the map
-	$("input[name='coords-x']").hide();
-	$("input[name='coords-y']").hide();
-	//show/hide map
+function hideMap() {
 	var content = $("#choose-place-content");
 	content.hide();
 	$("#choose-place").click(function(){
@@ -52,6 +41,9 @@ $(function(){
 		}
 		content.data("visible", !content.data("visible"));
 	});
+}
+
+function clearMarker() {
 	$("#form-new-travel").submit(function(){
 		setTimeout(function(){
 			if (!$("input[name='coords-x']").val()) {
@@ -60,4 +52,16 @@ $(function(){
 			}
 		}, 500);
 	});
+}
+
+$(function(){
+	initialize();
+	//stores up information of the map
+	$("input[name='coords-x']").hide();
+	$("input[name='coords-y']").hide();
+	//show/hide map
+	setTimeout(function(){
+		hideMap();
+	}, 100);
+	clearMarker();
 });

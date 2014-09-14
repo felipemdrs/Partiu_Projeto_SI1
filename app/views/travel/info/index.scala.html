@@ -6,9 +6,6 @@
 }
 @home(index) {
 	<style>
-		#map-canvas {
-			width: 100%;
-		}
 		.list-travels-info {
 			width:70%;
 			background-color: white;
@@ -40,7 +37,7 @@
 				<input type="text" class="form-control" disabled value="@travel.getPlace().getDescription()" />
 				<input type="button" id="choose-place" class="form-control btn btn-default" value="Ver no mapa" />
 				<div id="choose-place-content" class="thumbnail" data-visible="false">
-					<div id="map-canvas"></div>
+					<div id="map-canvas" width="100%" height="400px"></div>
 					<input type="hidden" name="coords-x" value="@travel.getPlace().getCoordX()" />
 					<input type="hidden" name="coords-y" value="@travel.getPlace().getCoordY()" />
 				</div>
