@@ -6,6 +6,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import models.User;
 import models.dao.GenericDAOImpl;
 import models.travel.Post;
@@ -21,33 +25,33 @@ public class TravelController extends Controller {
 
 	@Transactional
 	public static Result list() {
-		if (AccountController.getCurrentUser() == null) {
-			return redirect(routes.Application.index());
+		User currentUser = AccountController.getCurrentUser();
+		
+		List<Travel> allTravels = GenericDAOImpl.getInstance().findAllByClassName("Travel");
+
+		Set<Travel> travels = new HashSet<>();
+
+		for (Travel travel : allTravels) {
+			if (!travel.isAdminister(currentUser) && !travel.isParticipating(currentUser)) {
+				travels.add(travel);
+			}
 		}
-		return ok(views.html.travel.list.index.render(0));
+		
+		return ok(views.html.travel.list.index.render(0, travels));
 	}
 	
 	@Transactional
 	public static Result listIn() {
-		if (AccountController.getCurrentUser() == null) {
-			return redirect(routes.Application.index());
-		}
-		return ok(views.html.travel.list.index.render(1));
+		return ok(views.html.travel.list.index.render(1, AccountController.getCurrentUser().getTravelsParticipating()));
 	}
 	
 	@Transactional
 	public static Result listAdmin() {
-		if (AccountController.getCurrentUser() == null) {
-			return redirect(routes.Application.index());
-		}
-		return ok(views.html.travel.list.index_admin.render());
+		return ok(views.html.travel.list.index_admin.render(AccountController.getCurrentUser().getTravelsAdmin()));
 	}
 
 	@Transactional
 	public static Result board(Long id) {
-		if (AccountController.getCurrentUser() == null) {
-			return redirect(routes.Application.index());
-		}
 		Travel found = Travel.getTravelById(id);
 		User current = AccountController.getCurrentUser();
 		if (found == null) {
@@ -60,9 +64,6 @@ public class TravelController extends Controller {
 	
 	@Transactional
 	public static Result info(Long id) {
-		if (AccountController.getCurrentUser() == null) {
-			return redirect(routes.Application.index());
-		}
 		Travel found = Travel.getTravelById(id);
 		User current = AccountController.getCurrentUser();
 		if (found == null) {
@@ -73,9 +74,6 @@ public class TravelController extends Controller {
 	
 	@Transactional
 	public static Result edit(Long id) {
-		if (AccountController.getCurrentUser() == null) {
-			return redirect(routes.Application.index());
-		}
 		Travel found = Travel.getTravelById(id);
 		if (found == null) {
 			return ok(views.html.travel.edit.index.render(found, "Viagem não encontrada."));

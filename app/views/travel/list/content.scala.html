@@ -1,15 +1,21 @@
-@(menuIndex: Integer, isAdmin: Boolean)
+@(menuIndex: Integer, travels: Set[models.travel.Travel], isAdmin: Boolean)
 @home(menuIndex) {
 	<div class="list-travels col-md-5">
 		<div class="list-travels-header">
 			<p>Viagens</p>
 		</div>
-		@for(i <- 0 to 10) {
-			@if(isAdmin) {
-				@travel_admin("/assets/img/perfil.jpg", "Titulo", "Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao ")
-			} else {
-				@travel("/assets/img/perfil.jpg", "Titulo", "Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao Descricao ", (i % 2 == 0), (menuIndex == 1))
+		@if(travels != null && travels.size() > 0){
+			@for(i <- 0 to travels.size()) {
+				@for(t <- travels){
+					@if(isAdmin) {
+						@travel_admin("/assets/img/perfil.jpg", t.getName(), t.getDescription())
+					} else {
+						@travel("/assets/img/perfil.jpg", t.getName(), t.getDescription(), (i % 2 == 0), (menuIndex == 1))
+					}
+				}
 			}
+		}else{
+			<h3>Não existe viagens!</h3>
 		}
 		<div class="load-more btn btn-primary">
 			<h4>Carregar mais</h4>
