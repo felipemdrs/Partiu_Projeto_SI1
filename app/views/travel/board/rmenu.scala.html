@@ -1,25 +1,26 @@
-<style>
-</style>
+@(user: User, travel: models.travel.Travel)
 
-<h3><b>Viagem para Recife!</b></h3>
-<p style="margin-top:30px;text-align:justify">Venha conhecer
-	Recife conosco. Conhecida por seus centros históricos e suas belezas
-	naturais, Recife é a melhor opção para quem está fazendo CsF no Brasil.</p>
+<h3><b>@travel.getName()</b></h3>
+<p style="margin-top:30px;text-align:justify">@travel.getDescription()</p>
 <hr>
-<h3>Administração</h3>
-<div style="margin-top:30px;">
-	<a href="/travels/1/edit"><button class="btn btn-default col-md-4">Editar</button></a>
-	<button class="btn btn-danger col-md-6 col-md-offset-2">Cancelar viagem</button>
-	&nbsp; 
-</div>
+@if(travel.isAdminister(user)) {
+	<h3>Administração</h3>
+	<div style="margin-top:30px;">
+		<a href="/travels/@travel.getId()/edit"><button class="btn btn-default col-md-4">Editar</button></a>
+		<button class="btn btn-danger col-md-6 col-md-offset-2">Cancelar viagem</button>
+		&nbsp; 
+	</div>
+} else {
+	<button class="btn btn-danger col-md-6 col-md-offset-2">Sair da viagem</button>
+}
 <hr style="margin-top:0">
 <h3>Participantes</h3>
 <div style="margin-top: 30px;">
 	<input style="margin-bottom:25px" class="form-control" placeholder="Convide um usuário"/>
 	<div class="participantes-foto">
-		@for(i <- 1 to 30){ 
+		@for(user <- travel.getParticipating()){ 
 			<a href="/1/profile"><img src="/assets/img/perfil.jpg" width="40px" height="40px" style="margin-bottom: 4px; border: 1px solid rgb(172, 172, 172);"></a> 
 		}
 	</div>
-	<a href="/travels/1/info" style="margin-top:5px;text-decoration:none;">Ver mais...</a>
+	<a href="/travels/@travel.getId()/info" style="margin-top:5px;text-decoration:none;">Ver mais...</a>
 </div>

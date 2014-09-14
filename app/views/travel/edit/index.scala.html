@@ -1,3 +1,5 @@
+@(travel: models.travel.Travel, errorMessage: String)
+
 @home(2) {
 	<style>
 		#map-canvas {
@@ -12,42 +14,48 @@
 			top: 1.9%;
 		}
 	</style>
-	<div class="list-travels-edit col-md-5">
-		<div class="form-group">
-			<label>Nome</label>
-			<input type="text" class="form-control" value="Titulo" />
+	@if(!errorMessage.trim().equals("")) {
+		<div class="alert alert-danger" role="alert">
+			@errorMessage
 		</div>
-		<div class="form-group">
-			<label>Descri&ccedil;&atilde;o</label>
-			<input type="text" class="form-control" value="Descricao descricao descricao descricao" />
-		</div>
-		<div class="form-group">
-			<label>Data de viagem</label>
-			<input type="text" class="form-control" value="29/09/14" />
-		</div>
-		<div class="form-group">
-			<label>Local</label>
-			<input type="text" class="form-control" value="Cidade das fadas assassinas, n. 120" />
-			<input type="button" id="choose-place" class="form-control btn btn-default" value="Ver no mapa" />
-			<div id="choose-place-content" class="thumbnail" data-visible="false">
-				<div id="map-canvas"></div>
-			</div>
-		</div>
-		<div class="form-group">
-			<input type="checkbox" name="locked" /> Privado
-		</div>
-		<div id="lock-content">
+	} else {
+		<div class="list-travels-edit col-md-5">
 			<div class="form-group">
-				<input class="form-control" type="password" name="password" placeholder="Senha" />
+				<label>Nome</label>
+				<input type="text" class="form-control" value="Titulo" />
 			</div>
 			<div class="form-group">
-				<input class="form-control" type="password" name="repeat-password" placeholder="Repita a senha" />
+				<label>Descri&ccedil;&atilde;o</label>
+				<input type="text" class="form-control" value="Descricao descricao descricao descricao" />
+			</div>
+			<div class="form-group">
+				<label>Data de viagem</label>
+				<input type="text" class="form-control" value="29/09/14" />
+			</div>
+			<div class="form-group">
+				<label>Local</label>
+				<input type="text" class="form-control" value="Cidade das fadas assassinas, n. 120" />
+				<input type="button" id="choose-place" class="form-control btn btn-default" value="Ver no mapa" />
+				<div id="choose-place-content" class="thumbnail" data-visible="false">
+					<div id="map-canvas"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="checkbox" name="locked" /> Privado
+			</div>
+			<div id="lock-content">
+				<div class="form-group">
+					<input class="form-control" type="password" name="password" placeholder="Senha" />
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="password" name="repeat-password" placeholder="Repita a senha" />
+				</div>
+			</div>
+			<div class="form-group">
+				<center><button class="btn btn-success">Salvar</button></center>
 			</div>
 		</div>
-		<div class="form-group">
-			<center><button class="btn btn-success">Salvar</button></center>
-		</div>
-	</div>
+	}
 	@menus.rmenu(menu())
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/create-travel.js")"></script>
 } 

@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import models.User;
+import models.dao.GenericDAOImpl;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
 
@@ -199,6 +200,11 @@ public class Travel {
 	
 	public boolean isAdminister(User usr) {
 		return admin.equals(usr);
+	}
+
+	public static Travel getTravelById(Long id) {
+		Travel found = GenericDAOImpl.getInstance().findByEntityId(Travel.class, id);
+		return found;
 	}
 
 }

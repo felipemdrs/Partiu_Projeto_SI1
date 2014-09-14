@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import models.User;
 import models.dao.GenericDAOImpl;
 import models.travel.Travel;
 import play.data.DynamicForm;
@@ -44,7 +45,14 @@ public class TravelController extends Controller {
 		if (AccountController.getCurrentUser() == null) {
 			return redirect(routes.Application.index());
 		}
-		return ok(views.html.travel.board.index.render());
+		Travel found = Travel.getTravelById(id);
+		User current = AccountController.getCurrentUser();
+		if (!found.isParticipating(current) && !found.isAdminister(current)) {
+			return badRequest(views.html.travel.board.index.render(current, found, "Você não tem permissões para ver esta viagem."));
+		} else if (found == null) {
+			return badRequest(views.html.travel.board.index.render(current, found, "Viagem não encontrada."));
+		}
+		return ok(views.html.travel.board.index.render(current, found, ""));
 	}
 	
 	@Transactional
@@ -60,7 +68,12 @@ public class TravelController extends Controller {
 		if (AccountController.getCurrentUser() == null) {
 			return redirect(routes.Application.index());
 		}
-		return ok(views.html.travel.edit.index.render());
+		Travel found = Travel.getTravelById(id);
+		User current = AccountController.getCurrentUser();
+		if (!found.isAdminister(current)) {
+			return ok(views.html.travel.edit.index.render(found, "Você não tem permissões para editar esta viagem."));
+		}
+		return ok(views.html.travel.edit.index.render(found, ""));
 	}
 	
 	@Transactional

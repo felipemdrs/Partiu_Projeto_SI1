@@ -1,4 +1,9 @@
-@home(1){
+@(user: User, travel: models.travel.Travel, errorMessage: String)
+@index = @{
+	if(travel.isAdminister(user)) 2
+	else 1
+}
+@home(index){
 	<style>
 	#board {
 		border: 1px solid #b7b7b7;
@@ -9,11 +14,17 @@
 		width:70%;
 	}
 	</style>
-	<div class="col-md-8" id="board">
-		@message_input()
-		@for(i <- 1 to 5){
-			@message_box()
-		}
-	</div>
-	@menus.rmenu(rmenu())
+	@if(errorMessage.trim().equals("")) {
+		<div class="col-md-8" id="board">
+			@message_input(travel)
+			@for(i <- 1 to 5){
+				@message_box(travel)
+			}
+		</div>
+		@menus.rmenu(rmenu(user, travel))
+	} else {
+		<div class="alert alert-danger" role="alert" style="margin-top: 1.19%;">
+			@errorMessage
+		</div>
+	}
 }

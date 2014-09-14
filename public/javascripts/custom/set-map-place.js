@@ -58,6 +58,6 @@ $(function(){
 				marker.setMap(null);
 				marker = null;
 			}
-		}, 100);
+		}, 500);
 	});
 });
