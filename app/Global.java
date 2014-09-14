@@ -1,6 +1,8 @@
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import controllers.AccountController;
 import controllers.routes;
@@ -19,6 +21,8 @@ import play.mvc.Result;
 
 public class Global extends GlobalSettings {
 
+	private final List<String> ROUTES_WHITE_LIST = Arrays.asList("/", "/login", "/register");
+	
 	@Override
 	public void onStart(Application arg0) {
 
@@ -57,14 +61,11 @@ public class Global extends GlobalSettings {
 		});
 	}
 
-	public void ok(){
-		
-	}
+
 	@Override
 	public Action<Void> onRequest(Request request, Method arg1) {
 		String requestURI = request.uri();
-
-		if((!requestURI.equals("/") && !requestURI.equals("/login")) && request.cookie("PLAY_SESSION") == null){
+		if(!ROUTES_WHITE_LIST.contains(requestURI) && request.cookie("PLAY_SESSION") == null){
 			return new Action.Simple() {
 				@Override
 				public Promise<Result> call(Context arg0) throws Throwable {
@@ -74,4 +75,6 @@ public class Global extends GlobalSettings {
 	    }
 		return super.onRequest(request, arg1);
 	}
+	
+	
 }

@@ -15,7 +15,7 @@
 		<p><b><h3>@travel.getName()</h3></b></p>
 		<p>@travel.getDescription()</p>
 	</div></a>
-	<div class='travel-box-toggle travel-box-join @if(participating) { color-green } else { color-gray } ' data-activated="@(participating)" data-locked='@(locked)' title="@if(participating) { Sair } else { Participar }">
+	<div class='travel-box-toggle travel-box-join @if(participating) { color-green } else { color-gray } ' data-activated="@(participating)" data-locked='@(locked)' title="@if(participating) { Sair } else { Participar }" data-travelid="@travel.getId()">
 		<i class="fa @if(locked) { fa-lock } else { fa-check }"></i>
 	</div>
 	<a href="/travels/@travel.getId()/info"><div class="travel-box-toggle travel-box-info color-blue" title="Mais informa&ccedil;&otilde;es">	

@@ -65,7 +65,7 @@
 			<!-- Right side -->
 			<div class="collapse navbar-collapse">
 					<!-- Login fields -->
-		        	@if(user == null){
+		        	@if(AccountController.getCurrentUser() == null){
 	        		  <ul class="nav navbar-nav navbar-right col-md-5">
 		          	  	@login()
 		          	  </ul>

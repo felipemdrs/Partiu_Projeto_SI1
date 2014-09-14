@@ -49,7 +49,14 @@ function clickJoinButton() {
 				$("#typePasswordModal").data($(this));
 				$("#typePasswordModal").modal("show");
 			} else {
-				enableJoinButton($(this));
+				var travelId = $(this).data('travelid');
+				$.proxy($.ajax({
+					type: 'put',
+					url: '/travels/' + travelId + '/join',
+					success: function(result) {
+						enableJoinButton($(this));
+					}
+				}), this);
 			}
 		}
 	});

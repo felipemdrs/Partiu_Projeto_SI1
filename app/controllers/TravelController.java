@@ -41,8 +41,9 @@ public class TravelController extends Controller {
 	
 	@Transactional
 	public static Result listIn() {
-		User current = AccountController.getCurrentUser();
-		return ok(views.html.travel.list.index.render(1, current, current.getTravelsParticipating()));
+		User currentUser = AccountController.getCurrentUser();
+
+		return ok(views.html.travel.list.index.render(1, currentUser, getTravelsParticipating()));
 	}
 	
 	@Transactional
@@ -202,29 +203,68 @@ public class TravelController extends Controller {
 		if (!travel.leave(current)) {
 			return badRequest("Usuário não está participando da viagem."); 
 		}
-		if (!current.leaveTravel(travel)) {
+		if (!travel.leave(current)) {
 			return badRequest("Usuário não está participando da viagem."); 
 		}
 		Travel.merge(travel);
 		User.merge(current);
 		return ok();
 	}
+
+	@Transactional
+	public static Result join(Long id) {
+		Travel travel = Travel.getTravelById(id);
+		if (travel == null) {
+			return badRequest("Viagem não encontrada.");
+		}
+
+		DynamicForm form = form().bindFromRequest();
+		String password = form.get("password");
+
+		User current = AccountController.getCurrentUser();
+		if (!travel.join(current, password)) {		
+			return badRequest("Usuário não está participando da viagem."); 
+		}
+		System.out.println("okkkkkkkkkkkkkkkk");
+		//Travel.merge(travel);
+		//User.merge(current);
+		return ok();
+	}
 	
 	@Transactional
 	public static Result travelsParticipating() {
-		User user = AccountController.getCurrentUser();
+		User currentUser = AccountController.getCurrentUser();
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
-		
+
 		try {
-			json = mapper.writeValueAsString(user.getTravelsParticipating());
+			json = mapper.writeValueAsString(getTravelsParticipating());
 		} catch (Exception e) {
 			return badRequest();
 		}
 		
 		return ok(json);
 	}
+	
+	@Transactional
+	public static Set<Travel> getTravelsParticipating() {
+		User currentUser = AccountController.getCurrentUser();
+
+		List<Travel> allTravels = GenericDAOImpl.getInstance().findAllByClassName("Travel");
+
+		Set<Travel> travels = new HashSet<>();
+
+		for (Travel travel : allTravels) {
+			if (!travel.isAdminister(currentUser) && travel.isParticipating(currentUser)) {
+				travels.add(travel);
+			}
+		}
+		
+		return travels;
+	}
+	
+	
 	
 	@Transactional
 	public static Result travelsAdmin() {

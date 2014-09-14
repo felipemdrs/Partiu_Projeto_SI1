@@ -16,7 +16,7 @@
 					</h2>
 					<h2 class="row">Participe agora mesmo!</h2>
 			</div>	
-			@if(!message.trim().equals("")) {
+			@if(message != null && !message.trim().equals("")) {
 				<div class="alert alert-danger row col-md-5" role="alert" style="left: 50px; margin-top: -50px;">
 					<p>@message</p>
 				</div>

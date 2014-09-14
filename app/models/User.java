@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,9 +58,6 @@ public class User {
 
 	@Temporal(TemporalType.DATE)
 	private Date dateRegister;
-	
-	@OneToMany(cascade=CascadeType.ALL)
-	private Set<Travel> travelsParticipating = new HashSet<Travel>();
 
 	@OneToMany(mappedBy="admin", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
@@ -103,10 +101,6 @@ public class User {
 
 	public Long getId() {
 		return id;
-	}
-	
-	public Set<Travel> getTravelsParticipating() {
-		return this.travelsParticipating;
 	}
 	
 	public Set<Travel> getTravelsAdmin() {
@@ -194,10 +188,6 @@ public class User {
 	public boolean passwordIsValid(String password) throws Exception {
 		String criptoPass = PasswordService.getInstance().encrypt(password);
 		return criptoPass.equals(this.password);
-	}
-
-	public boolean leaveTravel(Travel travel) {
-		return travelsParticipating.remove(travel);
 	}
 
 	public static User getUserByEmail(String email) {
