@@ -18,6 +18,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import models.User;
 import models.dao.GenericDAOImpl;
 import play.data.validation.Constraints.MaxLength;
@@ -54,6 +56,7 @@ public class Travel {
 	@ManyToOne(cascade=CascadeType.ALL)
 	@Required
 	@NotNull
+	@JsonBackReference
 	private User admin;
 
 	@Temporal(TemporalType.DATE)

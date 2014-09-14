@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import models.User;
 import models.dao.GenericDAOImpl;
 import models.travel.Travel;
@@ -164,6 +166,37 @@ public class TravelController extends Controller {
 		}
 		
 		return redirect(routes.Application.index());
+	}
+	
+	@Transactional
+	public static Result travelsParticipating() {
+		User user = AccountController.getCurrentUser();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		
+		try {
+			json = mapper.writeValueAsString(user.getTravelsParticipating());
+		} catch (Exception e) {
+			return badRequest();
+		}
+		
+		return ok(json);
+	}
+	
+	@Transactional
+	public static Result travelsAdmin() {
+		User user = AccountController.getCurrentUser();
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		
+		try {
+			json = mapper.writeValueAsString(user.getTravelsAdmin());
+		} catch (Exception e) {
+			return badRequest(e.getMessage());
+		}
+		
+		return ok(json);
 	}
 	
 }

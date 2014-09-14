@@ -3,21 +3,29 @@ package models;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import models.Utils.PasswordService;
 import models.dao.GenericDAOImpl;
+import models.travel.Travel;
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class User {
@@ -48,6 +56,13 @@ public class User {
 
 	@Temporal(TemporalType.DATE)
 	private Date dateRegister;
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	private Set<Travel> travelsParticipating = new HashSet<>();
+
+	@OneToMany(mappedBy="admin", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
+	private Set<Travel> travelsAdmin = new HashSet<>();
 	
 	public User() {
 	}
@@ -87,6 +102,14 @@ public class User {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public Set<Travel> getTravelsParticipating() {
+		return this.travelsParticipating;
+	}
+	
+	public Set<Travel> getTravelsAdmin() {
+		return this.travelsAdmin;
 	}
 
 	public void setId(Long id) {
