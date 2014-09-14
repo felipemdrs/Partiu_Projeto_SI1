@@ -7,15 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -26,8 +22,6 @@ import models.travel.Travel;
 import models.travel.TravelException;
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class User {
@@ -59,12 +53,8 @@ public class User {
 	@Temporal(TemporalType.DATE)
 	private Date dateRegister;
 
-	@OneToMany(mappedBy="admin", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JsonManagedReference
-	private Set<Travel> travelsAdmin = new HashSet<Travel>();
-	
-	public User() {
-	}
+	@SuppressWarnings("unused")
+	private User() { }
 
 	public User(String name, String email, String password) throws Exception {
 		setEmail(email);
@@ -103,14 +93,11 @@ public class User {
 		return id;
 	}
 	
-	public Set<Travel> getTravelsAdmin() {
-		return this.travelsAdmin;
-	}
-	
 	public void createTravel(String name, String description, double coordX, 
 			double coordY, String placeDescription, Date dateRegister) {
 		try {
-			this.travelsAdmin.add(new Travel(this, name, description, coordX, coordY, placeDescription, dateRegister));
+			Travel travel = new Travel(this, name, description, coordX, coordY, placeDescription, dateRegister);
+			Travel.persist(travel);
 		} catch (TravelException e) {
 			e.printStackTrace();
 		}
@@ -124,8 +111,7 @@ public class User {
 			if (password != null) {
 				travel.close(password);
 			}		
-
-			this.travelsAdmin.add(travel);
+			Travel.persist(travel);
 		} catch (TravelException e) {
 			e.printStackTrace();
 		}
@@ -183,6 +169,34 @@ public class User {
 	
 	public String getFirstName() {
 		return name.split(" ")[0];
+	}
+
+	public Set<Travel> getTravelsAdmin() {
+		List<Travel> allTravels = GenericDAOImpl.getInstance().findAllByClassName("Travel");
+
+		Set<Travel> travels = new HashSet<>();
+
+		for (Travel travel : allTravels) {
+			if (travel.isAdminister(this)) {
+				travels.add(travel);
+			}
+		}
+		
+		return travels;
+	}
+
+	public Set<Travel> getTravelsParticipating() {
+		List<Travel> allTravels = GenericDAOImpl.getInstance().findAllByClassName("Travel");
+
+		Set<Travel> travels = new HashSet<>();
+
+		for (Travel travel : allTravels) {
+			if (!travel.isAdminister(this) && travel.isParticipating(this)) {
+				travels.add(travel);
+			}
+		}
+		
+		return travels;
 	}
 	
 	public boolean passwordIsValid(String password) throws Exception {

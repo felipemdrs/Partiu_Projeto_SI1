@@ -43,7 +43,7 @@ public class TravelController extends Controller {
 	public static Result listIn() {
 		User currentUser = AccountController.getCurrentUser();
 
-		return ok(views.html.travel.list.index.render(1, currentUser, getTravelsParticipating()));
+		return ok(views.html.travel.list.index.render(1, currentUser, currentUser.getTravelsParticipating()));
 	}
 	
 	@Transactional
@@ -279,7 +279,7 @@ public class TravelController extends Controller {
 		if (!travel.leave(current)) {
 			return badRequest("Usuário não está participando da viagem."); 
 		}
-
+		Travel.merge(travel);
 		return ok();
 	}
 
@@ -294,7 +294,7 @@ public class TravelController extends Controller {
 		if (!travel.join(current, password)) {	
 			return badRequest("Usuário não está participando da viagem."); 
 		}
-
+		Travel.merge(travel);
 		return ok();
 	}
 	
@@ -305,37 +305,18 @@ public class TravelController extends Controller {
 	
 	@Transactional
 	public static Result travelsParticipating() {
-
+		User user = AccountController.getCurrentUser();
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 
 		try {
-			json = mapper.writeValueAsString(getTravelsParticipating());
+			json = mapper.writeValueAsString(user.getTravelsParticipating());
 		} catch (Exception e) {
 			return badRequest();
 		}
 		
 		return ok(json);
 	}
-	
-	@Transactional
-	public static Set<Travel> getTravelsParticipating() {
-		User currentUser = AccountController.getCurrentUser();
-
-		List<Travel> allTravels = GenericDAOImpl.getInstance().findAllByClassName("Travel");
-
-		Set<Travel> travels = new HashSet<>();
-
-		for (Travel travel : allTravels) {
-			if (!travel.isAdminister(currentUser) && travel.isParticipating(currentUser)) {
-				travels.add(travel);
-			}
-		}
-		
-		return travels;
-	}
-	
-	
 	
 	@Transactional
 	public static Result travelsAdmin() {

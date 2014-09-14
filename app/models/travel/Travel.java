@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -58,11 +59,10 @@ public class Travel {
 	@NotNull
 	private Place place;
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@Column
 	@Required
 	@NotNull
-	@JsonBackReference
-	private User admin;
+	private String admin;
 
 	@Temporal(TemporalType.DATE)
 	@Required
@@ -72,8 +72,8 @@ public class Travel {
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private TravelState state;
 
-	@OneToMany(cascade=CascadeType.ALL)
-	private Set<User> participating = new HashSet<User>();
+	@ElementCollection
+	private Set<String> participating = new HashSet<String>();
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JsonBackReference
@@ -144,7 +144,7 @@ public class Travel {
 	}
 
 	public User getAdmin() {
-		return admin;
+		return User.getUserByEmail(admin);
 	}
 
 	public void setAdmin(User admin) throws TravelException {
@@ -153,7 +153,7 @@ public class Travel {
 		} else if (this.admin != null) {
 			throw new TravelException("Esta viagem já possui um administrador.");
 		}
-		this.admin = admin;
+		this.admin = admin.getEmail();
 	}
 
 	public String getPhotoUrl() {
@@ -176,7 +176,11 @@ public class Travel {
 	}
 
 	public Set<User> getParticipating() {
-		return Collections.unmodifiableSet(participating);
+		Set<User> found = new HashSet<User>();
+		for(String email : participating) {
+			found.add(User.getUserByEmail(email));
+		}
+		return Collections.unmodifiableSet(found);
 	}
 
 	public List<Post> getPosts() {
@@ -188,13 +192,13 @@ public class Travel {
 	}
 
 	public boolean leave(User usr) {
-		return participating.remove(usr);
+		return participating.remove(usr.getEmail());
 	}
 	
 	//protected because only the travelstate
 	//can add a user this way (without the need of password)
 	protected boolean join(User usr) {
-		return participating.add(usr);
+		return participating.add(usr.getEmail());
 	}
 	
 	//this is the method which is public (requires password)
@@ -215,11 +219,11 @@ public class Travel {
 	}
 	
 	public boolean isParticipating(User usr) {
-		return participating.contains(usr);
+		return participating.contains(usr.getEmail());
 	}
 	
 	public boolean isAdminister(User usr) {
-		return admin.equals(usr);
+		return admin.equals(usr.getEmail());
 	}
 
 	public void addPost(User user, String message) {
