@@ -122,6 +122,21 @@ public class User {
 		}
 	}
 
+	public void createTravel(String name2, String description, double coordX,
+			double coordY, String placeDescription, Date date, String password) {
+		try {
+			Travel travel = new Travel(this, name, description, coordX, coordY, placeDescription, dateRegister);
+			
+			if (password != null) {
+				travel.close(password);
+			}		
+
+			this.travelsAdmin.add(travel);
+		} catch (TravelException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}

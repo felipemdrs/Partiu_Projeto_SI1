@@ -9,21 +9,23 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import models.User;
 import models.dao.GenericDAOImpl;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Travel {
@@ -32,7 +34,9 @@ public class Travel {
 	private static final int MAX_NAME_LENGTH = 40;
 	private static final int MAX_DESCRIPTION_LENGTH = 350;
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name="TRAVEL_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column
@@ -64,8 +68,8 @@ public class Travel {
 	@NotNull
 	private Date date;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
-	private TravelState state = new OpenState(this);
+	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private TravelState state;
 
 	@OneToMany(cascade=CascadeType.ALL)
 	private Set<User> participating = new HashSet<User>();
@@ -86,6 +90,7 @@ public class Travel {
 		setPlace(new Place(coordX, coordY, placeDescription));
 		setDate(date);
 		setPhotoUrl("");
+		this.state  = new OpenState(this);
 	}
 	
 	public Travel(User admin, String name, String description, double coordX,
@@ -94,7 +99,7 @@ public class Travel {
 		this(admin, name, description, coordX, coordY, placeDescription, date);
 		setPhotoUrl(photoUrl);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}

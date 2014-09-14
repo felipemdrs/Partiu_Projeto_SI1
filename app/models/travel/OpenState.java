@@ -1,9 +1,7 @@
 package models.travel;
 
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import models.User;
@@ -12,9 +10,6 @@ import models.User;
 @DiscriminatorValue("OpenState")
 @Table(name = "OPENSTATE")
 public class OpenState extends TravelState {
-
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Travel context;
 
 	public OpenState() { }
 

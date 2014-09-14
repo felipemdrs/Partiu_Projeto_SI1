@@ -178,17 +178,10 @@ public class TravelController extends Controller {
 		if (locked && !password.equals(repeatPassword)) {
 			return badRequest("Senhas não coincidem.");
 		}
-		
-		Travel newTravel;
+
 		try {
-			newTravel = new Travel(AccountController.getCurrentUser(), name, description, coordX, coordY, placeDescription, date);
+			AccountController.getCurrentUser().createTravel(name, description, coordX, coordY, placeDescription, date, password);
 		} catch(Exception e) {
-			return badRequest(e.getMessage());
-		}
-		
-		try {
-			Travel.persist(newTravel);
-		} catch(Throwable e) {
 			return badRequest("Ocorreu um erro. Tente novamente.");
 		}
 		

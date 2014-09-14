@@ -1,10 +1,8 @@
 package models.travel;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import models.User;
@@ -12,11 +10,8 @@ import models.Utils.PasswordService;
 
 @Entity
 @DiscriminatorValue("CloseState")
-@Table(name="CLOSESTATE")
+@Table(name = "CLOSESTATE")
 public class ClosedState extends TravelState {
-
-	@ManyToOne(cascade=CascadeType.ALL)
-	private Travel context;
 
 	@Column
 	private String password;
@@ -24,6 +19,7 @@ public class ClosedState extends TravelState {
 	public ClosedState() { }
 
 	public ClosedState(Travel context, String password) {
+		System.out.println("closeds");
 		setContext(context);
 		setPassword(password);
 	}
