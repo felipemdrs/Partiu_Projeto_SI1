@@ -20,7 +20,8 @@ GET		/travels/:id/edit					controllers.TravelController.edit(id: Long)
 POST	/travels/:id/saveEdit				controllers.TravelController.saveEdit(id: Long)
 POST	/travels/create						controllers.TravelController.create()
 PUT		/travels/:id/leave					controllers.TravelController.leave(id: Long)
-PUT		/travels/:id/join					controllers.TravelController.join(id: Long)
+PUT		/travels/:id/join/:password			controllers.TravelController.join(id: Long, password : String)
+PUT		/travels/:id/join					controllers.TravelController.joinOpenTravel(id: Long)
 
 # Posts
 POST	/travels/:id/insertPost				controllers.TravelController.insertPost(id: Long)

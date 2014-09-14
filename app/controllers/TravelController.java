@@ -257,11 +257,15 @@ public class TravelController extends Controller {
 		}
 
 		try {
-			AccountController.getCurrentUser().createTravel(name, description, coordX, coordY, placeDescription, date, password);
+			Travel travel = new Travel(AccountController.getCurrentUser(), name, description, coordX, coordY, placeDescription, date);
+			if (password != null && !password.trim().isEmpty()) {
+				travel.close(password);
+			}
+			Travel.merge(travel);
 		} catch(Exception e) {
 			return badRequest("Ocorreu um erro. Tente novamente.");
 		}
-		
+
 		return redirect(routes.Application.index());
 	}
 
@@ -275,30 +279,33 @@ public class TravelController extends Controller {
 		if (!travel.leave(current)) {
 			return badRequest("Usuário não está participando da viagem."); 
 		}
+
 		return ok();
 	}
 
 	@Transactional
-	public static Result join(Long id) {
+	public static Result join(Long id, String password) {
 		Travel travel = Travel.getTravelById(id);
 		if (travel == null) {
 			return badRequest("Viagem não encontrada.");
 		}
 
-		DynamicForm form = form().bindFromRequest();
-		String password = form.get("password");
-
 		User current = AccountController.getCurrentUser();
-		if (!travel.join(current, password)) {		
+		if (!travel.join(current, password)) {	
 			return badRequest("Usuário não está participando da viagem."); 
 		}
+
 		return ok();
 	}
 	
 	@Transactional
+	public static Result joinOpenTravel(Long id) {
+		return join(id, null);
+	}
+	
+	@Transactional
 	public static Result travelsParticipating() {
-		User currentUser = AccountController.getCurrentUser();
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 

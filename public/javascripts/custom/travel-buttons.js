@@ -45,7 +45,15 @@ function clickJoinButton() {
 	//Confirm the typed password
 	$("#travel-box-password-confirm").click(function(){
 		var button = $("#typePasswordModal").data();
-		enableJoinButton(button);
+		var travelId = button.data('travelid');
+
+		$.proxy($.ajax({
+			type: 'put',
+			url: '/travels/' + travelId + '/join/' + $("#typePasswordModal input").val(),
+			success: function(result) {
+				enableJoinButton(button);
+			}
+		}), this);
 		$("#typePasswordModal").modal("hide");
 	}); 
 	//Click on join button 

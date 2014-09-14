@@ -47,6 +47,7 @@ public class ClosedState extends TravelState {
 	
 	@Override
 	public boolean join(User usr, String password) {
+		System.out.println("closed");
 		try {
 			if (passwordIsValid(password) && !context.isAdminister(usr)) {
 				return context.join(usr);
