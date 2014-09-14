@@ -74,7 +74,8 @@ public class Travel {
 	@JsonBackReference
 	private List<Post> posts = new ArrayList<Post>();
 	
-	public Travel() { }
+	@SuppressWarnings("unused")
+	private Travel() { }
 	
 	public Travel(User admin, String name, String description, double coordX, 
 			double coordY, String placeDescription, Date date) 
@@ -168,16 +169,8 @@ public class Travel {
 		return Collections.unmodifiableSet(participating);
 	}
 
-	public void setParticipating(Set<User> participating) {
-		this.participating = participating;
-	}
-
 	public List<Post> getPosts() {
 		return Collections.unmodifiableList(posts);
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
 	}
 
 	protected void setState(TravelState state) {
@@ -222,7 +215,11 @@ public class Travel {
 	public void addPost(User user, String message) {
 		posts.add(0, new Post(user, message));
 	}
-	
+
+	public void removePost(Post post) {
+		posts.remove(post);
+	}
+
 	public static Travel getTravelById(Long id) {
 		Travel found = GenericDAOImpl.getInstance().findByEntityId(Travel.class, id);
 		return found;

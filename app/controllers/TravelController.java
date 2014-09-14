@@ -6,10 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import models.User;
 import models.dao.GenericDAOImpl;
+import models.travel.Post;
 import models.travel.Travel;
 import play.data.DynamicForm;
 import play.db.jpa.Transactional;
@@ -89,11 +88,11 @@ public class TravelController extends Controller {
 	}
 	
 	@Transactional
-	public static Result post(Long id) {
+	public static Result post(Long travelId) {
 		DynamicForm form = form().bindFromRequest();
 		String message = form.get("message");
 		
-		Travel found = Travel.getTravelById(id);
+		Travel found = Travel.getTravelById(travelId);
 		if (found == null) {
 			return badRequest("Viagem não encontrada.");
 		}
@@ -126,6 +125,31 @@ public class TravelController extends Controller {
 		}
 		
 		return ok(json);
+	}
+	
+	@Transactional
+	public static Result canEditPost(Long travelId, Long postId) {
+		Travel travel = Travel.getTravelById(travelId);
+		Post post = Post.getPostById(postId);
+		User current = AccountController.getCurrentUser();
+		boolean canEdit = travel.isAdminister(current) || post.getUser().equals(current);
+		return ok("[" + canEdit + "]");
+	}
+	
+	@Transactional
+	public static Result deletePost(Long travelId, Long postId) {
+		Travel travel = Travel.getTravelById(travelId);
+		Post post = Post.getPostById(postId);
+		User current = AccountController.getCurrentUser();
+		boolean canEdit = travel.isAdminister(current) || post.getUser().equals(current);
+		if (canEdit) {
+			travel.removePost(post);
+		} else {
+			return badRequest("Operação inválida.");
+		}
+		GenericDAOImpl.getInstance().merge(travel);
+		GenericDAOImpl.getInstance().flush();
+		return ok();
 	}
 	
 	@Transactional

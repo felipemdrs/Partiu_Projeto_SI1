@@ -33,7 +33,8 @@ public class Place {
 	@MaxLength(value = MAX_DESCRIPTION_LENGTH)
 	private String description;
 	
-	public Place() { }
+	@SuppressWarnings("unused")
+	private Place() { }
 	
 	public Place(double coordX, double coordY, String description) 
 		throws TravelException {

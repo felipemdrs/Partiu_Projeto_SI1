@@ -58,11 +58,11 @@ public class User {
 	private Date dateRegister;
 	
 	@OneToMany(cascade=CascadeType.ALL)
-	private Set<Travel> travelsParticipating = new HashSet<>();
+	private Set<Travel> travelsParticipating = new HashSet<Travel>();
 
 	@OneToMany(mappedBy="admin", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
-	private Set<Travel> travelsAdmin = new HashSet<>();
+	private Set<Travel> travelsAdmin = new HashSet<Travel>();
 	
 	public User() {
 	}
@@ -157,7 +157,7 @@ public class User {
 		}
 		this.photoUrl = photoUrl;
 	}
-
+	
 	public String getFormattedDate() { 
 		return new SimpleDateFormat("dd/MM/yyyy").format(dateRegister);
 	}
@@ -192,4 +192,5 @@ public class User {
 	public int hashCode() {
 		return this.email.hashCode();
 	}
+
 }

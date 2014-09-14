@@ -1,16 +1,20 @@
 @(post: models.travel.Post)
+
 <div class="message-box">
+	
 	<div class="col-md-2">
 		<div>
 			<a href="/@post.getUser().getId()/profile"><img src="@post.getUser().getPhotoUrl()"></a>
 		</div>
 	</div>
 	<div class="arrow_box col-md-7">
+		
 		<h3>
 			<b>@post.getUser().getName() disse</b>
 		</h3>
 		<p> @post.getMessage()</p>
 		<i>@post.getFormattedDate()</i> 
 	</div>
+	<a data-id="@post.getId()" id="post-close" style="position: absolute; float: right; color: red; margin-top: 50px;"  href="#"><i class="fa fa-times"></i></a>
 </div>
 

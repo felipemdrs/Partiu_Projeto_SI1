@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import models.User;
+import models.dao.GenericDAOImpl;
 import play.data.validation.Constraints.Required;
 
 @Entity
@@ -44,7 +45,8 @@ public class Post {
 	@Column
 	private String formattedDate = getSimplifiedDate(date) + " às " + timeOfDay + "h";
 	
-	public Post() { }
+	@SuppressWarnings("unused")
+	private Post() { }
 	
 	public Post(User user, String message) {
 		this.setUser(user);
@@ -101,8 +103,11 @@ public class Post {
 	
 	private static String getSimplifiedDate(Date date) { 
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
-		System.out.println(format.format(date));
 		return format.format(date);
+	}
+
+	public static Post getPostById(Long id) {
+		return GenericDAOImpl.getInstance().findByEntityId(Post.class, id);
 	}
 	
 }

@@ -13,12 +13,38 @@ function refreshPosts() {
 				template.find("#userName").text(data[i].user.name);
 				template.find("#message").text(data[i].message);
 				template.find("#date").text(data[i].formattedDate);
+				template.find("#post-close").data('id', data[i].id);
+				$.ajax({
+					type: 'post',
+					url: '/posts/' + travelid + '&' + data[i].id + '/canEdit',
+					datatype: 'json',
+					async: false,
+					success: function(result) {
+						var data = JSON.parse(result);
+						if (!data[0]) {
+							template.find("#post-close").remove();
+						}
+					}
+				});
 				template.addClass("message-box");
 				template.removeClass("message-box-template");
 				$("#message-input").parent().append(template);
 				template.show();
 			}
 		}
+	});
+}
+function removePost() {
+	var travelid = $("#travel-id").val();
+	$(document).on("click", "#post-close", function(){
+		var postid = $(this).data("id");
+		$.ajax({
+			type: 'post',
+			url: '/posts/' + travelid + '&' + postid + '/delete',
+			success: function(result) {
+				refreshPosts();
+			}
+		});
 	});
 }
 $(function(){
@@ -47,4 +73,5 @@ $(function(){
 		});
 		return false;
 	});
+	removePost();
 });

@@ -64,18 +64,18 @@
 		<hr>
 		<div>
 			<h3>Viagens administradas</h3>
-			@for(i <- 1 to 3) {
+			@for(travel <- user.getTravelsAdmin()) {
 				<div class="profile-travel">
-					<a href="/travels/1/info"><img src="/assets/img/perfil.jpg" title="Viagem para recife" /></a>
+					<a href="/travels/@travel.getId()/info"><img src="/assets/img/perfil.jpg" title="@travel.getName()" /></a>
 				</div>
 			}
 		</div>
 		<hr>
 		<div>
 			<h3>Viagens participadas</h3>
-			@for(i <- 1 to 10) {
+			@for(travel <- user.getTravelsParticipating()) {
 				<div class="profile-travel">
-					<a href="/travels/1/info"><img src="/assets/img/perfil.jpg" title="Viagem para recife" /></a>
+					<a href="/travels/@travel.getId()/info"><img src="/assets/img/perfil.jpg" title="@travel.getName()" /></a>
 				</div>
 			}
 		</div>
