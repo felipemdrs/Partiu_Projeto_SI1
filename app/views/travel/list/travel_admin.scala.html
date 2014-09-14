@@ -1,7 +1,7 @@
 @(user: User, travel: models.travel.Travel)
 
 <div class="travel-box"  >
-	<a href="/travels/1/board" style="color: #333333;"><div class="col-md-2">
+	<a href="/travels/@travel.getId()/board" style="color: #333333;"><div class="col-md-2">
 		<div >
 			<img src="@travel.getPhotoUrl()" >
 		</div>
