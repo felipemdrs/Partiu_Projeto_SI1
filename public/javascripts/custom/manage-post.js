@@ -39,7 +39,7 @@ function removePost() {
 	$(document).on("click", "#post-close", function(){
 		var postid = $(this).data("id");
 		$.ajax({
-			type: 'post',
+			type: 'delete',
 			url: '/posts/' + travelid + '&' + postid + '/delete',
 			success: function(result) {
 				refreshPosts();

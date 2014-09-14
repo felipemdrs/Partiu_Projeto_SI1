@@ -27,7 +27,7 @@ PUT		/travels/:id/join					controllers.TravelController.joinOpenTravel(id: Long)
 POST	/travels/:id/insertPost				controllers.TravelController.insertPost(id: Long)
 POST	/travels/:id/getposts				controllers.TravelController.getPosts(id: Long)
 POST	/posts/:travelid&:postid/canEdit	controllers.TravelController.canEditPost(travelid: Long, postid: Long)
-POST	/posts/:travelid&:postid/delete		controllers.TravelController.deletePost(travelid: Long, postid: Long)
+DELETE	/posts/:travelid&:postid/delete		controllers.TravelController.deletePost(travelid: Long, postid: Long)
 
 # Account
 POST    /login								controllers.AccountController.login()
