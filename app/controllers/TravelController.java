@@ -64,7 +64,12 @@ public class TravelController extends Controller {
 		if (AccountController.getCurrentUser() == null) {
 			return redirect(routes.Application.index());
 		}
-		return ok(views.html.travel.info.index.render());
+		Travel found = Travel.getTravelById(id);
+		User current = AccountController.getCurrentUser();
+		if (found == null) {
+			return ok(views.html.travel.info.index.render(current, found, "Viagem não encontrada."));
+		}
+		return ok(views.html.travel.info.index.render(current, found, ""));
 	}
 	
 	@Transactional
@@ -116,7 +121,7 @@ public class TravelController extends Controller {
 		
 		try {
 			json = mapper.writeValueAsString(found.getPosts());
-		} catch (Exception _) {
+		} catch (Exception e) {
 			return badRequest();
 		}
 		

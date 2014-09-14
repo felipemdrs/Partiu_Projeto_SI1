@@ -71,6 +71,7 @@ public class Travel {
 	private Set<User> participating = new HashSet<User>();
 	
 	@OneToMany(cascade=CascadeType.ALL)
+	@JsonBackReference
 	private List<Post> posts = new ArrayList<Post>();
 	
 	public Travel() { }

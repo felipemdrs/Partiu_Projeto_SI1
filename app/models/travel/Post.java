@@ -42,7 +42,7 @@ public class Post {
 						String.format("%02d", Calendar.getInstance().get(Calendar.MINUTE));
 	
 	@Column
-	private String formattedDate = date + " às " + timeOfDay + "h";
+	private String formattedDate = getSimplifiedDate(date) + " às " + timeOfDay + "h";
 	
 	public Post() { }
 	
@@ -97,6 +97,12 @@ public class Post {
 
 	public void setFormattedDate(String formattedDate) {
 		this.formattedDate = formattedDate;
+	}
+	
+	private static String getSimplifiedDate(Date date) { 
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
+		System.out.println(format.format(date));
+		return format.format(date);
 	}
 	
 }

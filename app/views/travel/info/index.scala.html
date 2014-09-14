@@ -1,4 +1,10 @@
-@home(0) {
+@(user: User, travel: models.travel.Travel, errorMessage: String)
+@index = @{
+	if(travel.isAdminister(user)) 2
+	else if(travel.isParticipating(user)) 1
+	else 0
+}
+@home(index) {
 	<style>
 		#map-canvas {
 			width: 100%;
@@ -11,31 +17,37 @@
 			border: 1px solid #b7b7b7;
 		}
 	</style>
-	<div class="list-travels list-travels-info col-md-5">
-		<div class="form-group">
-			<label>Nome</label>
-			<input type="text" class="form-control" disabled value="Titulo" />
+	@if(!errorMessage.trim().equals("")) {
+		<div class="alert alert-danger" role="alert">
+			@errorMessage
 		</div>
-		<div class="form-group">
-			<label>Descri&ccedil;&atilde;o</label>
-			<input type="text" class="form-control" disabled value="Descricao descricao descricao descricao" />
-		</div>
-		<div class="form-group">
-			<label>Data de viagem</label>
-			<input type="text" class="form-control" disabled value="29/09/14" />
-		</div>
-		<div class="form-group">
-			<label>Local</label>
-			<input type="text" class="form-control" disabled value="Cidade das fadas assassinas, n. 120" />
-			<input type="button" id="choose-place" class="form-control btn btn-default" value="Ver no mapa" />
-			<div id="choose-place-content" class="thumbnail" data-visible="false">
-				<div id="map-canvas"></div>
+	} else {
+		<div class="list-travels list-travels-info col-md-5">
+			<div class="form-group">
+				<label>Nome</label>
+				<input type="text" class="form-control" disabled value="Titulo" />
+			</div>
+			<div class="form-group">
+				<label>Descri&ccedil;&atilde;o</label>
+				<input type="text" class="form-control" disabled value="Descricao descricao descricao descricao" />
+			</div>
+			<div class="form-group">
+				<label>Data de viagem</label>
+				<input type="text" class="form-control" disabled value="29/09/14" />
+			</div>
+			<div class="form-group">
+				<label>Local</label>
+				<input type="text" class="form-control" disabled value="Cidade das fadas assassinas, n. 120" />
+				<input type="button" id="choose-place" class="form-control btn btn-default" value="Ver no mapa" />
+				<div id="choose-place-content" class="thumbnail" data-visible="false">
+					<div id="map-canvas"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="checkbox" disabled /> Privado
 			</div>
 		</div>
-		<div class="form-group">
-			<input type="checkbox" disabled /> Privado
-		</div>
-	</div>
-	@menus.rmenu(menu())
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/show-travel.js")"></script>
+		@menus.rmenu(menu())
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/show-travel.js")"></script>
+	}
 } 
