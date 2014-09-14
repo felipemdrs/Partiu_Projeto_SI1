@@ -1,17 +1,14 @@
 package models.travel;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import models.User;
 
 @Entity
-@DiscriminatorValue("OpenState")
-@Table(name = "OPENSTATE")
 public class OpenState extends TravelState {
 
-	public OpenState() { }
+	@SuppressWarnings("unused")
+	private OpenState() { }
 
 	public OpenState(Travel context) {
 		setContext(context);

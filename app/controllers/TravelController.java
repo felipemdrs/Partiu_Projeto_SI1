@@ -78,13 +78,84 @@ public class TravelController extends Controller {
 	public static Result edit(Long id) {
 		Travel found = Travel.getTravelById(id);
 		if (found == null) {
-			return ok(views.html.travel.edit.index.render(found, "Viagem não encontrada."));
+			return ok(views.html.travel.edit.index.render(found, "Viagem não encontrada.", "", true));
 		}
 		User current = AccountController.getCurrentUser();
 		if (!found.isAdminister(current)) {
-			return ok(views.html.travel.edit.index.render(found, "Você não tem permissões para editar esta viagem."));
+			return ok(views.html.travel.edit.index.render(found, "Você não tem permissões para editar esta viagem.", "", true));
 		}
-		return ok(views.html.travel.edit.index.render(found, ""));
+		return ok(views.html.travel.edit.index.render(found, "", "", true));
+	}
+	
+	@Transactional
+	public static Result saveEdit(Long id) {
+		Travel found = Travel.getTravelById(id);
+		User current = AccountController.getCurrentUser();
+		
+		DynamicForm form = form().bindFromRequest();
+		String accountPassword = form.get("account-password");
+		try {
+			if (!current.passwordIsValid(accountPassword)) {
+				return badRequest(views.html.travel.edit.index.render(found, "", "Senha da conta inválida.", true));
+			}
+		} catch (Exception e2) {
+			return badRequest(views.html.travel.edit.index.render(found, "", "Senha da conta inválida.", true));
+		}
+		
+		String name = form.get("travel-name");
+		String description = form.get("description");
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
+		Date date = null;
+		try {
+			date = new Date(format.parse(form.get("date")).getTime());
+		} catch (ParseException e1) {
+			return badRequest(views.html.travel.edit.index.render(found, "", "Data inválida.", true));
+		}  
+
+		double coordX, coordY;
+		try {
+			coordX = Double.valueOf(form.get("coords-x"));
+			coordY = Double.valueOf(form.get("coords-y"));
+		} catch(Exception e) {
+			return badRequest(views.html.travel.edit.index.render(found, "", "Um local deve ser informado.", true));
+		}
+		String placeDescription = form.get("place-description");
+		boolean locked = form.field("locked").value() != null;
+		String password = form.get("password");
+		String repeatPassword = form.get("repeat-password");
+		if (locked && !password.equals(repeatPassword)) {
+			return badRequest(views.html.travel.edit.index.render(found, "", "Senhas não coincidem.", true));
+		}
+		
+		try {
+			found.setName(name);
+			found.setDescription(description);
+			found.setDate(date);
+			found.getPlace().setDescription(placeDescription);
+			found.getPlace().setCoordX(coordX);
+			found.getPlace().setCoordY(coordY);
+			if (locked && !password.trim().equals("")) {
+				if (found.isLocked()) {
+					found.changePassword(password);
+				} else {
+					found.close(password);
+				}
+			} else if (!locked) {
+				if (found.isLocked()) {
+					found.open();
+				}
+			}
+		} catch(Exception e) {
+			return badRequest(views.html.travel.edit.index.render(found, "", e.getMessage(), true));
+		}
+		
+		try {
+			Travel.merge(found);
+		} catch(Exception e) {
+			return badRequest(views.html.travel.edit.index.render(found, "", "Erro ao atualizar dados. Tente novamente.", true));
+		}
+		
+		return ok(views.html.travel.edit.index.render(found, "", "Dados atualizados com sucesso.", false));
 	}
 	
 	@Transactional
@@ -161,11 +232,11 @@ public class TravelController extends Controller {
 		String description = form.get("description");
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
 		Date date = null;
-			try {
-				date = new Date(format.parse(form.get("date")).getTime());
-			} catch (ParseException e1) {
-				return badRequest("Data inválida.");
-			}  
+		try {
+			date = new Date(format.parse(form.get("date")).getTime());
+		} catch (ParseException e1) {
+			return badRequest("Data inválida.");
+		}  
 
 		double coordX, coordY;
 		try {

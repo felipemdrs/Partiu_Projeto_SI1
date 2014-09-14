@@ -1,22 +1,19 @@
 package models.travel;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import models.User;
 import models.Utils.PasswordService;
 
 @Entity
-@DiscriminatorValue("CloseState")
-@Table(name = "CLOSESTATE")
 public class ClosedState extends TravelState {
 
 	@Column
 	private String password;
 	
-	public ClosedState() { }
+	@SuppressWarnings("unused")
+	private ClosedState() { }
 
 	public ClosedState(Travel context, String password) {
 		setContext(context);
