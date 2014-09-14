@@ -116,7 +116,7 @@ public class User {
 		}
 	}
 
-	public void createTravel(String name2, String description, double coordX,
+	public void createTravel(String name, String description, double coordX,
 			double coordY, String placeDescription, Date date, String password) {
 		try {
 			Travel travel = new Travel(this, name, description, coordX, coordY, placeDescription, dateRegister);
