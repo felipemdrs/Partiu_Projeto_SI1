@@ -44,18 +44,31 @@ public class Global extends GlobalSettings {
 			@Override
 			public void invoke() throws Throwable {
 
-				User user1 = createUser("User1", "user1@mail.com",
-						DEFAULT_PASSWORD);
+				createFakeUsers(date);
+				
+				createFakeTravels(date);
 
-				for (int i = 2; i <= AMOUNT_USER; i++) {
-					createUser("User" + i, "user" + i + "@mail.com",
-							DEFAULT_PASSWORD);
+				createFakeParticipating();
+				
+			}
+
+			private void createFakeParticipating() {
+				int currentParticipating = 0;
+
+				while (currentParticipating < MAX_PARTICIPATING) {
+					Travel travel = getRandomTravel();
+					User user = getRandomUser();
+
+					if (!(travel.getAdmin().equals(user))) {
+						boolean result = travel.join(user, DEFAULT_PASSWORD);
+						if (result) {
+							currentParticipating++;
+						}
+					}
 				}
-				
-				createTravel(user1, "Travel 1", "Go to travel 1",
-						DEFAULT_COORD_X, DEFAULT_COORD_Y, "Location 1", date,
-						null);
-				
+			}
+
+			private void createFakeTravels(final Date date) throws Throwable {
 				for (int i = 2; i <= AMOUNT_TRAVEL; i++) {
 					User user = getRandomUser();
 
@@ -69,23 +82,20 @@ public class Global extends GlobalSettings {
 										+ i, date, null);
 					}
 				}
+			}
 
-				int currentParticipating = 0;
+			private void createFakeUsers(final Date date) throws Throwable {
+				User user1 = createUser("User1", "user1@mail.com",
+						DEFAULT_PASSWORD);
 
-				while (currentParticipating < MAX_PARTICIPATING) {
-					Travel travel = getRandomTravel();
-					System.out.println(travel.getId() + " "
-							+ currentParticipating);
-					User user = getRandomUser();
-
-					if (!(travel.getAdmin().equals(user))) {
-						boolean result = travel.join(user, DEFAULT_PASSWORD);
-						if (result) {
-							currentParticipating++;
-						}
-					}
+				for (int i = 2; i <= AMOUNT_USER; i++) {
+					createUser("User" + i, "user" + i + "@mail.com",
+							DEFAULT_PASSWORD);
 				}
 				
+				createTravel(user1, "Travel 1", "Go to travel 1",
+						DEFAULT_COORD_X, DEFAULT_COORD_Y, "Location 1", date,
+						null);
 			}
 
 			private int randInt(int min, int max) {
