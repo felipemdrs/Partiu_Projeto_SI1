@@ -1,10 +1,11 @@
+@(menuIndex: Integer)
 <div id="l-menu">
 	<div class="col-sm-2">
 		<h3 style="display: inline-block;"><b>Menu</b></h3>
-		<div class="list-group" style="font-size: 14px;">
-			<a data-index="1" href="#" class="list-group-item menu-link-travels">Todas</a>
-			<a data-index="2" href="#" class="list-group-item travels-board menu-link-board">Participando</a>
-			<a data-index="3" href="#" class="list-group-item travels-admin menu-link-admin">Administrando</a>
+		<div class="list-group" id="dynamic-menu" style="font-size: 14px;">
+			<a data-index="1" href="#" class="list-group-item menu-link-travels @if(menuIndex == 0){active}">Todas</a>
+			<a data-index="2" href="#" class="list-group-item travels-board menu-link-board @if(menuIndex == 1){active}">Participando</a>
+			<a data-index="3" href="#" class="list-group-item travels-admin menu-link-admin @if(menuIndex == 2){active}">Administrando</a>
 		</div>
 	</div>
 </div>
@@ -74,14 +75,14 @@ $(function(){
 					template.find("#photoUrl").attr("src", travel.photoUrl);
 					template.find("#name").text(travel.name);
 					template.find("#description").text(travel.description);
-					template.find("#info").attr("href", "travels/" + travel.id + "/info");
+					template.find("#info").attr("href", "travels/" + id + "/info");
 					
 					if (admin) {
 						template.find("#participating").remove();
-						template.find("#edit").attr("href", "/travels/" + travel.id + "/edit");
+						template.find("#edit").attr("href", "/travels/" + id + "/edit");
 					} else {
 						template.find("#administer").remove();
-						
+						template.find(".travel-box-join").data("travelid", id);
 						if (participating) {
 							template.find(".travel-box-join").addClass("color-green");
 							template.find(".travel-box-join").data("activated", true);
@@ -99,8 +100,11 @@ $(function(){
 					$(".list-travels-content").append(template);
 					template.slideDown();
 				}
-				$(".list-group a").removeClass("active");
-				$(".list-group:nth-child(" + index + ")").addClass("active");
+				var obj = $("#dynamic-menu a");
+				if (obj.hasClass("active")) {
+					obj.removeClass("active");
+				}
+				$("#dynamic-menu a:nth-child(" + index + ")").addClass("active");
 			}
 		});
 		return false;

@@ -13,7 +13,7 @@
 	@modals.cancel_travel()
 	<!--  Sidebar menu -->
 	@if(dynamic) {
-		@menus.dynamiclmenu()
+		@menus.dynamiclmenu(menuIndex)
 	} else {
 		@menus.lmenu(menuIndex)
 	}
