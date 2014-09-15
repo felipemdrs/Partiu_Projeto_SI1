@@ -269,6 +269,10 @@ public class User {
 
 	public static String mapUser(User user) {
 		StringBuilder map = new StringBuilder("{")
+						.append("\"id\":" + user.getId() + ",")
+						.append("\"name\":\"" + user.getName() + "\",")
+						.append("\"email\":\"" + user.getEmail() + "\",")
+						.append("\"photoUrl\":\"" + user.getPhotoUrl() + "\"")
 						.append("}");
 		return map.toString();
 	}

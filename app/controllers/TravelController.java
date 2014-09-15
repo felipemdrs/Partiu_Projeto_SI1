@@ -182,15 +182,15 @@ public class TravelController extends Controller {
 	
 	@Transactional
 	public static Result getPosts(Long id) {
+		User current = AccountController.getCurrentUser();
 		Travel found = Travel.getTravelById(id);
 		if (found == null) {
 			return badRequest("Viagem não encontrada.");
 		}
-		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		
 		try {
-			json = mapper.writeValueAsString(found.getPosts());
+			json = Post.mapPostCollection(current, found.getPosts());
 		} catch (Exception e) {
 			return badRequest();
 		}

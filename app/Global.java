@@ -51,11 +51,11 @@ public class Global extends GlobalSettings {
 					createUser("User" + i, "user" + i + "@mail.com",
 							DEFAULT_PASSWORD);
 				}
-
+				
 				createTravel(user1, "Travel 1", "Go to travel 1",
 						DEFAULT_COORD_X, DEFAULT_COORD_Y, "Location 1", date,
 						null);
-
+				
 				for (int i = 2; i <= AMOUNT_TRAVEL; i++) {
 					User user = getRandomUser();
 
@@ -85,6 +85,7 @@ public class Global extends GlobalSettings {
 						}
 					}
 				}
+				
 			}
 
 			private int randInt(int min, int max) {

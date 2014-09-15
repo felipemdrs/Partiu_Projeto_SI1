@@ -96,9 +96,7 @@ public class Post {
 							.append("\"id\":" + p.getId() + ",")
 							.append("\"message\":\"" + p.getMessage() + "\",")
 							.append("\"formattedDate\":\"" + p.getFormattedDate() + "\",")
-							.append("\"user\":{")
-							.append(User.mapUser(p.getUser()))
-							.append("}")
+							.append("\"user\":" + User.mapUser(p.getUser()))
 							.append("}");
 		return mapped.toString();
 	}
