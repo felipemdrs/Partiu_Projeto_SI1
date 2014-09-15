@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -70,7 +71,7 @@ public class User {
 	@JsonManagedReference
 	private Set<Travel> travelsAdmin = new HashSet<Travel>();
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinTable(name="entity_travelsparticipating")
 	@IndexColumn(base = 1, name = "trp")
 	@JsonManagedReference
