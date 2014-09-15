@@ -69,9 +69,12 @@ function updatePosts() {
 						template.addClass("travel-box");
 						template.removeClass("travel-box-template");
 						$(".list-travels-content").append(template);
-						template.slideDown();
+						template.show();
 					}
 				}
+				$(".list-travels-content").hide();
+				$(".list-travels-content").slideDown();
+				
 			}
 		});
 	});

@@ -302,7 +302,7 @@ public class TravelController extends Controller {
 	public static Result travelsAll() {
 		User user = AccountController.getCurrentUser();
 		String json = "";
-		
+
 		List<Travel> all = GenericDAOImpl.getInstance().findAllByClassName("Travel");
 		Set<Travel> include = new HashSet<Travel>();
 		for(Travel t : all) {
