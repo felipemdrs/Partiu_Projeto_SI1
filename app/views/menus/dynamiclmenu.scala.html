@@ -91,6 +91,7 @@ $(function(){
 						}
 						if (locked) {
 							template.find(".travel-box-join i").addClass("fa-lock");
+							template.find(".travel-box-join").data("locked", true);
 						} else {
 							template.find(".travel-box-join i").addClass("fa-check");
 						}
