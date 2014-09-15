@@ -68,6 +68,7 @@ function clickJoinButton() {
 			if ($(this).data("locked")) {
 				$("#typePasswordModal").data($(this));
 				$("#typePasswordModal").modal("show");
+				$("#typePasswordModal input").val("");
 			} else {
 				$.proxy($.ajax({
 					type: 'put',
