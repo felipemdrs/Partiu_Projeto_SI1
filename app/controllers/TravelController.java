@@ -4,6 +4,7 @@ import static play.data.Form.form;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -300,6 +301,36 @@ public class TravelController extends Controller {
 	}
 	
 	@Transactional
+	public static String mapTravel(Travel t) {
+		User current = AccountController.getCurrentUser();
+		StringBuilder mapped = new StringBuilder("{")
+							.append("\"id\":" + t.getId() + ",")
+							.append("\"name\":\"" + t.getName() + "\",")
+							.append("\"description\":\"" + t.getDescription() + "\",")
+							.append("\"photoUrl\":\"" + t.getPhotoUrl() + "\",")
+							.append("\"isLocked\":" + t.isLocked() + ",")
+							.append("\"isAdmin\":" + current.isAdminister(t) + ",")
+							.append("\"isParticipating\":" + current.isParticipating(t))
+							.append("}");
+		return mapped.toString();
+	}
+	
+	@Transactional
+	public static String mapSet(Set<Travel> travels) {
+		StringBuilder mapped = new StringBuilder("[");
+		int count = 0;
+		for(Travel t : travels) {
+			count++;
+			mapped.append(mapTravel(t));
+			if (count < travels.size()) {
+				mapped.append(",");
+			}
+		}
+		mapped.append("]");
+		return mapped.toString();
+	}
+	
+	@Transactional
 	public static Result travelsAll() {
 		User user = AccountController.getCurrentUser();
 		ObjectMapper mapper = new ObjectMapper();
@@ -314,7 +345,7 @@ public class TravelController extends Controller {
 		}
 		
 		try {
-			json = mapper.writeValueAsString(include);
+			json = mapSet(include);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return badRequest();
@@ -330,7 +361,7 @@ public class TravelController extends Controller {
 		String json = "";
 
 		try {
-			json = mapper.writeValueAsString(user.getTravelsParticipating());
+			json = mapSet(user.getTravelsParticipating());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return badRequest();
@@ -346,7 +377,7 @@ public class TravelController extends Controller {
 		String json = "";
 		
 		try {
-			json = mapper.writeValueAsString(user.getTravelsAdmin());
+			json = mapSet(user.getTravelsAdmin());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return badRequest();

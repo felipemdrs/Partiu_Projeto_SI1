@@ -59,20 +59,48 @@ $(function(){
 			success: function(result) {
 				var data = JSON.parse(result);
 				$(".list-travels-content").find("*").remove();
+				if (data.length == 0) {
+					$(".list-travels-content").append("<h3>No momento não existem viagens para esta categoria.</h3>");
+				}
 				for(i = 0; i < data.length; i++) {
 					var travel = data[i];
 					var template = $(".travel-box-template").clone();
-					template.find("#travel-id").val(travel.id);
+					var id = travel.id;
+					var participating = travel.isParticipating;
+					var admin = travel.isAdmin;
+					var locked = travel.isLocked;
+					
+					template.find("#travel-id").val(id);
 					template.find("#photoUrl").attr("src", travel.photoUrl);
 					template.find("#name").text(travel.name);
 					template.find("#description").text(travel.description);
 					template.find("#info").attr("href", "travels/" + travel.id + "/info");
-					template.find("#administer").remove();
+					
+					if (admin) {
+						template.find("#participating").remove();
+						template.find("#edit").attr("href", "/travels/" + travel.id + "/edit");
+					} else {
+						template.find("#administer").remove();
+						
+						if (participating) {
+							template.find(".travel-box-join").addClass("color-green");
+							template.find(".travel-box-join").data("activated", true);
+						} else {
+							template.find(".travel-box-join").addClass("color-gray");
+						}
+						if (locked) {
+							template.find(".travel-box-join i").addClass("fa-lock");
+						} else {
+							template.find(".travel-box-join i").addClass("fa-check");
+						}
+					}
 					template.addClass("travel-box");
 					template.removeClass("travel-box-template");
 					$(".list-travels-content").append(template);
-					template.show();
+					template.slideDown();
 				}
+				$(".list-group a").removeClass("active");
+				$(".list-group:nth-child(" + index + ")").addClass("active");
 			}
 		});
 		return false;

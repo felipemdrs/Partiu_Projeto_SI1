@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
-public class Travel {
+public class Travel implements Comparable<Travel> {
 
 	private static final String DEFAULT_PHOTO = "/assets/images/default-travel.jpg";
 	private static final int MAX_NAME_LENGTH = 40;
@@ -238,6 +238,15 @@ public class Travel {
 	public static void merge(Travel travel) {
 		GenericDAOImpl.getInstance().merge(travel);
 		GenericDAOImpl.getInstance().flush();
+	}
+
+	@Override
+	public int compareTo(Travel other) {
+		int firstComparator = date.compareTo(other.date);
+		if (firstComparator == 0) {
+			return name.compareTo(other.name);
+		}
+		return firstComparator;
 	}
 	
 }

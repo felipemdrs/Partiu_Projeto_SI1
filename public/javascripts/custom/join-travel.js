@@ -27,7 +27,7 @@ function disableJoinButton(button) {
 //clicks on join button
 function clickJoinButton() {
 	//Confirm the cancelling of travel
-	$("#travel-box-confirm").click(function(e){
+	$(document).on("click", "#travel-box-confirm", function(e){
 		e.preventDefault();
 
 		var button = $("#confirmModal").data();
@@ -43,7 +43,7 @@ function clickJoinButton() {
 		$("#confirmModal").modal("hide");
 	});
 	//Confirm the typed password
-	$("#travel-box-password-confirm").click(function(){
+	$(document).on("click", "#travel-box-password-confirm", function(){
 		var button = $("#typePasswordModal").data();
 		var travelId = button.data('travelid');
 
@@ -57,7 +57,7 @@ function clickJoinButton() {
 		$("#typePasswordModal").modal("hide");
 	}); 
 	//Click on join button 
-	$(".travel-box-join").click(function(){
+	$(document).on("click", ".travel-box-join", function(){
 		var travelId = $(this).data('travelid');
 		var joinButton = $(this);
 		if ($(this).data("activated")) {
@@ -83,7 +83,7 @@ function clickJoinButton() {
 //hover on buttons
 function hoverJoinButton() {
 	//Entering of hover of join button
-	$(".travel-box-join").mouseenter(function(){
+	$(document).on("mouseenter", ".travel-box-join", function(){
 		if ($(this).data("activated")) {
 			var icon = $(this).find("i");
 			if ($(this).data("locked")) {
@@ -98,7 +98,7 @@ function hoverJoinButton() {
 		}
 	});
 	//Leaving of hover of join button
-	$(".travel-box-join").mouseleave(function(){
+	$(document).on("mouseleave", ".travel-box-join", function(){
 		if ($(this).data("activated")) {
 			var icon = $(this).find("i");
 			icon.removeClass("fa-close");
@@ -114,7 +114,7 @@ function hoverJoinButton() {
 	});
 }
 function joinTravel() {
-	$(".travel-box-content").click(function(){
+	$(document).on("click", ".travel-box-content", function(){
 		var button = $(this).parent().parent().find(".travel-box-join");
 		var travelid = $(this).parent().parent().find("#travel-id").val();
 		if (!button.data("activated")) {
