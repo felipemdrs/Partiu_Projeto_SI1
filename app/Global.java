@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import controllers.AccountController;
-import controllers.routes;
 import models.Travel;
 import models.User;
 import models.dao.GenericDAOImpl;
@@ -19,6 +17,7 @@ import play.mvc.Action;
 import play.mvc.Http.Context;
 import play.mvc.Http.Request;
 import play.mvc.Result;
+import controllers.routes;
 
 public class Global extends GlobalSettings {
 
@@ -26,9 +25,13 @@ public class Global extends GlobalSettings {
 			"/register");
 	private final int AMOUNT_USER = 40;
 	private final int AMOUNT_TRAVEL = 30;
+
 	private final Double DEFAULT_COORD_X = -7.2038321;
 	private final Double DEFAULT_COORD_Y = -35.8993208;
+
 	private final String DEFAULT_PASSWORD = "password#123";
+
+	private final int MAX_PARTICIPATING = 15;
 
 	@Override
 	public void onStart(Application arg0) {
@@ -40,29 +43,23 @@ public class Global extends GlobalSettings {
 		JPA.withTransaction(new F.Callback0() {
 			@Override
 			public void invoke() throws Throwable {
-				Random rnd = new Random();
 
 				User user1 = createUser("User1", "user1@mail.com",
-						"password#123");
+						DEFAULT_PASSWORD);
 
 				for (int i = 2; i <= AMOUNT_USER; i++) {
 					createUser("User" + i, "user" + i + "@mail.com",
-							"password#123");
+							DEFAULT_PASSWORD);
 				}
 
 				createTravel(user1, "Travel 1", "Go to travel 1",
-						DEFAULT_COORD_X, DEFAULT_COORD_Y, "Location 1", date, null);
+						DEFAULT_COORD_X, DEFAULT_COORD_Y, "Location 1", date,
+						null);
 
 				for (int i = 2; i <= AMOUNT_TRAVEL; i++) {
-					User user = (User) GenericDAOImpl
-							.getInstance()
-							.findByAttributeName(
-									"User",
-									"id",
-									String.valueOf(rnd.nextInt(AMOUNT_USER) + 1))
-							.get(0);
+					User user = getRandomUser();
 
-					if (rnd.nextInt(1) == 1) {
+					if (randInt(0, 1) == 1) {
 						createTravel(user, "Travel " + i, "Go to travel " + i,
 								DEFAULT_COORD_X, DEFAULT_COORD_Y, "Location "
 										+ i, date, DEFAULT_PASSWORD);
@@ -72,6 +69,43 @@ public class Global extends GlobalSettings {
 										+ i, date, null);
 					}
 				}
+
+				int currentParticipating = 0;
+
+				while (currentParticipating < MAX_PARTICIPATING) {
+					Travel travel = getRandomTravel();
+					System.out.println(travel.getId() + " "
+							+ currentParticipating);
+					User user = getRandomUser();
+
+					if (!(travel.getAdmin().equals(user))) {
+						boolean result = travel.join(user, DEFAULT_PASSWORD);
+						if (result) {
+							currentParticipating++;
+						}
+					}
+				}
+			}
+
+			private int randInt(int min, int max) {
+				Random rand = new Random();
+				int randomNum = rand.nextInt((max - min) + 1) + min;
+				return randomNum;
+			}
+
+			private User getRandomUser() {
+				return (User) GenericDAOImpl
+						.getInstance()
+						.findByAttributeName("User", "id",
+								String.valueOf(randInt(1, AMOUNT_USER))).get(0);
+			}
+
+			private Travel getRandomTravel() {
+				return (Travel) GenericDAOImpl
+						.getInstance()
+						.findByAttributeName("Travel", "id",
+								String.valueOf(randInt(1, AMOUNT_TRAVEL)))
+						.get(0);
 			}
 
 			public User createUser(String name, String email, String password)
@@ -100,7 +134,6 @@ public class Global extends GlobalSettings {
 				}
 				return null;
 			}
-
 		});
 	}
 
