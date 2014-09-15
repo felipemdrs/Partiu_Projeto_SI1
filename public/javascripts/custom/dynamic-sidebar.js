@@ -12,6 +12,7 @@ function alreadyExists(findId) {
 
 function updatePosts() {
 	$("#load-more").click(function(){
+		$(this).button("loading");
 		var index = $(".list-group .active").data("index");
 		var newUrl;
 		switch(index) {
@@ -28,6 +29,7 @@ function updatePosts() {
 			type: 'GET',
 			url: newUrl,
 			success: function(result) {
+				$("#load-more").button("reset");
 				var data = JSON.parse(result);
 				for(i = 0; i < data.length; i++) {
 					var travel = data[i];
