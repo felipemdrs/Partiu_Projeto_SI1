@@ -27,8 +27,12 @@ import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 public class Travel {
 
 	private static final String DEFAULT_PHOTO = "/assets/images/default-travel.jpg";
@@ -72,6 +76,7 @@ public class Travel {
 	
 	@ManyToOne
 	@JoinColumn(name="entity_travelsadmin")
+	@JsonManagedReference
 	private User admin;
 	
 	@SuppressWarnings("unused")

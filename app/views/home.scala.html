@@ -1,4 +1,4 @@
-@(menuIndex: Integer)(content: Html)
+@(menuIndex: Integer, dynamic: Boolean)(content: Html)
 @main("#Partiu", AccountController.getCurrentUser()) {
 	<style>
 	body, .main-content {
@@ -12,7 +12,11 @@
 	@modals.remove_participant()
 	@modals.cancel_travel()
 	<!--  Sidebar menu -->
-	@menus.lmenu(menuIndex)
+	@if(dynamic) {
+		@menus.dynamiclmenu()
+	} else {
+		@menus.lmenu(menuIndex)
+	}
 	<!--  Main content -->
 	<div class="main-content" >
 		@content

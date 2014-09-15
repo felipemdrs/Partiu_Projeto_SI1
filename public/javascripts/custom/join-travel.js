@@ -119,9 +119,10 @@ function joinTravel() {
 		var travelid = $(this).parent().parent().find("#travel-id").val();
 		if (!button.data("activated")) {
 			$("#forbiddenModal").modal("show");
-			return; 
+			return false; 
 		}
 		window.location.href = "/travels/" + travelid + "/board";
+		return false;
 	});
 }
 $(function(){

@@ -300,6 +300,30 @@ public class TravelController extends Controller {
 	}
 	
 	@Transactional
+	public static Result travelsAll() {
+		User user = AccountController.getCurrentUser();
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		
+		List<Travel> all = GenericDAOImpl.getInstance().findAllByClassName("Travel");
+		Set<Travel> include = new HashSet<Travel>();
+		for(Travel t : all) {
+			if (!user.isAdminister(t) && !user.isParticipating(t)) {
+				include.add(t);
+			}
+		}
+		
+		try {
+			json = mapper.writeValueAsString(include);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return badRequest();
+		}
+		
+		return ok(json);
+	}
+	
+	@Transactional
 	public static Result travelsParticipating() {
 		User user = AccountController.getCurrentUser();
 		ObjectMapper mapper = new ObjectMapper();
@@ -308,6 +332,7 @@ public class TravelController extends Controller {
 		try {
 			json = mapper.writeValueAsString(user.getTravelsParticipating());
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return badRequest();
 		}
 		
@@ -323,7 +348,8 @@ public class TravelController extends Controller {
 		try {
 			json = mapper.writeValueAsString(user.getTravelsAdmin());
 		} catch (Exception e) {
-			return badRequest(e.getMessage());
+			System.out.println(e.getMessage());
+			return badRequest();
 		}
 		
 		return ok(json);

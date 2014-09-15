@@ -1,0 +1,81 @@
+<div id="l-menu">
+	<div class="col-sm-2">
+		<h3 style="display: inline-block;"><b>Menu</b></h3>
+		<div class="list-group" style="font-size: 14px;">
+			<a data-index="1" href="#" class="list-group-item menu-link-travels">Todas</a>
+			<a data-index="2" href="#" class="list-group-item travels-board menu-link-board">Participando</a>
+			<a data-index="3" href="#" class="list-group-item travels-admin menu-link-admin">Administrando</a>
+		</div>
+	</div>
+</div>
+
+<div class="travel-box-template">
+	<input type="hidden" id="travel-id" value="" />
+	<a href="#" style="color: #333333;"><div class="col-md-2">
+		<div>
+			<img src="" id="photoUrl">
+		</div>
+	</div>
+	<div class="travel-box-content">
+		<p><b><h3 id="name"></h3></b></p>
+		<p id="description"></p>
+	</div></a>
+	<div id="administer">
+		<a href="" id="edit">
+			<div class='travel-box-toggle travel-box-edit color-green' title="Editar" >
+				<i class="fa fa-cog"></i>
+			</div>
+			<div class="travel-box-join" data-activated="true"></div>
+		</a>
+	</div>
+	<div id="participating">
+		<div class='travel-box-toggle travel-box-join' data-activated="false" data-locked='false' title="Participar" data-travelid="1">
+			<i class="fa"></i>
+		</div>
+	</div>
+	<a href="" id="info"><div class="travel-box-toggle travel-box-info color-blue" title="Mais informa&ccedil;&otilde;es">	
+		<i class="fa fa-plus"></i>
+	</div></a>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(".travel-box-template").hide();
+	$(".list-group a").click(function(){
+		var index = $(this).data("index");
+		var newUrl;
+		switch(index) {
+		case 1:
+			newUrl = "/travels/all/get";
+			break;
+		case 2:
+			newUrl = "/travels/part/get";
+			break;
+		case 3:
+			newUrl = "/travels/admin/get";
+		}
+		$.ajax({
+			type: 'GET',
+			url: newUrl,
+			success: function(result) {
+				var data = JSON.parse(result);
+				$(".list-travels-content").find("*").remove();
+				for(i = 0; i < data.length; i++) {
+					var travel = data[i];
+					var template = $(".travel-box-template").clone();
+					template.find("#travel-id").val(travel.id);
+					template.find("#photoUrl").attr("src", travel.photoUrl);
+					template.find("#name").text(travel.name);
+					template.find("#description").text(travel.description);
+					template.find("#info").attr("href", "travels/" + travel.id + "/info");
+					template.find("#administer").remove();
+					template.addClass("travel-box");
+					template.removeClass("travel-box-template");
+					$(".list-travels-content").append(template);
+					template.show();
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>

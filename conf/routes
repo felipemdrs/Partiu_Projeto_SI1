@@ -7,10 +7,11 @@ GET     /                           controllers.Application.index()
 
 
 # Travels
-GET		/travels  				   			 controllers.TravelController.list()
+GET		/travels  				   			controllers.TravelController.list()
 GET		/travels/in							controllers.TravelController.listIn()
 GET		/travels/admin						controllers.TravelController.listAdmin()
 
+GET		/travels/all/get					controllers.TravelController.travelsAll() 
 GET		/travels/part/get					controllers.TravelController.travelsParticipating()
 GET		/travels/admin/get					controllers.TravelController.travelsAdmin()
 

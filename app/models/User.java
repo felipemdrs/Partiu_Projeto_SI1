@@ -29,9 +29,12 @@ import org.hibernate.annotations.IndexColumn;
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 public class User {
 	
 	private static final String DEFAULT_PHOTO = "/assets/images/default-user.gif";
@@ -62,15 +65,15 @@ public class User {
 	private Date dateRegister;
 
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JsonManagedReference
 	@JoinTable(name="entity_travelsadmin")
 	@IndexColumn(base = 1, name = "tra")
+	@JsonManagedReference
 	private Set<Travel> travelsAdmin = new HashSet<Travel>();
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JsonManagedReference
 	@JoinTable(name="entity_travelsparticipating")
 	@IndexColumn(base = 1, name = "trp")
+	@JsonManagedReference
 	private Set<Travel> travelsParticipating = new HashSet<Travel>();
 	
 	@SuppressWarnings("unused")

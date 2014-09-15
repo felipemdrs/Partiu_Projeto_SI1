@@ -1,6 +1,6 @@
 @(travel: Travel, errorMessage: String, requestMessage: String, isError: Boolean)
 
-@home(2) {
+@home(2, false) {
 	@if(!errorMessage.trim().equals("")) {
 		<div class="alert alert-danger" role="alert" style="margin-top: 1.19%;">
 			@errorMessage

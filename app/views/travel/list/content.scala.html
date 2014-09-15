@@ -1,9 +1,10 @@
 @(menuIndex: Integer, user: User, travels: Set[Travel], isAdmin: Boolean)
-@home(menuIndex) {
+@home(menuIndex, true) {
 	<div class="list-travels col-md-5">
 		<div class="list-travels-header">
 			<p>Viagens</p>
 		</div>
+		<div class="list-travels-content">
 		@if(travels != null && travels.size() > 0){
 			@for(t <- travels){
 				@travel(user, t)
@@ -11,10 +12,11 @@
 		}else{
 			<h3>No momento n&atilde;o existem viagens para esta categoria.</h3>
 		}
+		</div>
 		<div class="load-more btn btn-primary">
 			<h4>Carregar mais</h4>
 		</div>     
 	</div>
 	@menus.rmenu(menu())
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/travel-buttons.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/custom/join-travel.js")"></script>
 } 
