@@ -2,6 +2,7 @@ package models;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -88,6 +89,32 @@ public class Post {
 	
 	public static Post getPostById(Long id) {
 		return GenericDAOImpl.getInstance().findByEntityId(Post.class, id);
+	}
+
+	public static String mapPost(User current, Post p) {
+		StringBuilder mapped = new StringBuilder("{")
+							.append("\"id\":" + p.getId() + ",")
+							.append("\"message\":\"" + p.getMessage() + "\",")
+							.append("\"formattedDate\":\"" + p.getFormattedDate() + "\",")
+							.append("\"user\":{")
+							.append(User.mapUser(p.getUser()))
+							.append("}")
+							.append("}");
+		return mapped.toString();
+	}
+	
+	public static String mapPostCollection(User current, Collection<Post> posts) {
+		StringBuilder mapped = new StringBuilder("[");
+		int count = 0;
+		for(Post p : posts) {
+			count++;
+			mapped.append(mapPost(current, p));
+			if (count < posts.size()) {
+				mapped.append(",");
+			}
+		}
+		mapped.append("]");
+		return mapped.toString();
 	}
 	
 }

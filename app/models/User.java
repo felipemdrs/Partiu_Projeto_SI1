@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,13 +68,13 @@ public class User {
 	@JoinTable(name="entity_travelsadmin")
 	@IndexColumn(base = 1, name = "tra")
 	@JsonManagedReference
-	private Set<Travel> travelsAdmin = new TreeSet<Travel>();
+	private Set<Travel> travelsAdmin = new HashSet<Travel>();
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinTable(name="entity_travelsparticipating")
 	@IndexColumn(base = 1, name = "trp")
 	@JsonManagedReference
-	private Set<Travel> travelsParticipating = new TreeSet<Travel>();
+	private Set<Travel> travelsParticipating = new HashSet<Travel>();
 	
 	@SuppressWarnings("unused")
 	private User() { }
@@ -265,6 +265,12 @@ public class User {
 	@Override
 	public int hashCode() {
 		return this.email.hashCode();
+	}
+
+	public static String mapUser(User user) {
+		StringBuilder map = new StringBuilder("{")
+						.append("}");
+		return map.toString();
 	}
 
 }

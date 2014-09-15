@@ -10,6 +10,7 @@ function refreshPosts() {
 			for(i = 0; i < data.length; i++) {
 				var template = $(".message-box-template").clone();
 				template.find("#photoUrl").attr("src", data[i].user.photoUrl);
+				template.find("#photoUrl").parent().attr("href", "/" + data[i].user.id + "/profile");
 				template.find("#userName").text(data[i].user.name);
 				template.find("#message").text(data[i].message);
 				template.find("#date").text(data[i].formattedDate);

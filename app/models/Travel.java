@@ -1,6 +1,7 @@
 package models;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -33,7 +34,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
-public class Travel implements Comparable<Travel> {
+public class Travel {
 
 	private static final String DEFAULT_PHOTO = "/assets/images/default-travel.jpg";
 	private static final int MAX_NAME_LENGTH = 40;
@@ -240,13 +241,31 @@ public class Travel implements Comparable<Travel> {
 		GenericDAOImpl.getInstance().flush();
 	}
 
-	@Override
-	public int compareTo(Travel other) {
-		int firstComparator = date.compareTo(other.date);
-		if (firstComparator == 0) {
-			return name.compareTo(other.name);
+	public static String mapTravel(User current, Travel t) {
+		StringBuilder mapped = new StringBuilder("{")
+							.append("\"id\":" + t.getId() + ",")
+							.append("\"name\":\"" + t.getName() + "\",")
+							.append("\"description\":\"" + t.getDescription() + "\",")
+							.append("\"photoUrl\":\"" + t.getPhotoUrl() + "\",")
+							.append("\"isLocked\":" + t.isLocked() + ",")
+							.append("\"isAdmin\":" + current.isAdminister(t) + ",")
+							.append("\"isParticipating\":" + current.isParticipating(t))
+							.append("}");
+		return mapped.toString();
+	}
+	
+	public static String mapTravelCollection(User current, Collection<Travel> travels) {
+		StringBuilder mapped = new StringBuilder("[");
+		int count = 0;
+		for(Travel t : travels) {
+			count++;
+			mapped.append(mapTravel(current, t));
+			if (count < travels.size()) {
+				mapped.append(",");
+			}
 		}
-		return firstComparator;
+		mapped.append("]");
+		return mapped.toString();
 	}
 	
 }
