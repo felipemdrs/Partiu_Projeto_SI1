@@ -4,7 +4,6 @@ import static play.data.Form.form;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +18,6 @@ import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TravelController extends Controller {
 

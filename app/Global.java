@@ -135,19 +135,20 @@ public class Global extends GlobalSettings {
 					String placeDescription, Date date, String password)
 					throws Throwable {
 				if (admin != null) {
-					if (password != null) {
-						admin.createTravel(name, description, coordX, coordY,
-								placeDescription, date);
-					} else {
+					//if (password == null) {
+					//	admin.createTravel(name, description, coordX, coordY,
+					//			placeDescription, date);
+					//} else {
 						admin.createTravel(name, description, coordX, coordY,
 								placeDescription, date, password);
-					}
+					//}
 				}
 				return null;
 			}
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Action<Void> onRequest(Request request, Method arg1) {
 		String requestURI = request.uri();
